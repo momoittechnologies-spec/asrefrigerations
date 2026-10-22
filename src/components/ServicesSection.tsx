@@ -175,16 +175,24 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               <div className="p-6 pt-0 bg-transparent">
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                   <div>
-                    <div className="text-[10px] uppercase font-bold text-slate-400">Fixed Rate</div>
+                    <div className="text-[10px] uppercase font-bold text-slate-400">
+                      {service.price > 0 ? 'Fixed Rate' : 'Quote on Inspection'}
+                    </div>
                     <div className="text-2xl font-black text-slate-900 flex items-baseline">
-                      <span className="text-red-600">₹{service.price}</span>
-                      {service.category === 'amc' && <span className="text-xs text-slate-500 font-semibold ml-1">/year</span>}
+                      {service.price > 0 ? (
+                        <>
+                          <span className="text-red-600">₹{service.price}</span>
+                          {service.category === 'amc' && <span className="text-xs text-slate-500 font-semibold ml-1">/year</span>}
+                        </>
+                      ) : (
+                        <span className="text-sm sm:text-base font-black text-amber-600">Price on Inspection</span>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-1.5">
                     <a
-                      href={`https://wa.me/${cityConfig.phoneRaw}?text=${encodeURIComponent(`Hi AS Refrigeration ${cityConfig.name}, I am interested in ${service.name} (₹${service.price}).`)}`}
+                      href={`https://wa.me/${cityConfig.phoneRaw}?text=${encodeURIComponent(`Hi AS Refrigeration ${cityConfig.name}, I am interested in ${service.name} (${service.price > 0 ? `₹${service.price}` : 'Price on Inspection'}).`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2.5 rounded-xl border border-slate-200 text-slate-700 hover:text-emerald-600 hover:border-emerald-500 hover:bg-emerald-50 transition ios-tap"

@@ -202,8 +202,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   if (!isOpen) return null;
 
-  const rawTotal = preSelectedPrice || selectedService.price * quantity;
-  const calculatedTotal = Math.max(350, rawTotal - discount);
+  const isFluctuatingPrice = selectedService.price <= 0;
+  const rawTotal = isFluctuatingPrice ? 0 : (preSelectedPrice || selectedService.price * quantity);
+  const calculatedTotal = isFluctuatingPrice ? 0 : Math.max(350, rawTotal - discount);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -266,7 +267,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       `Customer: ${customerName || 'Customer'}\n` +
       `Phone: ${customerPhone}\n` +
       `Service: ${selectedService.name} (Qty: ${quantity})\n` +
-      `Estimated Amount: Rs. ${calculatedTotal} (Pay After Service via UPI)\n` +
+      (isFluctuatingPrice ? `Estimated Amount: Quote on Inspection (Price fluctuates by model/capacity)\n` : `Estimated Amount: Rs. ${calculatedTotal} (Pay After Service via UPI)\n`) +
       `Date & Slot: ${effectiveDate} [${effectiveSlot}]\n` +
       `Locality: ${area}\n` +
       `Full Address: ${streetAddress || cityConfig.name}\n` +
@@ -422,7 +423,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </div>
                   <div className="text-right">
                     <div className="text-[10px] font-black uppercase text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full inline-block">Estimated Price</div>
-                    <div className="text-xl font-black text-red-600 mt-0.5">₹{calculatedTotal}</div>
+                    <div className="text-xl font-black text-red-600 mt-0.5">{isFluctuatingPrice ? "Quote on Inspection" : `₹${calculatedTotal}`}</div>
                   </div>
                 </div>
 
@@ -707,7 +708,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Estimated Total:</span>
-                <span className="font-bold text-red-600">₹{calculatedTotal}</span>
+                <span className="font-bold text-red-600">{isFluctuatingPrice ? "Quote on Inspection" : `₹${calculatedTotal}`}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Dispatched To:</span>

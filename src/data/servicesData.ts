@@ -267,6 +267,18 @@ export const SERVICES_DATA: ServiceItem[] = [
     features: ['Inverter PCB diagnostics', 'Precision digital gauge refill', 'Commercial freezer compatibility']
   },
   {
+    id: 'fridge-compressor',
+    name: 'Inverter Fridge Compressor Replacement',
+    nameTe: 'ఇన్వర్టర్ ఫ్రిజ్ కంప్రెసర్ మార్పు (మోడల్ ఆధారంగా ధర)',
+    category: 'fridge',
+    price: 0,
+    duration: '120 mins',
+    popular: true,
+    description: 'Genuine branded inverter compressor replacement (LG, Samsung, Whirlpool, Godrej). Price varies depending on fridge capacity, inverter PCB compatibility, and brand model.',
+    descriptionTe: 'బ్రాండెడ్ ఇన్వర్టర్ కంప్రెసర్ మార్పు. ఫ్రిజ్ మోడల్ మరియు ఇన్వర్టర్ బోర్డు ఆధారంగా ధర నిర్ణయించబడుతుంది.',
+    features: ['Doorstep fault diagnosis', 'Nitrogen leak testing & vacuuming', 'Genuine branded compressor', 'Fresh refrigerant gas refill', '90-day compressor warranty']
+  },
+  {
     id: 'fridge-visit',
     name: 'Refrigerator Inspection & Visiting Charge',
     nameTe: 'ఫ్రిజ్ చెకప్ & విజిటింగ్ ఛార్జ్',
@@ -320,11 +332,11 @@ export const SERVICES_DATA: ServiceItem[] = [
     name: 'Water Heater / Geyser Repair & Coil Replacement',
     nameTe: 'గీజర్ రిపేర్ & హీటింగ్ కాయిల్ మార్పు',
     category: 'electrical',
-    price: 450,
+    price: 0,
     duration: '30 mins',
-    description: 'Thermostat replacement, heating element change, water leak repair & safe grounding.',
-    descriptionTe: 'హీటింగ్ కాయిల్ మార్పు, థర్మోస్టాట్ రిపేర్ మరియు షాక్ ప్రూఫ్ సేఫ్టీ టెస్ట్.',
-    features: ['Heating element check', 'Thermostat calibration', 'Safety earthing verification']
+    description: 'Thermostat replacement, heating element change, water leak repair & safe grounding. Price fluctuates based on geyser capacity (instant vs storage) and element wattage.',
+    descriptionTe: 'హీటింగ్ కాయిల్ మార్పు, థర్మోస్టాట్ రిపేర్. గీజర్ మోడల్ మరియు కాయిల్ వాటేజ్ ఆధారంగా ధర నిర్ణయం.',
+    features: ['Heating element check', 'Thermostat calibration', 'Safety earthing verification', 'Quote on inspection']
   },
   {
     id: 'appliance-microwave',
@@ -355,23 +367,23 @@ export const SERVICES_DATA: ServiceItem[] = [
     name: 'Home Comfort AMC (1 Year AC Protection)',
     nameTe: 'హోమ్ కంఫర్ట్ ఏసీ AMC (1 సంవత్సరం ప్రొటెక్షన్)',
     category: 'amc',
-    price: 1999,
+    price: 0,
     duration: '12 Months',
     popular: true,
-    description: '2 Free Jet/Foam washes, unlimited breakdown callouts, 20% flat discount on gas & spare parts.',
-    descriptionTe: '2 ఉచిత జెట్ వాష్‌లు, అపరిమిత బ్రేక్‌డౌన్ విజిట్స్, గ్యాస్ మరియు స్పేర్ పార్ట్స్ పై 20% డిస్కౌంట్.',
-    features: ['2 Scheduled Deep Jet Washes', 'Priority 2-hour technician dispatch', 'Flat 20% off on spare parts & gas', 'Free gas top-up inspection']
+    description: '2 Free Jet/Foam washes, unlimited breakdown callouts, discount on spares. Price fluctuates based on number of AC units, brand, and tonnage.',
+    descriptionTe: '2 ఉచిత జెట్ వాష్‌లు, అపరిమిత బ్రేక్‌డౌన్ విజిట్స్. ఏసీల సంఖ్య మరియు టన్నేజ్ బట్టి ధర నిర్ణయం.',
+    features: ['2 Scheduled Deep Jet Washes', 'Priority 2-hour technician dispatch', 'Flat 20% off on spare parts & gas', 'Free gas top-up inspection', 'Customized multi-unit quote']
   },
   {
     id: 'amc-commercial',
-    name: 'Commercial Showroom & Hospital HVAC AMC',
-    nameTe: 'కమర్షియల్ షోరూమ్ & హాస్పిటల్ HVAC AMC',
+    name: 'Comprehensive Home Appliance AMC & Commercial HVAC',
+    nameTe: 'కమర్షియల్ షోరూమ్ & హోమ్ అప్లయన్సెస్ సమగ్ర AMC',
     category: 'amc',
-    price: 4999,
+    price: 0,
     duration: '12 Months',
-    description: 'Tailored for Kadapa retail stores, doctors clinics, diagnostic labs & corporate offices.',
-    descriptionTe: 'కడపలోని దుకాణాలు, ఆసుపత్రులు మరియు కార్యాలయాల కోసం ప్రత్యేక వార్షిక ప్యాకేజీ.',
-    features: ['Quarterly preventive maintenance', 'Emergency 60-min response guarantee', 'Dedicated account technician', 'GST invoice & compliance report']
+    description: 'Tailored for Kadapa households, retail stores, clinics & offices. Custom pricing based on appliance portfolio and on-site inspection.',
+    descriptionTe: 'కడపలోని గృహాలు, దుకాణాలు మరియు ఆసుపత్రుల కోసం సమగ్ర వార్షిక ప్యాకేజీ. అప్లయన్స్ సంఖ్యను బట్టి కస్టమ్ ధర.',
+    features: ['Quarterly preventive maintenance', 'Emergency 60-min response guarantee', 'Dedicated account technician', 'GST invoice & compliance report', 'Custom quote on inspection']
   }
 ];
 

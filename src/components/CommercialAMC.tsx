@@ -40,8 +40,8 @@ export const CommercialAMC: React.FC<CommercialAMCProps> = ({ lang, onOpenBookin
               <p className="text-xs text-slate-300 mt-1">Complete peaceful cooling for 1 full year.</p>
 
               <div className="my-6">
-                <span className="text-4xl font-black text-white">₹1,999</span>
-                <span className="text-xs text-slate-400 font-semibold ml-2">/ AC Unit / Year</span>
+                <span className="text-3xl font-black text-white">Custom Quote</span>
+                <span className="text-xs text-slate-400 font-semibold ml-2">/ Units & Model Based</span>
               </div>
 
               <div className="space-y-3 pt-4 border-t border-slate-800">
@@ -85,10 +85,10 @@ export const CommercialAMC: React.FC<CommercialAMCProps> = ({ lang, onOpenBookin
               <p className="text-xs text-slate-300 mt-1">Prevent customer discomfort & commercial downtime.</p>
 
               <div className="my-6">
-                <span className="text-4xl font-black text-white">
-                  ₹4,999
+                <span className="text-3xl font-black text-white">
+                  Custom Quote
                 </span>
-                <span className="text-xs text-slate-400 font-semibold ml-2">/ Year (Customizable for Multi-Units)</span>
+                <span className="text-xs text-slate-400 font-semibold ml-2">/ Multi-Unit Commercial Scale</span>
               </div>
 
               <div className="space-y-3 pt-4 border-t border-slate-800">

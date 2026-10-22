@@ -23,10 +23,11 @@ export const PriceCalculator: React.FC<PriceCalculatorProps> = ({
 
   const activeService = SERVICES_DATA.find((s) => s.id === selectedServiceId) || availableServices[0] || SERVICES_DATA[0];
 
-  const basePrice = activeService.price * quantity;
+  const isFluctuating = activeService.price <= 0;
+  const basePrice = isFluctuating ? 0 : activeService.price * quantity;
   const addonFoamPrice = includeFoamAddon ? 300 * quantity : 0;
   const addonNitrogenPrice = includeNitrogenTest ? 450 * quantity : 0;
-  const grandTotal = basePrice + addonFoamPrice + addonNitrogenPrice;
+  const grandTotal = isFluctuating ? 0 : basePrice + addonFoamPrice + addonNitrogenPrice;
 
   return (
     <section className="py-16 bg-slate-50/80 border-b border-slate-200 w-full max-w-full overflow-hidden" id="calculator">
@@ -113,7 +114,7 @@ export const PriceCalculator: React.FC<PriceCalculatorProps> = ({
                         </div>
                       </div>
                       <div className="text-sm font-black text-red-600">
-                        ₹{svc.price}
+                        {svc.price > 0 ? `₹${svc.price}` : "Quote on Inspection"}
                       </div>
                     </label>
                   ))}
@@ -207,8 +208,8 @@ export const PriceCalculator: React.FC<PriceCalculatorProps> = ({
                 {/* Breakdown table */}
                 <div className="mt-6 space-y-3 border-t border-slate-800 pt-4 text-xs font-medium">
                   <div className="flex justify-between text-slate-300">
-                    <span>Base Service ({quantity}x ₹{activeService.price})</span>
-                    <span className="font-bold text-white">₹{basePrice}</span>
+                    <span>Base Service ({quantity}x)</span>
+                    <span className="font-bold text-white">{isFluctuating ? "Quote on Inspection" : `₹${basePrice}`}</span>
                   </div>
 
                   {includeFoamAddon && (
@@ -240,14 +241,22 @@ export const PriceCalculator: React.FC<PriceCalculatorProps> = ({
                 {/* Grand Total */}
                 <div className="mt-6 pt-4 border-t border-slate-800">
                   <div className="text-xs text-slate-400 uppercase tracking-wider font-bold">
-                    Total Estimated Cost
+                    {isFluctuating ? "Price Estimate" : "Total Estimated Cost"}
                   </div>
-                  <div className="text-3xl sm:text-4xl font-black text-white mt-1">
-                    ₹{grandTotal.toLocaleString('en-IN')}
+                  <div className="text-2xl sm:text-3xl font-black text-white mt-1">
+                    {isFluctuating ? (
+                      <span className="text-amber-400">Quote on Inspection</span>
+                    ) : (
+                      `₹${grandTotal.toLocaleString('en-IN')}`
+                    )}
                   </div>
                   <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Pay only after repair is completed satisfactorily.</span>
+                    <span>
+                      {isFluctuating
+                        ? "Exact rate quoted after technician inspects model & capacity."
+                        : "Pay only after repair is completed satisfactorily."}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -259,7 +268,7 @@ export const PriceCalculator: React.FC<PriceCalculatorProps> = ({
                   onClick={() => onBookEstimatedService(activeService, quantity, grandTotal)}
                   className="w-full py-4 px-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-sm sm:text-base shadow-xl shadow-red-600/25 flex items-center justify-center gap-2 cursor-pointer ios-tap transition active:scale-98"
                 >
-                  <span>Book at this Estimate (₹{grandTotal})</span>
+                  <span>{isFluctuating ? "Book Doorstep Inspection" : `Book at this Estimate (₹${grandTotal})`}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
