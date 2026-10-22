@@ -24,6 +24,7 @@ interface HeaderProps {
   onOpenBooking: () => void;
   onOpenQr: () => void;
   onOpenPortals: () => void;
+  onOpenCityModal?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -32,7 +33,8 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectCity,
   onOpenBooking,
   onOpenQr,
-  onOpenPortals
+  onOpenPortals,
+  onOpenCityModal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
@@ -139,63 +141,22 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             </a>
 
-            {/* City Hub Selector Dropdown */}
-            <div className="relative hidden md:block" ref={dropdownRef}>
-              <button
-                onClick={() => setCityDropdownOpen(!cityDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 transition text-xs font-bold cursor-pointer group/btn"
-                title="Switch active operating hub"
-              >
-                <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                <span className="font-extrabold text-white">{cityConfig.name}</span>
-                <span className="text-[10px] text-slate-400">| 60-Min</span>
-                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 group-hover/btn:text-white ${cityDropdownOpen ? 'rotate-180 text-red-400' : ''}`} />
-              </button>
-
-              {cityDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-slate-900/98 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-700/80 p-2 z-50 text-left animate-fadeIn">
-                  <div className="px-3 py-1.5 text-[10px] uppercase font-black tracking-wider text-slate-400">Select Operating Hub</div>
-                  
-                  <button
-                    onClick={() => {
-                      onSelectCity('kadapa');
-                      setCityDropdownOpen(false);
-                    }}
-                    className={`w-full px-3 py-2.5 rounded-xl text-left text-xs font-bold flex items-center justify-between transition cursor-pointer ${
-                      selectedCity === 'kadapa' ? 'bg-red-600/20 text-red-400 border border-red-500/30' : 'text-slate-300 hover:bg-white/5'
-                    }`}
-                  >
-                    <div>
-                      <div className="font-extrabold text-white flex items-center gap-1.5">
-                        <span>Kadapa Flagship HQ</span>
-                        <span className="px-1.5 py-0.2 rounded text-[9px] bg-red-500 text-white font-bold">Fastest</span>
-                      </div>
-                      <div className="text-[10px] text-slate-400 font-normal">Entire District • 100% Coverage</div>
-                    </div>
-                    {selectedCity === 'kadapa' && <Check className="w-4 h-4 text-red-400" />}
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      onSelectCity('bangalore');
-                      setCityDropdownOpen(false);
-                    }}
-                    className={`w-full px-3 py-2.5 rounded-xl text-left text-xs font-bold flex items-center justify-between transition cursor-pointer mt-1 ${
-                      selectedCity === 'bangalore' ? 'bg-red-600/20 text-red-400 border border-red-500/30' : 'text-slate-300 hover:bg-white/5'
-                    }`}
-                  >
-                    <div>
-                      <div className="font-extrabold text-white flex items-center gap-1.5">
-                        <span>Bangalore Branch Hub</span>
-                        <span className="px-1.5 py-0.2 rounded text-[9px] bg-emerald-500 text-white font-bold">Express</span>
-                      </div>
-                      <div className="text-[10px] text-slate-400 font-normal">Kammanahalli & Nearby Areas Only</div>
-                    </div>
-                    {selectedCity === 'bangalore' && <Check className="w-4 h-4 text-red-400" />}
-                  </button>
-                </div>
-              )}
-            </div>
+            {/* City Hub Selector - Visible on BOTH Mobile and Desktop */}
+            <button
+              onClick={() => {
+                if (onOpenCityModal) {
+                  onOpenCityModal();
+                } else {
+                  setCityDropdownOpen(!cityDropdownOpen);
+                }
+              }}
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-slate-200 transition text-[11px] sm:text-xs font-black cursor-pointer shrink-0 active:scale-95 shadow-sm"
+              title="Click to switch city (Kadapa / Bangalore)"
+            >
+              <MapPin className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-red-500 shrink-0" />
+              <span className="font-extrabold text-white tracking-wide">{cityConfig.name}</span>
+              <ChevronDown className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-red-400 shrink-0" />
+            </button>
           </div>
 
           {/* Center: Clean & Professional Desktop Navigation Links */}
@@ -277,7 +238,10 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="flex items-center bg-black/40 border border-white/10 rounded-lg p-0.5 text-xs">
               <button
-                onClick={() => onSelectCity('kadapa')}
+                onClick={() => {
+                  onSelectCity('kadapa');
+                  setMobileMenuOpen(false);
+                }}
                 className={`px-2.5 py-1 rounded-md font-black transition ${
                   selectedCity === 'kadapa' ? 'bg-red-600 text-white shadow-xs' : 'text-slate-400 hover:text-white'
                 }`}
@@ -285,7 +249,10 @@ export const Header: React.FC<HeaderProps> = ({
                 Kadapa
               </button>
               <button
-                onClick={() => onSelectCity('bangalore')}
+                onClick={() => {
+                  onSelectCity('bangalore');
+                  setMobileMenuOpen(false);
+                }}
                 className={`px-2.5 py-1 rounded-md font-black transition ${
                   selectedCity === 'bangalore' ? 'bg-red-600 text-white shadow-xs' : 'text-slate-400 hover:text-white'
                 }`}
@@ -294,6 +261,21 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
           </div>
+          {onOpenCityModal && (
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenCityModal();
+              }}
+              className="w-full py-2 px-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-slate-300 hover:text-white flex items-center justify-between transition cursor-pointer"
+            >
+              <span className="flex items-center gap-2">
+                <MapPin className="w-3.5 h-3.5 text-red-400" />
+                <span>Change City / GPS Auto-Detect</span>
+              </span>
+              <span className="text-[10px] text-red-400 font-bold">Switch Hub &rarr;</span>
+            </button>
+          )}
 
           {/* Quick Navigation Tile Grid */}
           <div className="grid grid-cols-2 gap-2 text-xs font-bold">

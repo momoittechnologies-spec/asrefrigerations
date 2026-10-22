@@ -24,6 +24,7 @@ interface MobileStickyBarProps {
   onOpenBooking: () => void;
   onOpenPortals?: () => void;
   onOpenQr?: () => void;
+  onOpenCityModal?: () => void;
 }
 
 export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
@@ -32,7 +33,8 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
   onSelectCity,
   onOpenBooking,
   onOpenPortals,
-  onOpenQr
+  onOpenQr,
+  onOpenCityModal
 }) => {
   const cityConfig = CITIES_DATA[selectedCity];
   const [activeTab, setActiveTab] = useState<'home' | 'location' | 'support' | 'services' | 'booking'>('home');
@@ -98,24 +100,26 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
             </span>
           </button>
 
-          {/* Tab 2: Location */}
+          {/* Tab 2: Location / City Switcher */}
           <button
             onClick={() => {
-              setActiveTab('location');
-              scrollToSection('location');
+              if (onOpenCityModal) {
+                onOpenCityModal();
+              } else {
+                setActiveTab('location');
+                scrollToSection('location');
+              }
             }}
             className={`flex-1 flex flex-col items-center justify-center py-1 transition-all duration-200 cursor-pointer ${
-              activeTab === 'location' ? 'text-red-600' : 'text-slate-500 hover:text-slate-800'
+              selectedCity === 'bangalore' ? 'text-emerald-600' : 'text-red-600'
             }`}
           >
             <div className="relative">
-              <MapPin className={`w-5 h-5 transition-transform duration-200 ${activeTab === 'location' ? 'scale-110 stroke-[2.5]' : 'stroke-[1.8]'}`} />
-              {activeTab === 'location' && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-red-600 rounded-full" />
-              )}
+              <MapPin className="w-5 h-5 transition-transform duration-200 stroke-[2.2]" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
             </div>
-            <span className={`text-[10px] mt-1 transition-all leading-none ${activeTab === 'location' ? 'font-black text-red-600' : 'font-semibold'}`}>
-              Location
+            <span className="text-[10px] mt-1 font-black leading-none truncate max-w-[64px]">
+              {cityConfig.name}
             </span>
           </button>
 

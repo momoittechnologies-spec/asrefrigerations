@@ -21,9 +21,18 @@ import { MobileStickyBar } from './components/MobileStickyBar';
 import { DiagnosticAssistant } from './components/DiagnosticAssistant';
 import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
+import { CitySelectModal } from './components/CitySelectModal';
 
 export function App() {
   const [lang, setLang] = useState<Language>('en');
+  const [cityModalOpen, setCityModalOpen] = useState<boolean>(() => {
+    try {
+      // First visit: if user has not chosen a city before, immediately show City Selection Gateway
+      return !localStorage.getItem('as_city');
+    } catch {
+      return false;
+    }
+  });
   const [selectedCity, setSelectedCity] = useState<CityId>(() => {
     try {
       const saved = localStorage.getItem('as_city');
@@ -128,6 +137,7 @@ export function App() {
         lang={lang}
         selectedCity={selectedCity}
         onSelectCity={handleSelectCity}
+        onOpenCityModal={() => setCityModalOpen(true)}
         onOpenBooking={() => {
           setPreSelectedService(null);
           setPreSelectedPrice(undefined);
@@ -233,6 +243,7 @@ export function App() {
         lang={lang}
         selectedCity={selectedCity}
         onSelectCity={handleSelectCity}
+        onOpenCityModal={() => setCityModalOpen(true)}
         onOpenBooking={() => {
           setPreSelectedService(null);
           setPreSelectedPrice(undefined);
@@ -266,6 +277,14 @@ export function App() {
         preSelectedQuantity={preSelectedQuantity}
         preSelectedPrice={preSelectedPrice}
         preFilledContact={preFilledContact}
+      />
+
+      {/* First-Visit & Instant City Selection Gateway Modal */}
+      <CitySelectModal
+        isOpen={cityModalOpen}
+        onClose={() => setCityModalOpen(false)}
+        selectedCity={selectedCity}
+        onSelectCity={handleSelectCity}
       />
     </div>
   );

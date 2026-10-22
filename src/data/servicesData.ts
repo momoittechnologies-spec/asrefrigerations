@@ -641,6 +641,30 @@ export function getServicesForCity(city: 'kadapa' | 'bangalore' = 'kadapa'): Ser
           description: 'Complete check-up to identify issues before repair. (Doorstep visit by Kammanahalli Bangalore technician).'
         };
       }
+      // 8. Chemical wash: 1800rs for Bangalore
+      if (svc.id === 'ac-chemical-wash') {
+        return {
+          ...svc,
+          price: 1800,
+          description: 'Industrial coil-safe chemical wash for heavily choked cooling coils. Bangalore branch rate: ₹1,800.'
+        };
+      }
+      // 9. Single Door Fridge Service: 1500rs for Bangalore
+      if (svc.id === 'fridge-single-134' || svc.id === 'fridge-single-600') {
+        return {
+          ...svc,
+          price: 1500,
+          description: svc.description + ' Bangalore single door fridge rate: ₹1,500.'
+        };
+      }
+      // 10. Double Door Fridge Service: 2000rs for Bangalore
+      if (svc.id === 'fridge-double-600' || svc.id === 'fridge-double-134') {
+        return {
+          ...svc,
+          price: 2000,
+          description: svc.description + ' Bangalore double door frost-free rate: ₹2,000.'
+        };
+      }
       return svc;
     });
   }
