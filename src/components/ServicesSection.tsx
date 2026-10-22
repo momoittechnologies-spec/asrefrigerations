@@ -12,7 +12,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Language } from '../data/translations';
-import { SERVICES_DATA, ServiceItem } from '../data/servicesData';
+import { SERVICES_DATA, ServiceItem, getServicesForCity } from '../data/servicesData';
 import { CityId, CITIES_DATA } from '../data/citiesData';
 
 interface ServicesSectionProps {

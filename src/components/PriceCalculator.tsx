@@ -1,27 +1,31 @@
 import React, { useState } from 'react';
 import { Calculator, Check, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../data/translations';
-import { SERVICES_DATA, ServiceItem } from '../data/servicesData';
+import { SERVICES_DATA, ServiceItem, getServicesForCity } from '../data/servicesData';
+import { CityId } from '../data/citiesData';
 
 interface PriceCalculatorProps {
   lang: Language;
+  selectedCity?: CityId;
   onBookEstimatedService: (service: ServiceItem, quantity: number, total: number) => void;
 }
 
 export const PriceCalculator: React.FC<PriceCalculatorProps> = ({
   lang,
+  selectedCity = 'kadapa',
   onBookEstimatedService
 }) => {
+  const cityServices = React.useMemo(() => getServicesForCity(selectedCity), [selectedCity]);
   const t = TRANSLATIONS[lang];
 
   const [category, setCategory] = useState<ServiceItem['category']>('ac');
-  const availableServices = SERVICES_DATA.filter((s) => s.category === category);
+  const availableServices = cityServices.filter((s) => s.category === category);
   const [selectedServiceId, setSelectedServiceId] = useState<string>(availableServices[0]?.id || 'ac-jet-wash');
   const [quantity, setQuantity] = useState<number>(1);
   const [includeFoamAddon, setIncludeFoamAddon] = useState<boolean>(false);
   const [includeNitrogenTest, setIncludeNitrogenTest] = useState<boolean>(false);
 
-  const activeService = SERVICES_DATA.find((s) => s.id === selectedServiceId) || availableServices[0] || SERVICES_DATA[0];
+  const activeService = cityServices.find((s) => s.id === selectedServiceId) || availableServices[0] || cityServices[0];
 
   const isFluctuating = activeService.price <= 0;
   const basePrice = isFluctuating ? 0 : activeService.price * quantity;
@@ -68,7 +72,7 @@ export const PriceCalculator: React.FC<PriceCalculatorProps> = ({
                       onClick={() => {
                         const newCat = tab.id as ServiceItem['category'];
                         setCategory(newCat);
-                        const first = SERVICES_DATA.find((s) => s.category === newCat);
+                        const first = cityServices.find((s) => s.category === newCat);
                         if (first) setSelectedServiceId(first.id);
                       }}
                       className={`py-2.5 px-3 rounded-xl text-xs font-black transition cursor-pointer text-center ios-tap ${

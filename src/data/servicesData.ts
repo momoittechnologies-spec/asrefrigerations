@@ -175,6 +175,28 @@ export const SERVICES_DATA: ServiceItem[] = [
     features: ['Full system flush', 'Original R-22 refill', 'Thermostat testing']
   },
   {
+    id: 'ac-uninstallation',
+    name: 'AC Uninstallation Only',
+    nameTe: 'ఏసీ తీసివేయడం మాత్రమే',
+    category: 'ac',
+    price: 750,
+    duration: '45 mins',
+    description: 'Safe refrigerant pump-down, wall bracket detachment, and secure copper line sealing.',
+    descriptionTe: 'గ్యాస్ లాక్ చేసి ఇండోర్ మరియు ఔట్‌డోర్ యూనిట్లను సురక్షితంగా తీసివేయడం.',
+    features: ['Refrigerant pump-down lock', 'Indoor & outdoor bracket removal', 'Copper line sealed']
+  },
+  {
+    id: 'ac-water-leak',
+    name: 'AC Water Leakage & Drain Clearing',
+    nameTe: 'ఏసీ వాటర్ లీకేజ్ & డ్రైన్ రిపేర్',
+    category: 'ac',
+    price: 599,
+    duration: '30 mins',
+    description: 'Fix indoor water leakage, flush blocked condensate tray, and clear moldy drain line.',
+    descriptionTe: 'ఇండోర్ వాటర్ లీకేజ్ సరిచేయడం, డ్రైన్ ట్రే మరియు పైప్ క్లీనింగ్.',
+    features: ['Stop indoor dripping', 'High-pressure drain flush', 'Drain tray alignment', 'Zero wall mess guarantee']
+  },
+  {
     id: 'ac-uninstallation-fitting',
     name: 'AC Complete Uninstallation & Re-Installation',
     nameTe: 'ఏసీ రిమూవల్ & కొత్త ఫిట్టింగ్',
@@ -505,3 +527,124 @@ export const PARTNER_TIERS = [
     ]
   }
 ];
+
+
+export function detectCityFromLocation(query?: string, lat?: number, lng?: number): 'kadapa' | 'bangalore' {
+  if (lat !== undefined && lng !== undefined && !isNaN(lat) && !isNaN(lng)) {
+    const distToBangaloreSq = Math.pow(lat - 12.9716, 2) + Math.pow(lng - 77.5946, 2);
+    const distToKadapaSq = Math.pow(lat - 14.4673, 2) + Math.pow(lng - 78.8242, 2);
+    return distToBangaloreSq < distToKadapaSq ? 'bangalore' : 'kadapa';
+  }
+
+  if (query) {
+    const q = query.toLowerCase().trim();
+    const bngKeywords = [
+      'bangalore', 'bengaluru', 'kammanahalli', 'kalyan nagar', 'hrbr',
+      'banaswadi', 'hbr', 'hennur', 'lingarajapuram', 'ramamurthy', 'horamavu',
+      'kasturi nagar', 'cooke town', 'cox town', 'frazer town', 'pulikeshi',
+      'babusapalya', 'babu sahib', 'kothanur', 'richards town', 'hebbal', 'karnataka',
+      '560084', '560043', '560033', '560005', '560016', '560077', '560045'
+    ];
+    for (const kw of bngKeywords) {
+      if (q.includes(kw)) return 'bangalore';
+    }
+
+    const kdpKeywords = [
+      'kadapa', 'ysr', 'mariapuram', 'lohiya', 'pulivendula', 'chinna chowk',
+      'pedda chowk', 'akkayapalli', 'ngo colony', 'rims', 'ravindra nagar',
+      'prakash nagar', 'yerramukkapalli', 'nagarajupalli', 'proddatur',
+      'badvel', 'rayachoty', 'jammalamadugu', 'mydukur', 'kamalapuram',
+      'yerraguntla', 'vontimitta', 'rajampet', 'chennur', 'porumamilla',
+      'seven roads', 'devuni kadapa', 'andhra', '516001', '516002', '516003', '516004'
+    ];
+    for (const kw of kdpKeywords) {
+      if (q.includes(kw)) return 'kadapa';
+    }
+  }
+
+  return 'kadapa';
+}
+
+export function getServicesForCity(city: 'kadapa' | 'bangalore' = 'kadapa'): ServiceItem[] {
+  if (city === 'bangalore') {
+    return SERVICES_DATA.map((svc) => {
+      // 1. Gas charging 22, 32, 410 anything: 2500rs
+      if (svc.id === 'ac-gas-32') {
+        return {
+          ...svc,
+          name: 'AC R-32 Gas Charging (All Gases Flat ₹2,500)',
+          price: 2500,
+          description: 'Vacuum leak testing, Nitrogen pressure check, and 100% genuine R-32 refill. Flat ₹2,500 Bangalore branch rate.'
+        };
+      }
+      if (svc.id === 'ac-gas-410') {
+        return {
+          ...svc,
+          name: 'AC R-410A Gas Charging (All Gases Flat ₹2,500)',
+          price: 2500,
+          description: 'Precision digital scale refill with genuine R-410A refrigerant. Flat ₹2,500 Bangalore branch rate.'
+        };
+      }
+      if (svc.id === 'ac-gas-22') {
+        return {
+          ...svc,
+          name: 'AC R-22 Gas Charging (All Gases Flat ₹2,500)',
+          price: 2500,
+          description: 'Dedicated R-22 gas charging for conventional split and window ACs. Flat ₹2,500 Bangalore branch rate.'
+        };
+      }
+      // 2. Jet wash service: 550rs
+      if (svc.id === 'ac-jet-wash') {
+        return {
+          ...svc,
+          price: 550,
+          description: 'High-pressure water jet cleaning for deep dust, outdoor condenser fin flush & 2x cooling boost. Bangalore branch rate.'
+        };
+      }
+      // 3. Foam wash: 600rs
+      if (svc.id === 'ac-foam-wash') {
+        return {
+          ...svc,
+          price: 600,
+          description: 'Special active foam spray kills 99.9% germs, eliminates bad odors, and dissolves stubborn grime. Bangalore branch rate.'
+        };
+      }
+      // 4. Uninstallation: 850rs
+      if (svc.id === 'ac-uninstallation') {
+        return {
+          ...svc,
+          price: 850,
+          description: 'Safe gas lock uninstallation and professional bracket removal. Bangalore branch rate.'
+        };
+      }
+      // 5. Installation: 1700rs
+      if (svc.id === 'ac-fitting-only') {
+        return {
+          ...svc,
+          price: 1700,
+          description: 'Professional indoor and outdoor bracket mounting with precise leveling and vacuum check. Bangalore branch rate.'
+        };
+      }
+      // 6. Water leak: 599rs
+      if (svc.id === 'ac-water-leak') {
+        return {
+          ...svc,
+          price: 599,
+          description: 'Fix indoor unit water leaking / dripping, flush clogged condensate drain pipe, and align drain tray. Bangalore rate.'
+        };
+      }
+      // 7. AC repair visiting charges: 350rs (mention "Complete check-up to identify issues before repair")
+      if (svc.id === 'ac-visit') {
+        return {
+          ...svc,
+          price: 350,
+          description: 'Complete check-up to identify issues before repair. (Doorstep visit by Kammanahalli Bangalore technician).'
+        };
+      }
+      return svc;
+    });
+  }
+
+  // Kadapa rates
+  return SERVICES_DATA;
+}

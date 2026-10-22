@@ -18,7 +18,7 @@ import {
   Smartphone
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { SERVICES_DATA, ServiceItem } from '../data/servicesData';
+import { SERVICES_DATA, ServiceItem, getServicesForCity, detectCityFromLocation } from '../data/servicesData';
 import { Language } from '../data/translations';
 import { CityId, CITIES_DATA } from '../data/citiesData';
 import { bookingStore, CustomerUser } from '../services/bookingStore';
@@ -175,11 +175,17 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             if (streetParts.length > 0) {
               setStreetAddress(streetParts.join(', '));
             }
-
-            // Auto-detect locality in Kadapa / Bangalore
+            // Auto-detect city from GPS & address
             const rawLoc = addr.suburb || addr.neighbourhood || addr.city_district || addr.locality || '';
+            const detectedCity = detectCityFromLocation(rawLoc, lat, lng);
+            if (detectedCity !== modalCity) {
+              setModalCity(detectedCity);
+              if (onSelectCity) onSelectCity(detectedCity);
+            }
+
             if (rawLoc) {
-              const matched = cityConfig.localities.find(
+              const targetLocalities = CITIES_DATA[detectedCity].localities;
+              const matched = targetLocalities.find(
                 (loc) => loc.toLowerCase().includes(rawLoc.toLowerCase()) || rawLoc.toLowerCase().includes(loc.toLowerCase())
               );
               setArea(matched || rawLoc);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Language } from './data/translations';
 import { CityId } from './data/citiesData';
-import { ServiceItem, SERVICES_DATA } from './data/servicesData';
+import { ServiceItem, SERVICES_DATA, getServicesForCity } from './data/servicesData';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ApplianceCategoryGrid } from './components/ApplianceCategoryGrid';
@@ -78,7 +78,8 @@ export function App() {
       Electrical: 'electrical'
     };
     const cat = catMap[data.appliance] || 'ac';
-    const matched = SERVICES_DATA.find((s) => s.category === cat) || SERVICES_DATA[0];
+    const cityServices = getServicesForCity(data.city || selectedCity);
+    const matched = cityServices.find((s: ServiceItem) => s.category === cat) || cityServices[0];
 
     setPreSelectedService(matched);
     setPreSelectedQuantity(1);
@@ -168,6 +169,7 @@ export function App() {
         {/* 5. Interactive Transparent Price Estimator */}
         <PriceCalculator
           lang={lang}
+          selectedCity={selectedCity}
           onBookEstimatedService={handleBookEstimatedService}
         />
 

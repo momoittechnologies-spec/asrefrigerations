@@ -16,6 +16,7 @@ import {
 import { Language, TRANSLATIONS } from '../data/translations';
 import { ServiceItem } from '../data/servicesData';
 import { CityId, CITIES_DATA } from '../data/citiesData';
+import { detectCityFromLocation } from '../data/servicesData';
 
 interface HeroProps {
   lang: Language;
@@ -49,6 +50,51 @@ export const Hero: React.FC<HeroProps> = ({
   const [area, setArea] = useState(cityConfig.localities[0]);
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
+  const [gpsDetecting, setGpsDetecting] = useState(false);
+  const [detectedToast, setDetectedToast] = useState<string | null>(null);
+
+  const handleHeroGpsDetect = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    setGpsDetecting(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const detected = detectCityFromLocation(undefined, lat, lng);
+        if (onSelectCity && detected !== selectedCity) {
+          onSelectCity(detected);
+        }
+
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+          if (res.ok) {
+            const data = await res.json();
+            const addr = data.address || {};
+            const rawLoc = addr.suburb || addr.neighbourhood || addr.city_district || addr.locality || '';
+            if (rawLoc) {
+              const matched = CITIES_DATA[detected].localities.find(
+                (loc) => loc.toLowerCase().includes(rawLoc.toLowerCase()) || rawLoc.toLowerCase().includes(loc.toLowerCase())
+              );
+              setArea(matched || rawLoc);
+            }
+          }
+        } catch {}
+
+        setGpsDetecting(false);
+        const cityTitle = detected === 'bangalore' ? 'Bangalore (Kammanahalli)' : 'Kadapa District';
+        setDetectedToast(`📍 Auto-switched to ${cityTitle} • Dynamic ${detected === 'bangalore' ? 'Bangalore' : 'Kadapa'} rates applied!`);
+        setTimeout(() => setDetectedToast(null), 5000);
+      },
+      () => {
+        setGpsDetecting(false);
+      },
+      { timeout: 8000, enableHighAccuracy: true }
+    );
+  };
+
 
   // Update area when city changes
   React.useEffect(() => {
@@ -92,9 +138,14 @@ export const Hero: React.FC<HeroProps> = ({
       alert('Please enter your WhatsApp phone number for technician confirmation.');
       return;
     }
+    const detected = detectCityFromLocation(area);
+    if (detected !== selectedCity && onSelectCity) {
+      onSelectCity(detected);
+    }
     onExpressBook({
       appliance,
       issue,
+      city: detected || selectedCity,
       area,
       phone,
       name: name || 'Customer'
@@ -309,21 +360,25 @@ export const Hero: React.FC<HeroProps> = ({
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-                      3. Locality in {cityConfig.name}
+                      3. Locality ({cityConfig.name})
                     </label>
-                    {onSelectCity && (
-                      <div className="flex items-center gap-1 text-[10px]">
-                        <span className="text-slate-400">City:</span>
-                        <button
-                          type="button"
-                          onClick={() => onSelectCity(selectedCity === 'kadapa' ? 'bangalore' : 'kadapa')}
-                          className="text-red-400 hover:text-red-300 font-extrabold underline cursor-pointer"
-                        >
-                          Switch to {selectedCity === 'kadapa' ? 'Bangalore' : 'Kadapa'}
-                        </button>
-                      </div>
-                    )}
+                    <button
+                      type="button"
+                      onClick={handleHeroGpsDetect}
+                      disabled={gpsDetecting}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-400 border border-emerald-500/40 text-[10px] font-black transition cursor-pointer"
+                      title="Auto-detect city & locality via GPS"
+                    >
+                      <MapPin className="w-3 h-3 text-emerald-400" />
+                      <span>{gpsDetecting ? 'Detecting...' : '📍 Auto GPS City'}</span>
+                    </button>
                   </div>
+                  {detectedToast && (
+                    <div className="mb-2 p-2 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-[11px] font-bold flex items-center gap-1.5">
+                      <span>✓</span>
+                      <span>{detectedToast}</span>
+                    </div>
+                  )}
                   <div className="relative">
                     <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                     <select

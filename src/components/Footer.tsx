@@ -197,7 +197,7 @@ export const Footer: React.FC<FooterProps> = ({
                     <span>Native Smartphone Apps</span>
                   </span>
                   <span className="px-1.5 py-0.2 rounded text-[10px] font-black bg-red-600/20 text-red-400 border border-red-500/30">
-                    Urban UI
+                    Official Android Apps
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 pt-1">
