@@ -18,6 +18,11 @@ interface FAQItem {
 const FAQS: FAQItem[] = [
   {
     category: 'Doorstep Service',
+    question: 'Can I book an AC or appliance service online on behalf of someone else?',
+    answer: 'No. All online and in-app bookings must be made strictly by the customer for their own residence or premises. If you need to arrange service for someone else (such as a family member, tenant, or friend), please call our technician directly by phone (+91 78158 51330 for Kadapa or +91 80732 06402 for Bangalore) to discuss and coordinate arrangements.'
+  },
+  {
+    category: 'Doorstep Service',
     question: 'How fast can an AS Refrigerations technician reach my home in Kadapa?',
     answer: 'We guarantee rapid doorstep arrival within 60 minutes across Kadapa City Central (Mariapuram, Chinna Chowk, RIMS Road, RTC Bus Stand, Yerramukkapalli, Co-operative Colony, Nagarajupalli, etc.) and provide same-day doorstep service across all towns and mandals in Kadapa District (Proddatur, Pulivendula, Badvel, Rayachoty, Jammalamadugu, Mydukur & beyond).'
   },
