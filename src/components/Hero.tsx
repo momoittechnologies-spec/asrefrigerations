@@ -11,7 +11,8 @@ import {
   CheckCircle2,
   Sparkles,
   Download,
-  Smartphone
+  Smartphone,
+  Navigation
 } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../data/translations';
 import { ServiceItem } from '../data/servicesData';
@@ -146,7 +147,7 @@ export const Hero: React.FC<HeroProps> = ({
       appliance,
       issue,
       city: detected || selectedCity,
-      area,
+      area: area.trim() || cityConfig.localities[0],
       phone,
       name: name || 'Customer'
     });
@@ -356,42 +357,53 @@ export const Hero: React.FC<HeroProps> = ({
                   </select>
                 </div>
 
-                {/* Step 3: Area Selector */}
+                {/* Step 3: Smart Locality / GPS Field (Replaced Dropdown with Auto-GPS Input) */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-                      3. Locality ({cityConfig.name})
+                      3. Locality / Landmark ({cityConfig.name})
                     </label>
-                    <button
-                      type="button"
-                      onClick={handleHeroGpsDetect}
-                      disabled={gpsDetecting}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-400 border border-emerald-500/40 text-[10px] font-black transition cursor-pointer"
-                      title="Auto-detect city & locality via GPS"
-                    >
-                      <MapPin className="w-3 h-3 text-emerald-400" />
-                      <span>{gpsDetecting ? 'Detecting...' : '📍 Auto GPS City'}</span>
-                    </button>
+                    <span className="text-[10px] text-slate-400 font-medium">Type Colony or 1-Tap GPS</span>
                   </div>
+
                   {detectedToast && (
                     <div className="mb-2 p-2 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 text-[11px] font-bold flex items-center gap-1.5">
                       <span>✓</span>
                       <span>{detectedToast}</span>
                     </div>
                   )}
-                  <div className="relative">
-                    <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-                    <select
+
+                  <div className="relative flex items-center">
+                    <MapPin className="w-4 h-4 text-red-500 absolute left-3 pointer-events-none" />
+                    <input
+                      type="text"
+                      list="hero-locality-suggestions"
+                      required
+                      placeholder={
+                        selectedCity === 'bangalore'
+                          ? 'e.g. Kammanahalli, Banaswadi, Kalyan Nagar...'
+                          : 'e.g. Mariapuram, Chinna Chowk, RIMS, Proddatur...'
+                      }
                       value={area}
                       onChange={(e) => setArea(e.target.value)}
-                      className="w-full bg-slate-950/90 border border-slate-800 rounded-xl pl-9 pr-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
-                    >
+                      className="w-full bg-slate-950/90 border border-slate-800 rounded-xl pl-9 pr-24 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
+                    />
+                    <datalist id="hero-locality-suggestions">
                       {cityConfig.localities.map((ar) => (
-                        <option key={ar} value={ar} className="bg-slate-900 text-white">
-                          {ar}
-                        </option>
+                        <option key={ar} value={ar} />
                       ))}
-                    </select>
+                    </datalist>
+
+                    <button
+                      type="button"
+                      onClick={handleHeroGpsDetect}
+                      disabled={gpsDetecting}
+                      className="absolute right-1.5 px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-400 border border-emerald-500/40 text-[11px] font-black transition cursor-pointer flex items-center gap-1 active:scale-95 disabled:opacity-50"
+                      title="Fetch current location via GPS"
+                    >
+                      <Navigation className={`w-3 h-3 ${gpsDetecting ? 'animate-spin' : ''}`} />
+                      <span>{gpsDetecting ? 'Detecting...' : 'Auto GPS'}</span>
+                    </button>
                   </div>
                 </div>
 
