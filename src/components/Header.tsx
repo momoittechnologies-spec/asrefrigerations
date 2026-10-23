@@ -187,14 +187,14 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <span>Join as Partner</span>
             </a>
-            <button
-              onClick={onOpenPortals}
+            <a
+              href="/admin"
               className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 hover:text-white text-amber-300 border border-amber-400/30 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
               title="Open Admin Dispatch & Business Control Panel"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
               <span>Admin Console</span>
-            </button>
+            </a>
           </nav>
 
           {/* Right: Hotline & Primary Booking CTA */}
@@ -324,6 +324,16 @@ export const Header: React.FC<HeaderProps> = ({
             >
               📸 Work Reels
             </a>
+            <a
+              href="/admin"
+              className="p-3 rounded-xl bg-red-950/60 text-amber-300 border border-amber-500/40 font-bold hover:bg-red-900/60 transition text-left flex items-center justify-between"
+            >
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-amber-400" />
+                <span>👑 Admin Control Panel</span>
+              </span>
+              <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Master</span>
+            </a>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
@@ -331,7 +341,7 @@ export const Header: React.FC<HeaderProps> = ({
               }}
               className="p-3 rounded-xl bg-white/5 text-slate-200 border border-white/10 font-bold hover:bg-white/10 transition text-left cursor-pointer"
             >
-              💼 Admin & Portals Hub
+              💼 Simulation Portals Hub
             </button>
             <button
               onClick={() => {

@@ -43,7 +43,14 @@ export const PortalHubModal: React.FC<PortalHubModalProps> = ({
   onClose,
   selectedCity = 'kadapa'
 }) => {
-  const [activeTab, setActiveTab] = useState<'customer' | 'admin' | 'partner' | 'architecture'>('customer');
+  const [activeTab, setActiveTab] = useState<'customer' | 'admin' | 'partner' | 'architecture'>(() => {
+    if (typeof window !== 'undefined') {
+      const h = window.location.hash.toLowerCase();
+      if (h === '#admin' || h === '#dispatch' || h === '#control') return 'admin';
+      if (h === '#partner') return 'partner';
+    }
+    return 'customer';
+  });
   
   // State for Customer Auth
   const [customerSession, setCustomerSession] = useState<CustomerUser | null>(null);

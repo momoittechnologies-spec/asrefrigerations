@@ -4,6 +4,7 @@
   RewriteRule ^index\.html$ - [L]
   RewriteRule ^privacy-policy/?$ /privacy-policy.html [L]
   RewriteRule ^terms/?$ /terms.html [L]
+  RewriteRule ^admin/?$ /admin.html [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l

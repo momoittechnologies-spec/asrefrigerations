@@ -292,6 +292,14 @@ export const Footer: React.FC<FooterProps> = ({
                   <span>🔧 Join Partner Program</span>
                 </a>
               </li>
+              <li>
+                <a
+                  href="/admin"
+                  className="hover:text-amber-400 transition flex items-center gap-1.5 text-amber-300 font-bold"
+                >
+                  <span>👑 Admin Control Panel</span>
+                </a>
+              </li>
               {onOpenPortals && (
                 <li>
                   <button
