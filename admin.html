@@ -45,6 +45,11 @@
     .leaflet-popup-content-wrapper { background: #0f172a !important; color: #f8fafc !important; border: 1px solid #334155; border-radius: 14px; }
     .leaflet-popup-tip { background: #0f172a !important; }
 
+    /* Clean Dark Tiles Filter for Night Radar */
+    .map-dark-tiles {
+      filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+    }
+
     /* Radar Pulse Animation */
     @keyframes radarPulse {
       0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
@@ -459,7 +464,7 @@
 
         <!-- ================= VIEW 3: LIVE GPS RADAR MAP ================= -->
         <section id="viewMap" class="space-y-4 hidden flex-1 flex flex-col h-[650px]">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 class="text-lg font-black text-white flex items-center gap-2">
                 <span>Territory GPS Dispatch Radar</span>
@@ -467,14 +472,42 @@
               </h2>
               <p class="text-xs text-slate-400" id="mapSubtitle">Interactive geographic visualization of technician hubs and customer doorstep locations.</p>
             </div>
-            <div class="flex items-center gap-2" id="mapCenterControls">
-              <button onclick="recenterMap('kadapa')" id="btnCenterKadapa" class="px-3 py-1.5 rounded-xl bg-red-950/80 border border-red-800/60 text-red-300 text-xs font-bold hover:bg-red-900 transition">Center Kadapa Hub</button>
-              <button onclick="recenterMap('bangalore')" id="btnCenterBangalore" class="px-3 py-1.5 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-bold hover:bg-blue-900 transition">Center Bangalore Branch</button>
+            
+            <div class="flex items-center gap-2 flex-wrap">
+              <!-- Tile Layer Switcher (Free, High-Performance, Zero Watermarks) -->
+              <div class="bg-[#070b14] p-1 rounded-xl border border-slate-800 flex items-center text-xs font-bold">
+                <button type="button" onclick="setMapLayer('street')" id="btnLayerStreet" class="px-3 py-1 rounded-lg bg-red-600 text-white transition cursor-pointer">🗺️ Street Map</button>
+                <button type="button" onclick="setMapLayer('satellite')" id="btnLayerSat" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">🛰️ Satellite View</button>
+                <button type="button" onclick="setMapLayer('dark')" id="btnLayerDark" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">🕶️ Night Radar</button>
+              </div>
+
+              <!-- Quick Center Buttons -->
+              <div class="flex items-center gap-1.5" id="mapCenterControls">
+                <button onclick="recenterMap('kadapa')" id="btnCenterKadapa" class="px-3 py-1.5 rounded-xl bg-red-950/80 border border-red-800/60 text-red-300 text-xs font-bold hover:bg-red-900 transition cursor-pointer">Center Kadapa Hub</button>
+                <button onclick="recenterMap('bangalore')" id="btnCenterBangalore" class="px-3 py-1.5 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-bold hover:bg-blue-900 transition cursor-pointer">Center Bangalore Branch</button>
+              </div>
             </div>
           </div>
 
-          <div class="flex-1 rounded-3xl border border-slate-800 overflow-hidden relative shadow-2xl">
-            <div id="dispatchMap" class="w-full h-full min-h-[500px]"></div>
+          <div class="flex-1 rounded-3xl border border-slate-800 overflow-hidden relative shadow-2xl min-h-[550px]">
+            <div id="dispatchMap" class="w-full h-full min-h-[550px]"></div>
+
+            <!-- Overlay Legend -->
+            <div class="absolute bottom-4 left-4 z-[1000] bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-3 text-xs space-y-1.5 shadow-xl pointer-events-none">
+              <div class="text-[10px] font-black uppercase tracking-wider text-slate-400">Live Radar Legend</div>
+              <div class="flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full bg-red-600 border border-white"></span>
+                <span class="text-white font-medium">Shaik Sameer HQ (Kadapa)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white"></span>
+                <span class="text-white font-medium">Syed & Bangalore Fleet</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 border border-slate-900"></span>
+                <span class="text-white font-medium">Customer Doorstep (Active Lead)</span>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -1375,7 +1408,58 @@
       });
     }
 
-    // 13. Leaflet Map Initialization
+    // 13. Leaflet Map Initialization with Free Tile Providers (Zero Watermarks)
+    let currentMapTileLayer = null;
+    let currentLayerType = 'street';
+
+    const TILE_PROVIDERS = {
+      street: {
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        options: {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19
+        }
+      },
+      satellite: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        options: {
+          attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+          maxZoom: 18
+        }
+      },
+      dark: {
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        options: {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19,
+          className: 'map-dark-tiles'
+        }
+      }
+    };
+
+    function setMapLayer(type) {
+      currentLayerType = type;
+      ['street', 'satellite', 'dark'].forEach(t => {
+        const btn = document.getElementById(t === 'street' ? 'btnLayerStreet' : (t === 'satellite' ? 'btnLayerSat' : 'btnLayerDark'));
+        if (btn) {
+          if (t === type) {
+            btn.className = 'px-3 py-1 rounded-lg bg-red-600 text-white transition cursor-pointer';
+          } else {
+            btn.className = 'px-3 py-1 rounded-lg text-slate-400 hover:text-white transition cursor-pointer';
+          }
+        }
+      });
+
+      if (!dispatchMapInstance) return;
+
+      if (currentMapTileLayer) {
+        dispatchMapInstance.removeLayer(currentMapTileLayer);
+      }
+
+      const prov = TILE_PROVIDERS[type] || TILE_PROVIDERS.street;
+      currentMapTileLayer = L.tileLayer(prov.url, prov.options).addTo(dispatchMapInstance);
+    }
+
     function initMapIfNeeded() {
       if (dispatchMapInstance) {
         dispatchMapInstance.invalidateSize();
@@ -1390,12 +1474,11 @@
       const initialCoords = isSameer ? [14.4673, 78.8242] : [13.0158, 77.6377];
       const initialZoom = isSameer ? 12 : 14;
 
-      dispatchMapInstance = L.map('dispatchMap').setView(initialCoords, initialZoom);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors & CartoDB',
-        maxZoom: 19
-      }).addTo(dispatchMapInstance);
+      dispatchMapInstance = L.map('dispatchMap', {
+        zoomControl: true
+      }).setView(initialCoords, initialZoom);
 
+      setMapLayer('street');
       updateMapMarkers();
     }
 
