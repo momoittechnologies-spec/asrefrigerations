@@ -296,8 +296,10 @@ export const Footer: React.FC<FooterProps> = ({
                 <a
                   href="/admin"
                   className="hover:text-amber-400 transition flex items-center gap-1.5 text-amber-300 font-bold"
+                  title="Open Full-Screen Business Command Center"
                 >
-                  <span>👑 Admin Control Panel</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  <span>👑 Admin Command Center</span>
                 </a>
               </li>
               {onOpenPortals && (
@@ -641,6 +643,15 @@ export const Footer: React.FC<FooterProps> = ({
             >
               Partner Program Policy
             </button>
+            <span className="text-slate-600">•</span>
+            <a
+              href="/admin"
+              className="text-amber-400/90 hover:text-amber-300 transition font-bold flex items-center gap-1"
+              title="Shaik Sameer Master Dispatch Command Center"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span>Admin Portal</span>
+            </a>
           </div>
 
           {/* Technology Partner Attribution */}
