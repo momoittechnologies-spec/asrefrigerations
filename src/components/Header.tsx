@@ -179,6 +179,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
               <span>Android App</span>
+              <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">APK</span>
             </a>
             <a
               href="#partners"
@@ -296,9 +297,10 @@ export const Header: React.FC<HeaderProps> = ({
             <a
               href="#mobile-app"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold hover:bg-emerald-500/20 transition"
+              className="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold hover:bg-emerald-500/20 transition flex items-center justify-between"
             >
-              📱 Android App
+              <span>📱 Download APK</span>
+              <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-emerald-500 text-slate-950 uppercase">APK</span>
             </a>
             <a
               href="#partners"

@@ -4,12 +4,24 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/as-logo-square.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#dc2626" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="apple-touch-icon" href="/as-logo-square.png" />
+    <!-- Completely disabled PWA: Native APK installation promoted -->
+    <script>
+      // Automatically unregister any legacy PWA service workers and purge caches
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (var i = 0; i < registrations.length; i++) {
+            registrations[i].unregister();
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (var i = 0; i < names.length; i++) {
+            caches.delete(names[i]);
+          }
+        });
+      }
+    </script>
     <title>AS Refrigerations | #1 Doorstep AC, Fridge & Appliance Repair Service (Kadapa & Bangalore)</title>
     
     <!-- SEO & Metadata -->

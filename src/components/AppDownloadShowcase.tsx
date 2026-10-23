@@ -214,6 +214,59 @@ export const AppDownloadShowcase: React.FC = () => {
           </div>
         </div>
 
+        {/* Frictionless 3-Step APK Installation Guide */}
+        <div className="mb-14 p-5 sm:p-7 rounded-3xl bg-slate-900/90 border border-slate-800 text-left max-w-4xl mx-auto shadow-2xl">
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-5">
+            <div className="flex items-center gap-2">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <h4 className="text-sm sm:text-base font-black text-white uppercase tracking-wider">
+                How to Install the APK on Your Android Device (30 Seconds)
+              </h4>
+            </div>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              100% Virus &amp; Malware Safe
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex flex-col justify-between">
+              <div>
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 font-black text-sm flex items-center justify-center mb-2.5">
+                  1
+                </div>
+                <strong className="text-white text-sm block font-bold mb-1">Download APK</strong>
+                <p className="text-slate-400 leading-relaxed">
+                  Tap the green <strong>"Download Customer APK"</strong> button above. The verified 16 MB APK will download directly to your Android device.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex flex-col justify-between">
+              <div>
+                <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 font-black text-sm flex items-center justify-center mb-2.5">
+                  2
+                </div>
+                <strong className="text-white text-sm block font-bold mb-1">Tap Open &amp; Allow</strong>
+                <p className="text-slate-400 leading-relaxed">
+                  Open the download notification. If prompted with <em>"Install unknown apps"</em>, tap <strong>Settings &rarr; Toggle "Allow from this source"</strong> (Standard for direct APKs).
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex flex-col justify-between">
+              <div>
+                <div className="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 font-black text-sm flex items-center justify-center mb-2.5">
+                  3
+                </div>
+                <strong className="text-white text-sm block font-bold mb-1">Tap Install &amp; Book</strong>
+                <p className="text-slate-400 leading-relaxed">
+                  Tap <strong>Install</strong>. Launch the app to enjoy live 6-stage technician GPS radar, instant 60-min express bookings, and ₹100 instant discount!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Feature Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
           {features.map((f, i) => {

@@ -9,7 +9,9 @@ import {
   X, 
   ChevronRight,
   ShieldCheck,
-  Zap
+  Zap,
+  Download,
+  Smartphone
 } from 'lucide-react';
 import { CityId, CITIES_DATA } from '../data/citiesData';
 import { detectCityFromLocation } from '../data/servicesData';
@@ -220,9 +222,29 @@ export const CitySelectModal: React.FC<CitySelectModalProps> = ({
           </div>
         </div>
 
-        {/* Footer info note */}
-        <div className="p-4 bg-slate-950/60 border-t border-slate-800 text-center text-[11px] text-slate-400 font-medium">
-          💡 You can change your operating city anytime from the header pill or navigation bar.
+        {/* Footer info & APK Instigation Bar */}
+        <div className="p-4 bg-slate-950/90 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+              <Smartphone className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-black text-white flex items-center gap-1.5">
+                <span>Official AS Android App</span>
+                <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-emerald-500 text-slate-950 uppercase">₹100 OFF</span>
+              </div>
+              <p className="text-[11px] text-slate-400">Install native APK for live technician arrival GPS tracking & 1-tap bookings</p>
+            </div>
+          </div>
+          <a
+            href="/downloads/as-refrigerations-customer.apk"
+            download="as-refrigerations-customer.apk"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shrink-0 shadow-md shadow-emerald-600/20 active:scale-95 transition cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Download APK</span>
+          </a>
         </div>
       </div>
     </div>
