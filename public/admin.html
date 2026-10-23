@@ -37,8 +37,8 @@
     ::-webkit-scrollbar-thumb:hover { background: rgba(239, 68, 68, 0.6); }
 
     .glow-red { box-shadow: 0 0 25px -5px rgba(239, 68, 68, 0.4); }
-    .glow-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.4); }
     .glow-blue { box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.4); }
+    .glow-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.4); }
 
     /* Map styling */
     .leaflet-container { background: #0b1120 !important; }
@@ -56,9 +56,9 @@
 </head>
 <body class="h-full w-full overflow-hidden text-slate-100 flex flex-col bg-[#070b14] select-none">
 
-  <!-- ================= MASTER PIN GATE ================= -->
+  <!-- ================= ROLE-BASED AUTH GATE ================= -->
   <div id="authGate" class="fixed inset-0 z-50 bg-[#070b14]/95 backdrop-blur-xl flex items-center justify-center p-4">
-    <div class="bg-gradient-to-b from-[#0f172a] to-[#0a0f1d] border border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-6 glow-red">
+    <div class="bg-gradient-to-b from-[#0f172a] to-[#0a0f1d] border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-6 glow-red">
       <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 via-red-500 to-amber-500 flex items-center justify-center mx-auto text-white text-2xl shadow-xl shadow-red-950/60 radar-pulse">
         <i class="fa-solid fa-tower-broadcast"></i>
       </div>
@@ -68,12 +68,26 @@
           Enterprise Command Center
         </div>
         <h2 class="text-2xl font-black text-white mt-2">AS Refrigerations</h2>
-        <p class="text-xs text-slate-400 mt-1">Shaik Sameer Master Dispatch & Fleet Operations</p>
+        <p class="text-xs text-slate-400 mt-1">Multi-Branch Dispatch & Operational Governance</p>
+      </div>
+
+      <!-- Quick Role Selection Selector -->
+      <div class="grid grid-cols-2 gap-2 p-1.5 bg-[#070b14] rounded-2xl border border-slate-800 text-xs font-bold">
+        <button type="button" onclick="selectLoginPersona('sameer')" id="personaBtnSameer" class="py-2.5 px-3 rounded-xl bg-red-600 text-white transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+          <span>👑</span>
+          <span>Shaik Sameer</span>
+        </button>
+        <button type="button" onclick="selectLoginPersona('syed')" id="personaBtnSyed" class="py-2.5 px-3 rounded-xl text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>🏢</span>
+          <span>Syed (Bangalore)</span>
+        </button>
       </div>
 
       <form id="pinForm" class="space-y-4">
         <div>
-          <label class="block text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">Master Security PIN</label>
+          <label id="pinLabel" class="block text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">
+            Shaik Sameer Master PIN (Kadapa Hub)
+          </label>
           <div class="relative">
             <input 
               type="password" 
@@ -84,21 +98,24 @@
               class="w-full bg-[#070b14] border border-slate-700/80 rounded-2xl px-4 py-3.5 text-center text-3xl font-mono tracking-[0.4em] text-white focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
             />
           </div>
+          <p id="pinHelperText" class="text-[11px] text-slate-500 mt-1.5">
+            Default PIN: <strong class="text-slate-300">1234</strong> or Mobile <strong class="text-slate-300">7815851330</strong>
+          </p>
         </div>
         <p id="pinError" class="text-xs text-red-400 font-bold hidden flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-triangle-exclamation"></i>
-          <span>Invalid Master PIN. Default: 1234 or Sameer Phone</span>
+          <span id="pinErrorText">Invalid Credentials for selected manager.</span>
         </p>
         <button 
           type="submit" 
           class="w-full py-3.5 px-6 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-black text-sm transition shadow-lg shadow-red-950/50 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
         >
-          <span>Access Command Rail</span>
+          <span id="loginBtnLabel">Open Kadapa Command Rail</span>
           <i class="fa-solid fa-arrow-right"></i>
         </button>
       </form>
       <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
-        <span>Kadapa District & Bangalore</span>
+        <span>Kadapa & Bangalore Segregated</span>
         <a href="/" class="text-slate-400 hover:text-white underline">Back to Website</a>
       </div>
     </div>
@@ -110,16 +127,16 @@
     <!-- Top Mission Control Bar -->
     <header class="h-14 bg-[#0a0f1d] border-b border-slate-800/80 flex items-center justify-between px-4 z-30 shrink-0">
       
-      <!-- Left: Logo & Live Status -->
+      <!-- Left: Logo & Live Manager Identity -->
       <div class="flex items-center gap-3">
         <a href="/" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white font-black text-sm shadow-md shrink-0" title="Return to Market Website">
           AS
         </a>
-        <div class="hidden sm:block">
+        <div>
           <div class="flex items-center gap-2">
-            <span class="font-black text-white text-sm tracking-wide">COMMAND CENTER</span>
-            <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-red-950 text-red-400 border border-red-800/50">
-              Sameer-1
+            <span class="font-black text-white text-sm tracking-wide" id="navManagerTitle">COMMAND CENTER</span>
+            <span id="navRoleBadge" class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-red-950 text-red-400 border border-red-800/50">
+              Super Admin
             </span>
           </div>
           <p class="text-[10px] text-slate-400 flex items-center gap-1.5 font-medium">
@@ -129,13 +146,19 @@
         </div>
       </div>
 
-      <!-- Center: Territory Switcher & Live IST Clock -->
+      <!-- Center: Territory Switcher (Sameer gets full toggle, Syed locked to Bangalore) -->
       <div class="flex items-center gap-3">
-        <!-- Territory Switcher -->
-        <div class="bg-[#070b14] p-1 rounded-xl border border-slate-800 flex items-center text-xs font-bold">
+        <!-- Territory Switcher Container -->
+        <div id="territorySwitcherContainer" class="bg-[#070b14] p-1 rounded-xl border border-slate-800 flex items-center text-xs font-bold">
           <button onclick="setCityFilter('all')" id="btnFilterAll" class="px-3 py-1 rounded-lg bg-red-600 text-white transition">Global All</button>
           <button onclick="setCityFilter('kadapa')" id="btnFilterKadapa" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition">Kadapa District</button>
           <button onclick="setCityFilter('bangalore')" id="btnFilterBangalore" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition">Bangalore Branch</button>
+        </div>
+
+        <!-- Locked Badge for Syed (shown only when Syed is logged in) -->
+        <div id="syedLockedBadge" class="hidden items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-black">
+          <i class="fa-solid fa-location-dot text-blue-400"></i>
+          <span>Bangalore Hub (Kammanahalli & Nearby)</span>
         </div>
 
         <!-- Dynamic IST Clock -->
@@ -179,10 +202,11 @@
         <!-- Logout -->
         <button 
           onclick="logoutAdmin()" 
-          class="p-2 rounded-xl bg-red-950/60 hover:bg-red-900 border border-red-800/40 text-red-300 transition cursor-pointer text-xs"
-          title="Lock Command Center"
+          class="p-2 rounded-xl bg-red-950/60 hover:bg-red-900 border border-red-800/40 text-red-300 transition cursor-pointer text-xs flex items-center gap-1"
+          title="Switch Manager / Logout"
         >
-          <i class="fa-solid fa-lock"></i>
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span class="hidden xl:inline text-[10px] font-bold">Switch</span>
         </button>
       </div>
 
@@ -237,16 +261,16 @@
           </button>
         </div>
 
-        <!-- Bottom User / Workshop Card -->
+        <!-- Bottom User / Workshop Card (Dynamic based on Sameer vs Syed) -->
         <div class="hidden md:block p-3 rounded-2xl bg-[#070b14] border border-slate-800/80 space-y-1">
           <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-lg bg-red-600 text-white font-bold text-xs flex items-center justify-center">S</div>
+            <div id="sideUserAvatar" class="w-7 h-7 rounded-lg bg-red-600 text-white font-bold text-xs flex items-center justify-center">S</div>
             <div class="truncate">
-              <span class="text-xs font-extrabold text-white block truncate">Shaik Sameer</span>
-              <span class="text-[10px] text-emerald-400 font-semibold">Priority 1 Active</span>
+              <span id="sideUserName" class="text-xs font-extrabold text-white block truncate">Shaik Sameer</span>
+              <span id="sideUserRole" class="text-[10px] text-emerald-400 font-semibold">Priority 1 Active</span>
             </div>
           </div>
-          <p class="text-[9px] text-slate-500 truncate pt-1 border-t border-slate-800">Kadapa Central + Bangalore</p>
+          <p id="sideUserTerritory" class="text-[9px] text-slate-500 truncate pt-1 border-t border-slate-800">Kadapa Central + Bangalore</p>
         </div>
       </aside>
 
@@ -261,43 +285,43 @@
             
             <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-2xl p-4 relative overflow-hidden group hover:border-red-500/50 transition">
               <div class="flex items-center justify-between">
-                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Sameer Priority 1</span>
+                <span id="kpiLabel1" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Sameer Priority 1</span>
                 <span class="w-8 h-8 rounded-xl bg-red-950/80 text-red-400 border border-red-800/40 flex items-center justify-center text-sm"><i class="fa-solid fa-crown"></i></span>
               </div>
               <div class="text-3xl font-black text-white mt-2 font-mono" id="metricSameerActive">0</div>
               <div class="flex items-center justify-between text-[11px] mt-1">
-                <span class="text-red-400 font-semibold">Kadapa Direct Queue</span>
+                <span id="kpiSub1" class="text-red-400 font-semibold">Kadapa Direct Queue</span>
                 <span class="text-slate-500">100% District</span>
               </div>
             </div>
 
             <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-2xl p-4 relative overflow-hidden group hover:border-blue-500/50 transition">
               <div class="flex items-center justify-between">
-                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Fleet Delegated</span>
+                <span id="kpiLabel2" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Fleet Delegated</span>
                 <span class="w-8 h-8 rounded-xl bg-blue-950/80 text-blue-400 border border-blue-800/40 flex items-center justify-center text-sm"><i class="fa-solid fa-people-arrows"></i></span>
               </div>
               <div class="text-3xl font-black text-white mt-2 font-mono" id="metricPartnerDelegated">0</div>
               <div class="flex items-center justify-between text-[11px] mt-1">
-                <span class="text-blue-400 font-semibold">Imran / Venkatesh / Prasad</span>
+                <span id="kpiSub2" class="text-blue-400 font-semibold">Imran / Venkatesh</span>
                 <span class="text-slate-500">Field Partners</span>
               </div>
             </div>
 
             <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-2xl p-4 relative overflow-hidden group hover:border-amber-500/50 transition">
               <div class="flex items-center justify-between">
-                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Active Revenue Value</span>
+                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Active Pipeline</span>
                 <span class="w-8 h-8 rounded-xl bg-amber-950/80 text-amber-400 border border-amber-800/40 flex items-center justify-center text-sm"><i class="fa-solid fa-indian-rupee-sign"></i></span>
               </div>
               <div class="text-3xl font-black text-amber-400 mt-2 font-mono" id="metricPipelineTotal">₹0</div>
               <div class="flex items-center justify-between text-[11px] mt-1">
-                <span class="text-amber-400/90 font-semibold">Today's Dispatch Pipeline</span>
+                <span class="text-amber-400/90 font-semibold">Active Leads Value</span>
                 <span class="text-slate-500">Doorstep UPI/Cash</span>
               </div>
             </div>
 
             <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-2xl p-4 relative overflow-hidden group hover:border-emerald-500/50 transition">
               <div class="flex items-center justify-between">
-                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">60-Min Urgent Express</span>
+                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">60-Min Express</span>
                 <span class="w-8 h-8 rounded-xl bg-emerald-950/80 text-emerald-400 border border-emerald-800/40 flex items-center justify-center text-sm"><i class="fa-solid fa-bolt"></i></span>
               </div>
               <div class="text-3xl font-black text-emerald-400 mt-2 font-mono" id="metricExpressCount">0</div>
@@ -317,7 +341,7 @@
               <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div class="flex items-center gap-2">
                   <div class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></div>
-                  <h3 class="font-black text-base text-white">Live Lead Influx Feed</h3>
+                  <h3 class="font-black text-base text-white" id="feedHeaderTitle">Live Lead Influx Feed</h3>
                 </div>
                 <div class="flex items-center gap-2 text-xs">
                   <span class="text-slate-400">Total Leads:</span>
@@ -345,13 +369,13 @@
                 </div>
               </div>
 
-              <!-- Branch Dispatch Ratio -->
-              <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-3xl p-5 space-y-3">
+              <!-- Branch Dispatch Ratio (Shown for Sameer, replaced with SLA gauge for Syed) -->
+              <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-3xl p-5 space-y-3" id="territoryDistributionBox">
                 <h3 class="font-black text-sm text-white flex items-center gap-2">
                   <i class="fa-solid fa-city text-blue-500"></i>
-                  <span>Territory Distribution</span>
+                  <span id="territoryBoxTitle">Territory Distribution</span>
                 </h3>
-                <div class="space-y-3 text-xs">
+                <div class="space-y-3 text-xs" id="territoryBoxContent">
                   <div>
                     <div class="flex justify-between font-bold mb-1">
                       <span class="text-red-400">Kadapa Central & Mandals</span>
@@ -386,8 +410,8 @@
             
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
               <div>
-                <h2 class="text-lg font-black text-white">Full Dispatch Matrix & Operations</h2>
-                <p class="text-xs text-slate-400">Comprehensive table view of all client bookings across Kadapa and Bangalore.</p>
+                <h2 class="text-lg font-black text-white" id="gridTitle">Full Dispatch Matrix & Operations</h2>
+                <p class="text-xs text-slate-400" id="gridSubtitle">Comprehensive table view of all client bookings across territories.</p>
               </div>
 
               <div class="flex items-center gap-2 flex-wrap">
@@ -441,11 +465,11 @@
                 <span>Territory GPS Dispatch Radar</span>
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
               </h2>
-              <p class="text-xs text-slate-400">Interactive geographic visualization of technician hubs and customer doorstep locations.</p>
+              <p class="text-xs text-slate-400" id="mapSubtitle">Interactive geographic visualization of technician hubs and customer doorstep locations.</p>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="recenterMap('kadapa')" class="px-3 py-1.5 rounded-xl bg-red-950/80 border border-red-800/60 text-red-300 text-xs font-bold hover:bg-red-900 transition">Center Kadapa Hub</button>
-              <button onclick="recenterMap('bangalore')" class="px-3 py-1.5 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-bold hover:bg-blue-900 transition">Center Bangalore Branch</button>
+            <div class="flex items-center gap-2" id="mapCenterControls">
+              <button onclick="recenterMap('kadapa')" id="btnCenterKadapa" class="px-3 py-1.5 rounded-xl bg-red-950/80 border border-red-800/60 text-red-300 text-xs font-bold hover:bg-red-900 transition">Center Kadapa Hub</button>
+              <button onclick="recenterMap('bangalore')" id="btnCenterBangalore" class="px-3 py-1.5 rounded-xl bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-bold hover:bg-blue-900 transition">Center Bangalore Branch</button>
             </div>
           </div>
 
@@ -498,8 +522,8 @@
         <section id="viewFleet" class="space-y-4 hidden">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-lg font-black text-white">Technician Fleet & Branch Partners</h2>
-              <p class="text-xs text-slate-400">Active roster of field service personnel across Kadapa and Bangalore.</p>
+              <h2 class="text-lg font-black text-white" id="fleetHeaderTitle">Technician Fleet & Branch Partners</h2>
+              <p class="text-xs text-slate-400" id="fleetHeaderSubtitle">Active roster of field service personnel across territories.</p>
             </div>
           </div>
 
@@ -513,7 +537,7 @@
           <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-3xl p-5 space-y-4">
             <div>
               <h2 class="text-lg font-black text-white">Dynamic UPI QR Doorstep Billing Engine</h2>
-              <p class="text-xs text-slate-400">Shaik Sameer Primary VPA: <span class="font-mono text-amber-400 font-bold">7815851330-2@ibl</span> • Payee: <span class="font-bold text-white">AS REFRIGERATIONS</span></p>
+              <p class="text-xs text-slate-400">Direct Doorstep Settlement • VPA: <span class="font-mono text-amber-400 font-bold">7815851330-2@ibl</span> • Payee: <span class="font-bold text-white">AS REFRIGERATIONS</span></p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -552,7 +576,7 @@
                   <h4 class="font-black text-white text-sm" id="qrPreviewTitle">Bill ₹499.00</h4>
                   <p class="text-xs text-slate-400 font-mono">VPA: 7815851330-2@ibl</p>
                 </div>
-                <p class="text-[11px] text-slate-500 max-w-xs">Scan with Google Pay, PhonePe, Paytm, BHIM. Payment deposits directly to Shaik Sameer.</p>
+                <p class="text-[11px] text-slate-500 max-w-xs">Scan with Google Pay, PhonePe, Paytm, BHIM. Payment deposits directly to AS REFRIGERATIONS.</p>
               </div>
             </div>
           </div>
@@ -563,11 +587,12 @@
           <div class="bg-[#0a0f1d] border border-slate-800/80 rounded-3xl p-5 space-y-4">
             <div>
               <h2 class="text-lg font-black text-white">Dynamic Territory Tariff Matrix</h2>
-              <p class="text-xs text-slate-400">Strictly regulated pricing matrix applied across Website, Customer App, and Field Invoicing.</p>
+              <p class="text-xs text-slate-400" id="tariffSubtitle">Strictly regulated pricing matrix applied across Website, Customer App, and Field Invoicing.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div class="bg-[#070b14] border border-slate-800 p-4 rounded-2xl space-y-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs" id="tariffsGrid">
+              <!-- Kadapa Card -->
+              <div class="bg-[#070b14] border border-slate-800 p-4 rounded-2xl space-y-3" id="tariffCardKadapa">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                   <span class="font-black text-red-400 text-sm">Kadapa District Central Rates</span>
                   <span class="px-2 py-0.5 rounded bg-red-950 text-red-300 text-[10px] font-bold">Sameer Priority 1</span>
@@ -577,7 +602,8 @@
                 </div>
               </div>
 
-              <div class="bg-[#070b14] border border-slate-800 p-4 rounded-2xl space-y-3">
+              <!-- Bangalore Card -->
+              <div class="bg-[#070b14] border border-slate-800 p-4 rounded-2xl space-y-3" id="tariffCardBangalore">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                   <span class="font-black text-blue-400 text-sm">Bangalore Branch Rates</span>
                   <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 text-[10px] font-bold">Kammanahalli Branch</span>
@@ -717,7 +743,36 @@
       console.warn("Firestore initialization fallback:", e);
     }
 
-    // 2. Global State
+    // 2. Persona Profiles (Role-Based Access)
+    const PERSONAS = {
+      sameer: {
+        id: 'sameer',
+        name: 'Shaik Sameer',
+        phone: '+91 78158 51330',
+        phoneRaw: '7815851330',
+        title: '👑 Shaik Sameer (Kadapa & Founder)',
+        roleBadge: 'Super Admin',
+        defaultCity: 'kadapa',
+        isSuperAdmin: true,
+        allowedCities: ['all', 'kadapa', 'bangalore'],
+        dispatchSignature: 'Shaik Sameer from AS REFRIGERATIONS Kadapa'
+      },
+      syed: {
+        id: 'syed',
+        name: 'Syed',
+        phone: '+91 80732 06402',
+        phoneRaw: '8073206402',
+        title: '🏢 Syed (Bangalore Branch Lead)',
+        roleBadge: 'Branch Lead',
+        defaultCity: 'bangalore',
+        isSuperAdmin: false,
+        allowedCities: ['bangalore'],
+        dispatchSignature: 'Syed from AS REFRIGERATIONS Bangalore (Kammanahalli Branch)'
+      }
+    };
+
+    let selectedLoginPersona = 'sameer';
+    let currentSessionUser = null;
     let liveBookings = [];
     let currentCityFilter = 'all';
     let currentView = 'mission';
@@ -733,7 +788,8 @@
       { id: 'tech-sameer-01', name: 'Shaik Sameer', phone: '+91 78158 51330', city: 'kadapa', role: 'Founder & Master Lead (Priority 1)', rating: '4.98', jobs: '1,428', address: '74/15/1 Lohiya Nagar, Mariapuram, Kadapa', status: 'ON_ROUTE', lat: 14.4673, lng: 78.8242 },
       { id: 'tech-imran-02', name: 'Shaik Imran', phone: '+91 93460 21980', city: 'kadapa', role: 'Vetted Field Partner', rating: '4.88', jobs: '340', address: 'Apsara Circle, Kadapa', status: 'AVAILABLE', lat: 14.4720, lng: 78.8210 },
       { id: 'tech-venkatesh-03', name: 'K. Venkatesh', phone: '+91 98480 34120', city: 'kadapa', role: 'Refrigerator Specialist', rating: '4.82', jobs: '215', address: 'Seven Roads, Kadapa', status: 'AVAILABLE', lat: 14.4751, lng: 78.8293 },
-      { id: 'tech-bangalore-prasad-04', name: 'M. Prasad', phone: '+91 80732 06402', city: 'bangalore', role: 'Bangalore Branch Lead', rating: '4.92', jobs: '580', address: '#2 Sree Residency, Kammanahalli', status: 'ON_ROUTE', lat: 13.0158, lng: 77.6377 },
+      { id: 'tech-bangalore-syed-00', name: 'Syed', phone: '+91 80732 06402', city: 'bangalore', role: 'Bangalore Branch Operations Lead', rating: '4.95', jobs: '620', address: '#2 Sree Residency, Kammanahalli', status: 'AVAILABLE', lat: 13.0158, lng: 77.6377 },
+      { id: 'tech-bangalore-prasad-04', name: 'M. Prasad', phone: '+91 80732 06402', city: 'bangalore', role: 'Senior Field Lead', rating: '4.92', jobs: '580', address: 'Kammanahalli Main Road', status: 'ON_ROUTE', lat: 13.0165, lng: 77.6385 },
       { id: 'tech-bangalore-manjunath-05', name: 'R. Manjunath', phone: '+91 99002 44190', city: 'bangalore', role: 'Commercial HVAC Partner', rating: '4.85', jobs: '310', address: 'Kalyan Nagar, Bangalore', status: 'AVAILABLE', lat: 13.0240, lng: 77.6430 }
     ];
 
@@ -765,7 +821,7 @@
       { service: 'Compressor Replacement / AMC', price: 'Quote on Inspection' }
     ];
 
-    // 3. Audio Chime Synthesizer (Web Audio API)
+    // 3. Audio Chime Synthesizer
     function playChime() {
       if (!audioAlertsEnabled) return;
       try {
@@ -773,8 +829,8 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
-        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.25); // A6
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.25);
         gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
         osc.connect(gain);
@@ -809,7 +865,34 @@
     setInterval(updateIstClock, 1000);
     updateIstClock();
 
-    // 5. Auth Gate
+    // 5. Persona Selector in Auth Gate
+    function selectLoginPersona(personaKey) {
+      selectedLoginPersona = personaKey;
+      const btnSameer = document.getElementById('personaBtnSameer');
+      const btnSyed = document.getElementById('personaBtnSyed');
+      const label = document.getElementById('pinLabel');
+      const helper = document.getElementById('pinHelperText');
+      const submitLabel = document.getElementById('loginBtnLabel');
+      const pinInput = document.getElementById('adminPinInput');
+      pinInput.value = '';
+      document.getElementById('pinError').classList.add('hidden');
+
+      if (personaKey === 'sameer') {
+        btnSameer.className = 'py-2.5 px-3 rounded-xl bg-red-600 text-white transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm';
+        btnSyed.className = 'py-2.5 px-3 rounded-xl text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5 cursor-pointer';
+        label.textContent = 'Shaik Sameer Master PIN (Kadapa Hub)';
+        helper.innerHTML = 'Default PIN: <strong class="text-slate-300">1234</strong> or Mobile <strong class="text-slate-300">7815851330</strong>';
+        submitLabel.textContent = 'Open Kadapa Command Rail';
+      } else {
+        btnSyed.className = 'py-2.5 px-3 rounded-xl bg-blue-600 text-white transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm';
+        btnSameer.className = 'py-2.5 px-3 rounded-xl text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5 cursor-pointer';
+        label.textContent = 'Syed Security PIN (Bangalore Branch)';
+        helper.innerHTML = 'Default PIN: <strong class="text-slate-300">5600</strong>, <strong class="text-slate-300">8073</strong> or Mobile <strong class="text-slate-300">8073206402</strong>';
+        submitLabel.textContent = 'Open Bangalore Command Rail';
+      }
+      pinInput.focus();
+    }
+
     const pinForm = document.getElementById('pinForm');
     const pinInput = document.getElementById('adminPinInput');
     const pinError = document.getElementById('pinError');
@@ -817,7 +900,10 @@
     const adminApp = document.getElementById('adminApp');
 
     function checkAuth() {
-      if (sessionStorage.getItem('as_admin_auth') === 'true') {
+      const savedUser = sessionStorage.getItem('as_admin_user');
+      if (savedUser && PERSONAS[savedUser]) {
+        currentSessionUser = PERSONAS[savedUser];
+        applyUserPersona();
         authGate.classList.add('hidden');
         adminApp.classList.remove('hidden');
         initCommandCenter();
@@ -827,19 +913,105 @@
     pinForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const entered = pinInput.value.trim();
-      if (entered === '1234' || entered === '7815851330' || entered === '998877') {
-        sessionStorage.setItem('as_admin_auth', 'true');
-        authGate.classList.add('hidden');
-        adminApp.classList.remove('hidden');
-        initCommandCenter();
-      } else {
-        pinError.classList.remove('hidden');
+
+      // Authenticate based on persona selected
+      if (selectedLoginPersona === 'sameer') {
+        if (entered === '1234' || entered === '7815851330' || entered === '998877') {
+          currentSessionUser = PERSONAS.sameer;
+          sessionStorage.setItem('as_admin_user', 'sameer');
+          authGate.classList.add('hidden');
+          adminApp.classList.remove('hidden');
+          applyUserPersona();
+          initCommandCenter();
+        } else {
+          document.getElementById('pinErrorText').textContent = 'Incorrect PIN for Shaik Sameer (Kadapa). Use 1234.';
+          pinError.classList.remove('hidden');
+        }
+      } else if (selectedLoginPersona === 'syed') {
+        if (entered === '5600' || entered === '8073' || entered === '8073206402' || entered === '1234' || entered === '998877') {
+          currentSessionUser = PERSONAS.syed;
+          sessionStorage.setItem('as_admin_user', 'syed');
+          authGate.classList.add('hidden');
+          adminApp.classList.remove('hidden');
+          applyUserPersona();
+          initCommandCenter();
+        } else {
+          document.getElementById('pinErrorText').textContent = 'Incorrect PIN for Syed (Bangalore). Use 5600 or 8073.';
+          pinError.classList.remove('hidden');
+        }
       }
     });
 
     function logoutAdmin() {
-      sessionStorage.removeItem('as_admin_auth');
+      sessionStorage.removeItem('as_admin_user');
       window.location.reload();
+    }
+
+    // 6. Apply Personalization based on Logged-In User
+    function applyUserPersona() {
+      if (!currentSessionUser) return;
+
+      const isSameer = currentSessionUser.id === 'sameer';
+      currentCityFilter = currentSessionUser.defaultCity;
+
+      // Update Nav
+      document.getElementById('navManagerTitle').textContent = isSameer ? 'KADAPA COMMAND CENTER' : 'BANGALORE COMMAND CENTER';
+      document.getElementById('navRoleBadge').textContent = currentSessionUser.roleBadge;
+      document.getElementById('navRoleBadge').className = isSameer 
+        ? 'px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-red-950 text-red-400 border border-red-800/50'
+        : 'px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-blue-950 text-blue-400 border border-blue-800/50';
+
+      // Territory Controls
+      const switcher = document.getElementById('territorySwitcherContainer');
+      const syedBadge = document.getElementById('syedLockedBadge');
+      if (isSameer) {
+        switcher.classList.remove('hidden');
+        syedBadge.classList.add('hidden');
+        setCityFilter('kadapa');
+      } else {
+        switcher.classList.add('hidden');
+        syedBadge.classList.remove('hidden');
+        currentCityFilter = 'bangalore';
+      }
+
+      // Sidebar Profile Info
+      document.getElementById('sideUserAvatar').textContent = isSameer ? 'S' : 'SY';
+      document.getElementById('sideUserAvatar').className = isSameer ? 'w-7 h-7 rounded-lg bg-red-600 text-white font-bold text-xs flex items-center justify-center' : 'w-7 h-7 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center';
+      document.getElementById('sideUserName').textContent = currentSessionUser.name;
+      document.getElementById('sideUserRole').textContent = isSameer ? 'Founder & Priority 1' : 'Bangalore Branch Lead';
+      document.getElementById('sideUserRole').className = isSameer ? 'text-[10px] text-emerald-400 font-semibold' : 'text-[10px] text-blue-400 font-semibold';
+      document.getElementById('sideUserTerritory').textContent = isSameer ? 'Kadapa 100% District Hub' : 'Kammanahalli & Nearby Hub';
+
+      // KPI Customizations
+      if (isSameer) {
+        document.getElementById('kpiLabel1').textContent = 'Sameer Priority 1';
+        document.getElementById('kpiSub1').textContent = 'Kadapa Direct Queue';
+        document.getElementById('kpiLabel2').textContent = 'Fleet Delegated';
+        document.getElementById('kpiSub2').textContent = 'Imran / Venkatesh';
+      } else {
+        document.getElementById('kpiLabel1').textContent = 'Bangalore Queue';
+        document.getElementById('kpiSub1').textContent = 'Kammanahalli Branch';
+        document.getElementById('kpiLabel2').textContent = 'Field Dispatched';
+        document.getElementById('kpiSub2').textContent = 'Prasad / Manjunath';
+      }
+
+      // Hide or tailor map center buttons
+      if (!isSameer) {
+        document.getElementById('btnCenterKadapa').classList.add('hidden');
+        document.getElementById('btnCenterBangalore').textContent = 'Re-center Kammanahalli Radar';
+        document.getElementById('mapSubtitle').textContent = 'GPS Radar for Kammanahalli, Kalyan Nagar, HRBR Layout, Hennur & Banaswadi.';
+        // Tariffs view: Hide Kadapa for Syed
+        document.getElementById('tariffCardKadapa').classList.add('hidden');
+      } else {
+        document.getElementById('btnCenterKadapa').classList.remove('hidden');
+        document.getElementById('tariffCardKadapa').classList.remove('hidden');
+      }
+
+      // Manual Lead defaults
+      document.getElementById('manualCity').value = currentSessionUser.defaultCity;
+      if (!isSameer) {
+        document.getElementById('manualCity').innerHTML = '<option value="bangalore" selected>Bangalore (Kammanahalli Branch)</option>';
+      }
     }
 
     function toggleFullscreen() {
@@ -850,7 +1022,7 @@
       }
     }
 
-    // 6. Navigation View Switcher
+    // 7. Navigation View Switcher
     function switchView(view) {
       currentView = view;
       const views = ['mission', 'dispatch', 'map', 'customers', 'fleet', 'billing', 'tariffs'];
@@ -859,7 +1031,8 @@
         const btn = document.getElementById(`navBtn${v.charAt(0).toUpperCase() + v.slice(1)}`);
         if (v === view) {
           el.classList.remove('hidden');
-          btn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold bg-red-600 text-white transition text-left cursor-pointer";
+          const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+          btn.className = `w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold ${isSameer ? 'bg-red-600' : 'bg-blue-600'} text-white transition text-left cursor-pointer`;
         } else {
           el.classList.add('hidden');
           btn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800/60 transition text-left cursor-pointer";
@@ -872,19 +1045,24 @@
     }
 
     function setCityFilter(city) {
+      if (currentSessionUser && !currentSessionUser.isSuperAdmin && city !== 'bangalore') {
+        city = 'bangalore';
+      }
       currentCityFilter = city;
       ['all', 'kadapa', 'bangalore'].forEach(c => {
         const btn = document.getElementById(`btnFilter${c.charAt(0).toUpperCase() + c.slice(1)}`);
-        if (c === city) {
-          btn.className = "px-3 py-1 rounded-lg bg-red-600 text-white transition";
-        } else {
-          btn.className = "px-3 py-1 rounded-lg text-slate-400 hover:text-white transition";
+        if (btn) {
+          if (c === city) {
+            btn.className = "px-3 py-1 rounded-lg bg-red-600 text-white transition";
+          } else {
+            btn.className = "px-3 py-1 rounded-lg text-slate-400 hover:text-white transition";
+          }
         }
       });
       renderAllViews();
     }
 
-    // 7. Initialization
+    // 8. Initialization
     function initCommandCenter() {
       renderFleetCards();
       renderTariffCards();
@@ -892,12 +1070,12 @@
       startFirestoreSubscription();
     }
 
-    // 8. Firestore Subscription
+    // 9. Firestore Subscription
     function startFirestoreSubscription() {
       if (db) {
         db.collection('bookings').limit(100).onSnapshot((snapshot) => {
           const list = [];
-          let hasNewLead = false;
+          let hasNewLeadForMe = false;
 
           snapshot.forEach(doc => {
             const data = doc.data();
@@ -905,7 +1083,17 @@
             list.push(data);
 
             if (!previousLeadIds.has(doc.id)) {
-              if (previousLeadIds.size > 0) hasNewLead = true;
+              if (previousLeadIds.size > 0) {
+                // Check if this lead belongs to my territory
+                const docCity = (data.city || '').toLowerCase();
+                if (currentSessionUser) {
+                  if (currentSessionUser.isSuperAdmin && (currentCityFilter === 'all' || docCity === currentCityFilter)) {
+                    hasNewLeadForMe = true;
+                  } else if (!currentSessionUser.isSuperAdmin && docCity === 'bangalore') {
+                    hasNewLeadForMe = true;
+                  }
+                }
+              }
               previousLeadIds.add(doc.id);
             }
           });
@@ -914,7 +1102,7 @@
           list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
           liveBookings = list;
 
-          if (hasNewLead) playChime();
+          if (hasNewLeadForMe) playChime();
 
           document.getElementById('firestoreStatus').textContent = `Firestore: Synced (${liveBookings.length} records)`;
           renderAllViews();
@@ -937,7 +1125,7 @@
       renderAllViews();
     }
 
-    // 9. Master Render
+    // 10. Master Render
     function renderAllViews() {
       updateMissionKPIs();
       renderMissionFeed();
@@ -948,20 +1136,29 @@
 
     function getFilteredBookings() {
       return liveBookings.filter(b => {
+        const bCity = (b.city || '').toLowerCase();
+        if (currentSessionUser && !currentSessionUser.isSuperAdmin) {
+          return bCity === 'bangalore';
+        }
         if (currentCityFilter === 'all') return true;
-        return (b.city || '').toLowerCase() === currentCityFilter.toLowerCase();
+        return bCity === currentCityFilter.toLowerCase();
       });
     }
 
-    // 10. Mission KPIs & Feed
+    // 11. Mission KPIs & Feed
     function updateMissionKPIs() {
       const filtered = getFilteredBookings();
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+
       const sameerActive = filtered.filter(b => b.isAssignedToSameer || (b.city === 'kadapa' && (!b.assignedTechnicianId || b.assignedTechnicianId === 'tech-sameer-01'))).length;
-      const partnerDelegated = filtered.filter(b => !b.isAssignedToSameer && b.city !== 'kadapa').length;
+      const partnerDelegated = isSameer 
+        ? filtered.filter(b => !b.isAssignedToSameer && b.city !== 'kadapa').length
+        : filtered.filter(b => b.city === 'bangalore' && b.assignedTechnicianId && b.assignedTechnicianId !== 'tech-bangalore-syed-00').length;
+
       const pipelineTotal = filtered.reduce((acc, b) => acc + (Number(b.finalPrice || b.estimatedPrice) || 0), 0);
       const expressCount = filtered.filter(b => b.isExpress || (b.timeSlot || '').toLowerCase().includes('urgent') || (b.timeSlot || '').toLowerCase().includes('immediate')).length;
 
-      document.getElementById('metricSameerActive').textContent = sameerActive;
+      document.getElementById('metricSameerActive').textContent = isSameer ? sameerActive : filtered.length;
       document.getElementById('metricPartnerDelegated').textContent = partnerDelegated;
       document.getElementById('metricPipelineTotal').textContent = `₹${pipelineTotal.toLocaleString('en-IN')}`;
       document.getElementById('metricExpressCount').textContent = expressCount;
@@ -984,6 +1181,7 @@
     function renderMissionFeed() {
       const container = document.getElementById('missionFeedContainer');
       const filtered = getFilteredBookings();
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
 
       if (filtered.length === 0) {
         container.innerHTML = `
@@ -996,10 +1194,16 @@
       }
 
       container.innerHTML = filtered.map(b => {
-        const isSameer = b.isAssignedToSameer || (b.assignedTechnicianName || '').includes('Sameer');
+        const isAssignedSameer = b.isAssignedToSameer || (b.assignedTechnicianName || '').includes('Sameer');
         const phone = (b.customerMobile || b.customerPhone || '').replace(/\D/g, '').slice(-10);
         const isExpress = b.isExpress || (b.timeSlot || '').toLowerCase().includes('urgent') || (b.timeSlot || '').toLowerCase().includes('immediate');
         const mapsLink = b.googleMapsUrl || (b.latitude && b.longitude ? `https://maps.google.com/?q=${b.latitude},${b.longitude}` : `https://maps.google.com/?q=${encodeURIComponent((b.locality || '') + ' ' + (b.city || ''))}`);
+        
+        // Dynamic WhatsApp template tailored to who is clicking it!
+        const dispatcherSig = isSameer 
+          ? `Shaik Sameer from AS REFRIGERATIONS Kadapa` 
+          : `Syed from AS REFRIGERATIONS Bangalore (Kammanahalli Branch)`;
+        const waMsg = `Hello ${b.customerName || 'Customer'}, ${dispatcherSig} here. Confirming your service booking #${b.id} for ${b.serviceTitle || 'Appliance Service'}. Our technician is en route to your doorstep.`;
 
         return `
           <div class="p-4 rounded-2xl bg-[#070b14] border border-slate-800/80 hover:border-slate-700 transition space-y-3">
@@ -1051,7 +1255,7 @@
                   <i class="fa-solid fa-phone"></i>
                   <span>Call</span>
                 </a>
-                <a href="https://wa.me/91${phone}?text=${encodeURIComponent(`Hello ${b.customerName || 'Customer'}, Shaik Sameer from AS REFRIGERATIONS here. Confirming your service booking ${b.id} for ${b.serviceTitle || 'Appliance Service'}. Technician is en route.`)}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-green-700 hover:bg-green-600 text-white font-bold text-xs transition flex items-center gap-1">
+                <a href="https://wa.me/91${phone}?text=${encodeURIComponent(waMsg)}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-green-700 hover:bg-green-600 text-white font-bold text-xs transition flex items-center gap-1">
                   <i class="fa-brands fa-whatsapp"></i>
                   <span>WhatsApp</span>
                 </a>
@@ -1059,7 +1263,7 @@
 
               <div class="flex items-center gap-2">
                 ${b.city === 'kadapa' ? `
-                  ${isSameer ? `
+                  ${isAssignedSameer ? `
                     <span class="px-2 py-1 rounded-lg bg-red-950 text-red-300 text-[11px] font-bold border border-red-800/60 flex items-center gap-1">
                       <i class="fa-solid fa-crown text-amber-400"></i> Sameer (Priority 1)
                     </span>
@@ -1070,7 +1274,7 @@
                   `}
                 ` : `
                   <span class="px-2 py-1 rounded-lg bg-blue-950 text-blue-300 text-[11px] font-bold border border-blue-800/60">
-                    Bangalore (Prasad)
+                    Bangalore (${b.assignedTechnicianName || 'Syed / Prasad'})
                   </span>
                 `}
 
@@ -1094,15 +1298,21 @@
       }).join('');
     }
 
-    // 11. Dispatch Grid Table
+    // 12. Dispatch Grid Table
     function renderDispatchGrid() {
       const tbody = document.getElementById('dispatchGridBody');
       const filtered = getFilteredBookings();
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
 
       tbody.innerHTML = filtered.map(b => {
         const phone = (b.customerMobile || b.customerPhone || '').replace(/\D/g, '').slice(-10);
         const isExpress = b.isExpress || (b.timeSlot || '').toLowerCase().includes('urgent');
         const mapsLink = b.googleMapsUrl || (b.latitude && b.longitude ? `https://maps.google.com/?q=${b.latitude},${b.longitude}` : `https://maps.google.com/?q=${encodeURIComponent((b.locality || '') + ' ' + (b.city || ''))}`);
+        
+        const dispatcherSig = isSameer 
+          ? `Shaik Sameer from AS REFRIGERATIONS Kadapa` 
+          : `Syed from AS REFRIGERATIONS Bangalore (Kammanahalli Branch)`;
+        const waMsg = `Hello ${b.customerName || 'Customer'}, ${dispatcherSig} confirming booking #${b.id}. Technician dispatched.`;
 
         return `
           <tr class="hover:bg-slate-800/40 transition">
@@ -1130,7 +1340,7 @@
               ₹${b.finalPrice || b.estimatedPrice || 499}
             </td>
             <td class="py-3 px-3">
-              <span class="text-slate-300 font-medium">${b.assignedTechnicianName || 'Shaik Sameer'}</span>
+              <span class="text-slate-300 font-medium">${b.assignedTechnicianName || (b.city === 'kadapa' ? 'Shaik Sameer' : 'Syed / Prasad')}</span>
             </td>
             <td class="py-3 px-3">
               <select onchange="updateLeadStatus('${b.id}', this.value)" class="bg-[#070b14] border border-slate-700 text-white text-[11px] font-bold rounded-lg px-2 py-1">
@@ -1147,7 +1357,7 @@
                 <a href="tel:${phone}" class="p-1.5 rounded-lg bg-emerald-600/30 text-emerald-400 hover:bg-emerald-600 hover:text-white transition" title="Call Customer">
                   <i class="fa-solid fa-phone"></i>
                 </a>
-                <a href="https://wa.me/91${phone}?text=${encodeURIComponent(`Hello ${b.customerName || 'Customer'}, AS Refrigerations is dispatching technician for booking ${b.id}.`)}" target="_blank" class="p-1.5 rounded-lg bg-green-700/30 text-green-400 hover:bg-green-700 hover:text-white transition" title="WhatsApp">
+                <a href="https://wa.me/91${phone}?text=${encodeURIComponent(waMsg)}" target="_blank" class="p-1.5 rounded-lg bg-green-700/30 text-green-400 hover:bg-green-700 hover:text-white transition" title="WhatsApp">
                   <i class="fa-brands fa-whatsapp"></i>
                 </a>
               </div>
@@ -1165,7 +1375,7 @@
       });
     }
 
-    // 12. Leaflet Map Initialization
+    // 13. Leaflet Map Initialization
     function initMapIfNeeded() {
       if (dispatchMapInstance) {
         dispatchMapInstance.invalidateSize();
@@ -1176,7 +1386,11 @@
       const mapEl = document.getElementById('dispatchMap');
       if (!mapEl) return;
 
-      dispatchMapInstance = L.map('dispatchMap').setView([14.4673, 78.8242], 12);
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+      const initialCoords = isSameer ? [14.4673, 78.8242] : [13.0158, 77.6377];
+      const initialZoom = isSameer ? 12 : 14;
+
+      dispatchMapInstance = L.map('dispatchMap').setView(initialCoords, initialZoom);
       L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap contributors & CartoDB',
         maxZoom: 19
@@ -1190,31 +1404,38 @@
       if (city === 'kadapa') {
         dispatchMapInstance.setView([14.4673, 78.8242], 13);
       } else {
-        dispatchMapInstance.setView([13.0158, 77.6377], 13);
+        dispatchMapInstance.setView([13.0158, 77.6377], 14);
       }
     }
 
     function updateMapMarkers() {
       if (!dispatchMapInstance) return;
       
-      // Clear old
       mapMarkers.forEach(m => dispatchMapInstance.removeLayer(m));
       mapMarkers = [];
 
-      // Add Fleet HQ Pins
-      FLEET_MEMBERS.forEach(f => {
-        const iconHtml = `<div class="w-8 h-8 rounded-full bg-red-600 border-2 border-white text-white flex items-center justify-center font-bold text-xs shadow-lg"><i class="fa-solid fa-motorcycle"></i></div>`;
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+
+      // Fleet Markers Filtered
+      const fleetToDisplay = FLEET_MEMBERS.filter(f => {
+        if (!isSameer) return f.city === 'bangalore';
+        if (currentCityFilter === 'all') return true;
+        return f.city === currentCityFilter;
+      });
+
+      fleetToDisplay.forEach(f => {
+        const iconHtml = `<div class="w-8 h-8 rounded-full ${f.city === 'kadapa' ? 'bg-red-600' : 'bg-blue-600'} border-2 border-white text-white flex items-center justify-center font-bold text-xs shadow-lg"><i class="fa-solid fa-motorcycle"></i></div>`;
         const icon = L.divIcon({ html: iconHtml, className: 'custom-fleet-pin', iconSize: [32, 32] });
         const marker = L.marker([f.lat, f.lng], { icon }).addTo(dispatchMapInstance)
           .bindPopup(`<strong>${f.name}</strong><br/>${f.role}<br/>Phone: ${f.phone}`);
         mapMarkers.push(marker);
       });
 
-      // Add Customer Pins
+      // Customer Pins
       const filtered = getFilteredBookings();
       filtered.forEach(b => {
-        const lat = b.latitude || (b.city === 'bangalore' ? 13.0158 + (Math.random() - 0.5) * 0.04 : 14.4673 + (Math.random() - 0.5) * 0.04);
-        const lng = b.longitude || (b.city === 'bangalore' ? 77.6377 + (Math.random() - 0.5) * 0.04 : 78.8242 + (Math.random() - 0.5) * 0.04);
+        const lat = b.latitude || (b.city === 'bangalore' ? 13.0158 + (Math.random() - 0.5) * 0.03 : 14.4673 + (Math.random() - 0.5) * 0.04);
+        const lng = b.longitude || (b.city === 'bangalore' ? 77.6377 + (Math.random() - 0.5) * 0.03 : 78.8242 + (Math.random() - 0.5) * 0.04);
         const phone = (b.customerMobile || b.customerPhone || '').replace(/\D/g, '').slice(-10);
 
         const iconHtml = `<div class="w-7 h-7 rounded-full bg-emerald-500 border-2 border-slate-900 text-white flex items-center justify-center text-xs shadow-lg radar-pulse"><i class="fa-solid fa-house-chimney"></i></div>`;
@@ -1232,7 +1453,7 @@
       });
     }
 
-    // 13. Visual Charts (Chart.js)
+    // 14. Charts
     function updateCharts() {
       const filtered = getFilteredBookings();
       const acCount = filtered.filter(b => (b.applianceType || b.serviceTitle || '').toUpperCase().includes('AC')).length;
@@ -1271,7 +1492,7 @@
       }
     }
 
-    // 14. Customer CRM Directory
+    // 15. Customer CRM Directory
     function renderCrmTable() {
       let customers = [];
       try {
@@ -1285,8 +1506,15 @@
         ];
       }
 
+      // Filter CRM by territory if Syed
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+      const filtered = customers.filter(c => {
+        if (isSameer) return true;
+        return (c.city || '').toLowerCase() === 'bangalore';
+      });
+
       const tbody = document.getElementById('crmTableBody');
-      tbody.innerHTML = customers.map(c => `
+      tbody.innerHTML = filtered.map(c => `
         <tr class="hover:bg-slate-800/40 transition">
           <td class="py-3 px-4 font-bold text-white">${c.name}</td>
           <td class="py-3 px-4 font-mono text-slate-300">+91 ${c.mobile}</td>
@@ -1325,18 +1553,28 @@
         }
       } catch {}
       renderCrmTable();
-      const waUrl = `https://wa.me/91${mobile}?text=${encodeURIComponent(`Hello ${name}, Shaik Sameer from AS REFRIGERATIONS has verified your account. Your new 4-digit security PIN is: ${newPin.trim()}. You can now log into the app.`)}`;
+      const dispatcherSig = (!currentSessionUser || currentSessionUser.id === 'sameer')
+        ? 'Shaik Sameer from AS REFRIGERATIONS'
+        : 'Syed from AS REFRIGERATIONS Bangalore';
+      const waUrl = `https://wa.me/91${mobile}?text=${encodeURIComponent(`Hello ${name}, ${dispatcherSig} has verified your account. Your new 4-digit security PIN is: ${newPin.trim()}. You can now log into the app.`)}`;
       window.open(waUrl, '_blank');
     }
 
-    // 15. Fleet Cards
+    // 16. Fleet Cards Filtered by Territory
     function renderFleetCards() {
       const grid = document.getElementById('fleetGridContainer');
-      grid.innerHTML = FLEET_MEMBERS.map(f => `
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+
+      const filtered = FLEET_MEMBERS.filter(f => {
+        if (isSameer) return true;
+        return f.city === 'bangalore';
+      });
+
+      grid.innerHTML = filtered.map(f => `
         <div class="p-4 rounded-2xl bg-[#0a0f1d] border border-slate-800 space-y-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-              <div class="w-9 h-9 rounded-xl bg-red-600/20 text-red-400 flex items-center justify-center font-bold text-sm">
+              <div class="w-9 h-9 rounded-xl ${f.city === 'kadapa' ? 'bg-red-600/20 text-red-400' : 'bg-blue-600/20 text-blue-400'} flex items-center justify-center font-bold text-sm">
                 ${f.name.charAt(0)}
               </div>
               <div>
@@ -1362,7 +1600,7 @@
       `).join('');
     }
 
-    // 16. Tariffs Render
+    // 17. Tariffs Render
     function renderTariffCards() {
       const kList = document.getElementById('kadapaTariffList');
       kList.innerHTML = KADAPA_RATES.map(r => `
@@ -1381,7 +1619,7 @@
       `).join('');
     }
 
-    // 17. Lead State Management
+    // 18. Lead State Management
     function claimLeadForSameer(bookingId) {
       if (db) {
         db.collection('bookings').document(bookingId).update({
@@ -1420,7 +1658,7 @@
       renderAllViews();
     }
 
-    // 18. Dynamic UPI QR Simulator
+    // 19. Dynamic UPI QR Simulator
     function generateUpiPreview() {
       const amount = parseFloat(document.getElementById('billAmount').value) || 499;
       const vpa = '7815851330-2@ibl';
@@ -1433,7 +1671,7 @@
       document.getElementById('qrPreviewTitle').textContent = `Bill ₹${amount.toFixed(2)}`;
     }
 
-    // 19. Manual Lead Modal
+    // 20. Manual Lead Modal
     function openManualLeadModal() {
       document.getElementById('manualLeadModal').classList.remove('hidden');
     }
@@ -1456,6 +1694,8 @@
       }
 
       const id = `ASR-${Math.floor(1000 + Math.random() * 9000)}`;
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+
       const newLead = {
         id,
         customerName: name,
@@ -1468,8 +1708,8 @@
         isExpress: urgency === 'express',
         timeSlot: urgency === 'express' ? 'Immediate Urgent Visit (Within 60 Mins)' : 'Scheduled',
         status: 'booking_received',
-        isAssignedToSameer: city === 'kadapa',
-        assignedTechnicianName: city === 'kadapa' ? 'Shaik Sameer' : 'M. Prasad (Bangalore)',
+        isAssignedToSameer: city === 'kadapa' && isSameer,
+        assignedTechnicianName: city === 'kadapa' ? 'Shaik Sameer' : 'Syed / M. Prasad (Bangalore)',
         assignedTechnicianPhone: city === 'kadapa' ? '+91 78158 51330' : '+91 80732 06402',
         timestamp: Date.now()
       };
@@ -1488,13 +1728,17 @@
       renderAllViews();
     }
 
-    // 20. Invoice Modal
+    // 21. Invoice Modal
     function openInvoiceModal(bookingId) {
       const b = liveBookings.find(x => x.id === bookingId);
       if (!b) return;
       activeInvoiceData = b;
 
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+      const helplinePhone = (b.city === 'kadapa') ? '+91 78158 51330' : '+91 80732 06402';
+      const techName = b.assignedTechnicianName || (b.city === 'kadapa' ? 'Shaik Sameer' : 'Syed (Branch Lead)');
       const amount = b.finalPrice || b.estimatedPrice || 499;
+
       document.getElementById('invoiceDetailsBody').innerHTML = `
         <div class="p-3 bg-slate-50 rounded-xl space-y-1">
           <div class="flex justify-between font-bold">
@@ -1508,6 +1752,10 @@
           <div class="flex justify-between">
             <span>Customer:</span>
             <strong>${b.customerName} (+91 ${(b.customerMobile || b.customerPhone || '').replace(/\D/g, '').slice(-10)})</strong>
+          </div>
+          <div class="flex justify-between">
+            <span>Territory:</span>
+            <span class="font-bold uppercase text-[11px] text-red-600">${b.city}</span>
           </div>
           <div class="flex justify-between">
             <span>Address:</span>
@@ -1532,7 +1780,7 @@
         </div>
 
         <p class="text-[10px] text-slate-500 pt-2 text-center">
-          30-Day Doorstep Guarantee included. Shaik Sameer: +91 78158 51330.
+          30-Day Doorstep Guarantee included. Branch Helpline: ${helplinePhone}.
         </p>
       `;
 
@@ -1548,11 +1796,14 @@
       const b = activeInvoiceData;
       const phone = (b.customerMobile || b.customerPhone || '').replace(/\D/g, '').slice(-10);
       const amount = b.finalPrice || b.estimatedPrice || 499;
-      const msg = `*🧾 SERVICE RECEIPT - AS REFRIGERATIONS*\nInvoice No: #INV-${b.id}\nCustomer: ${b.customerName}\nService: ${b.serviceTitle}\nTotal Paid: Rs. ${amount}\nGuarantee: 30-Day Doorstep Service Guarantee\nTechnician: ${b.assignedTechnicianName || 'Shaik Sameer'}\nHelpline: +91 78158 51330\n\nThank you for choosing AS Refrigerations!`;
+      const helplinePhone = (b.city === 'kadapa') ? '+91 78158 51330' : '+91 80732 06402';
+      const techName = b.assignedTechnicianName || (b.city === 'kadapa' ? 'Shaik Sameer' : 'Syed (Branch Lead)');
+
+      const msg = `*🧾 SERVICE RECEIPT - AS REFRIGERATIONS*\nInvoice No: #INV-${b.id}\nCustomer: ${b.customerName}\nTerritory: ${(b.city || 'Kadapa').toUpperCase()}\nService: ${b.serviceTitle}\nTotal Paid: Rs. ${amount}\nGuarantee: 30-Day Doorstep Service Guarantee\nTechnician: ${techName}\nBranch Helpline: ${helplinePhone}\n\nThank you for choosing AS Refrigerations!`;
       window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    // 21. Export CSV
+    // 22. Export CSV
     function exportToCsv() {
       const filtered = getFilteredBookings();
       let csv = "ID,City,Customer,Phone,Service,Price,Status,Address\n";
@@ -1563,7 +1814,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `as_refrigerations_leads_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.download = `as_refrigerations_${currentCityFilter}_leads_${new Date().toISOString().slice(0, 10)}.csv`;
       link.click();
     }
 
