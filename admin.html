@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Control Panel | AS Refrigerations Master Dispatch</title>
+  <link rel="icon" type="image/svg+xml" href="/icons.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Firebase SDKs for Live Firestore Sync -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .badge-glow { box-shadow: 0 0 15px rgba(239, 68, 68, 0.35); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased flex flex-col">
+
+  <!-- ================= AUTH GATE MODAL ================= -->
+  <div id="authGate" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-6">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center mx-auto text-white text-2xl shadow-lg shadow-red-900/40">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-white">AS Refrigerations</h2>
+        <p class="text-xs uppercase tracking-widest text-red-400 font-bold mt-1">Master Admin Control Panel</p>
+        <p class="text-xs text-slate-400 mt-2">Enter Shaik Sameer Master PIN to access live bookings, partner dispatch, and business overview.</p>
+      </div>
+
+      <form id="pinForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Master Security PIN</label>
+          <input 
+            type="password" 
+            id="adminPinInput" 
+            maxlength="10" 
+            placeholder="••••" 
+            autofocus 
+            class="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3.5 text-center text-2xl font-mono tracking-widest text-white focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+          />
+        </div>
+        <p id="pinError" class="text-xs text-red-400 font-bold hidden">Incorrect Master PIN. Please try again.</p>
+        <button 
+          type="submit" 
+          class="w-full py-3.5 px-6 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-sm transition shadow-lg shadow-red-950/50 flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <span>Unlock Admin Console</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+      <div class="pt-2 border-t border-slate-800">
+        <p class="text-[11px] text-slate-500">Authorized personnel only: Shaik Sameer (Kadapa) & Branch Managers.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN ADMIN DASHBOARD ================= -->
+  <div id="adminApp" class="flex-1 flex flex-col hidden">
+    <!-- Top Bar -->
+    <header class="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        
+        <div class="flex items-center gap-3">
+          <a href="/" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white text-lg font-black shadow-md shrink-0" title="Return to Market Website">
+            AS
+          </a>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-base sm:text-lg font-black text-white">AS Refrigerations</h1>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-red-950 text-red-400 border border-red-800/60">
+                Admin Console
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-400 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span id="syncStatus">Connected to Cloud Firestore</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- City Filter & Actions -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex items-center text-xs font-bold">
+            <button onclick="setCityFilter('all')" id="btnFilterAll" class="px-3 py-1.5 rounded-lg bg-red-600 text-white transition">All Cities</button>
+            <button onclick="setCityFilter('kadapa')" id="btnFilterKadapa" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Kadapa</button>
+            <button onclick="setCityFilter('bangalore')" id="btnFilterBangalore" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Bangalore</button>
+          </div>
+
+          <a href="/" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5" title="View Customer Website">
+            <i class="fa-solid fa-globe text-slate-400"></i>
+            <span class="hidden sm:inline">Website</span>
+          </a>
+
+          <button onclick="logoutAdmin()" class="px-3 py-1.5 rounded-xl bg-red-950/60 hover:bg-red-900/80 text-red-300 border border-red-800/50 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="hidden sm:inline">Lock</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-slate-900 border-b border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-1 overflow-x-auto text-xs font-bold py-2">
+        <button onclick="switchTab('dispatch')" id="tabBtnDispatch" class="px-4 py-2 rounded-xl bg-red-600 text-white flex items-center gap-2 whitespace-nowrap transition">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Live Dispatch Queue</span>
+          <span id="badgeQueueCount" class="px-1.5 py-0.2 rounded-full bg-black/40 text-[10px]">0</span>
+        </button>
+        <button onclick="switchTab('customers')" id="tabBtnCustomers" class="px-4 py-2 rounded-xl text-slate-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
+          <i class="fa-solid fa-users"></i>
+          <span>Customer Directory</span>
+        </button>
+        <button onclick="switchTab('partners')" id="tabBtnPartners" class="px-4 py-2 rounded-xl text-slate-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span>Technician Fleet</span>
+        </button>
+        <button onclick="switchTab('rates')" id="tabBtnRates" class="px-4 py-2 rounded-xl text-slate-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition">
+          <i class="fa-solid fa-tags"></i>
+          <span>Rates Matrix</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-1 space-y-6">
+
+      <!-- KPI Summary Cards -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Sameer Priority 1</span>
+            <div class="w-8 h-8 rounded-xl bg-red-950 text-red-400 flex items-center justify-center text-sm"><i class="fa-solid fa-crown"></i></div>
+          </div>
+          <div id="kpiSameerCount" class="text-2xl sm:text-3xl font-black text-white mt-2">0</div>
+          <p class="text-[11px] text-red-400 font-semibold mt-1">Direct Kadapa Leads</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Partner Delegated</span>
+            <div class="w-8 h-8 rounded-xl bg-blue-950 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-people-arrows"></i></div>
+          </div>
+          <div id="kpiPartnerCount" class="text-2xl sm:text-3xl font-black text-white mt-2">0</div>
+          <p class="text-[11px] text-blue-400 font-semibold mt-1">Bangalore & Overflow</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Fleet</span>
+            <div class="w-8 h-8 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-sm"><i class="fa-solid fa-motorcycle"></i></div>
+          </div>
+          <div id="kpiFleetCount" class="text-2xl sm:text-3xl font-black text-white mt-2">5</div>
+          <p class="text-[11px] text-emerald-400 font-semibold mt-1">Verified Technicians</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Est. Pipeline</span>
+            <div class="w-8 h-8 rounded-xl bg-amber-950 text-amber-400 flex items-center justify-center text-sm"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          </div>
+          <div id="kpiPipelineValue" class="text-2xl sm:text-3xl font-black text-white mt-2">₹0</div>
+          <p class="text-[11px] text-amber-400 font-semibold mt-1">Active Leads Value</p>
+        </div>
+      </section>
+
+      <!-- ================= TAB 1: LIVE DISPATCH QUEUE ================= -->
+      <section id="tabDispatch" class="space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-black text-white flex items-center gap-2">
+              <span>Live Incoming Leads</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            </h2>
+            <p class="text-xs text-slate-400">Incoming bookings from website & customer app with 1-tap call, WhatsApp, and Google Maps GPS navigation.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="refreshBookings()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bookings Container -->
+        <div id="bookingsList" class="space-y-3">
+          <div class="p-8 text-center bg-slate-900/50 rounded-2xl border border-slate-800 text-slate-500">
+            <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-red-500"></i>
+            <p class="text-xs">Connecting to live Firestore stream...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 2: CUSTOMER DIRECTORY & PIN RESET ================= -->
+      <section id="tabCustomers" class="space-y-4 hidden">
+        <div class="p-5 rounded-3xl bg-slate-900 border border-slate-800 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-black text-white">Customer Account Directory & PIN Assistance</h2>
+              <p class="text-xs text-slate-400">Verify customer identities and reset forgotten 4-digit security PINs with direct WhatsApp delivery.</p>
+            </div>
+            <div class="relative w-full sm:w-72">
+              <input 
+                type="text" 
+                id="searchCustomerInput" 
+                placeholder="Search phone or name..." 
+                onkeyup="filterCustomers()"
+                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-500"
+              />
+              <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-2.5 text-xs text-slate-500"></i>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                <tr>
+                  <th class="py-3 px-4">Customer Name</th>
+                  <th class="py-3 px-4">WhatsApp Phone</th>
+                  <th class="py-3 px-4">Branch</th>
+                  <th class="py-3 px-4">Current PIN</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="customersTableBody" class="divide-y divide-slate-800/60 font-medium">
+                <!-- Dynamically Rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: TECHNICIAN FLEET ================= -->
+      <section id="tabPartners" class="space-y-4 hidden">
+        <div>
+          <h2 class="text-lg font-black text-white">Field Technicians & Branch Fleet</h2>
+          <p class="text-xs text-slate-400">Master dispatch network for Kadapa and Bangalore territory.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="fleetGrid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: RATES MATRIX ================= -->
+      <section id="tabRates" class="space-y-4 hidden">
+        <div class="p-5 rounded-3xl bg-slate-900 border border-slate-800 space-y-4">
+          <div>
+            <h2 class="text-lg font-black text-white">Transparent Rate Card (Kadapa vs Bangalore)</h2>
+            <p class="text-xs text-slate-400">Live doorstep pricing reference guide for customer quotes and technicians.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <!-- Kadapa Rates -->
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span class="font-black text-red-400 text-sm">Kadapa District Rates</span>
+                <span class="px-2 py-0.5 rounded bg-red-950 text-red-300 text-[10px] font-bold">Shaik Sameer</span>
+              </div>
+              <ul class="space-y-2 text-slate-300">
+                <li class="flex justify-between"><span>AC Inspection / Visiting:</span> <strong class="text-white">₹199</strong></li>
+                <li class="flex justify-between"><span>AC Jet Wash Service:</span> <strong class="text-white">₹499</strong></li>
+                <li class="flex justify-between"><span>AC Foam Jet Wash:</span> <strong class="text-white">₹599</strong></li>
+                <li class="flex justify-between"><span>AC Chemical Deep Wash:</span> <strong class="text-white">₹1,499</strong></li>
+                <li class="flex justify-between"><span>AC Uninstallation:</span> <strong class="text-white">₹699</strong></li>
+                <li class="flex justify-between"><span>AC Installation:</span> <strong class="text-white">₹1,499</strong></li>
+                <li class="flex justify-between"><span>AC Water Leak Repair:</span> <strong class="text-white">₹499</strong></li>
+                <li class="flex justify-between"><span>AC Gas Refill (R32 / R410A / R22):</span> <strong class="text-white">₹2,200</strong></li>
+                <li class="flex justify-between"><span>Single Door Fridge Service:</span> <strong class="text-white">₹499</strong></li>
+                <li class="flex justify-between"><span>Double Door Fridge Service:</span> <strong class="text-white">₹799</strong></li>
+                <li class="flex justify-between"><span>Compressor Replacement / AMC:</span> <strong class="text-amber-400">Quote on Inspection</strong></li>
+              </ul>
+            </div>
+
+            <!-- Bangalore Rates -->
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span class="font-black text-blue-400 text-sm">Bangalore Branch Rates</span>
+                <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 text-[10px] font-bold">Kammanahalli Branch</span>
+              </div>
+              <ul class="space-y-2 text-slate-300">
+                <li class="flex justify-between"><span>AC Check-up Visiting:</span> <strong class="text-white">₹350</strong></li>
+                <li class="flex justify-between"><span>AC Jet Wash Service:</span> <strong class="text-white">₹550</strong></li>
+                <li class="flex justify-between"><span>AC Foam Wash:</span> <strong class="text-white">₹600</strong></li>
+                <li class="flex justify-between"><span>AC Chemical Deep Wash:</span> <strong class="text-white">₹1,800</strong></li>
+                <li class="flex justify-between"><span>AC Uninstallation:</span> <strong class="text-white">₹850</strong></li>
+                <li class="flex justify-between"><span>AC Installation:</span> <strong class="text-white">₹1,700</strong></li>
+                <li class="flex justify-between"><span>AC Water Leak Repair:</span> <strong class="text-white">₹599</strong></li>
+                <li class="flex justify-between"><span>AC Gas Charging (22, 32, 410):</span> <strong class="text-white">₹2,500 Flat</strong></li>
+                <li class="flex justify-between"><span>Single Door Fridge Service:</span> <strong class="text-white">₹1,500</strong></li>
+                <li class="flex justify-between"><span>Double Door Fridge Service:</span> <strong class="text-white">₹2,000</strong></li>
+                <li class="flex justify-between"><span>Compressor Replacement / AMC:</span> <strong class="text-amber-400">Quote on Inspection</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Javascript Controller -->
+  <script>
+    // 1. Firebase Firestore Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSkfCwwEf-omXMWHbxgINwqSMQJnU7epg",
+      authDomain: "as-refrigerations.firebaseapp.com",
+      projectId: "as-refrigerations",
+      storageBucket: "as-refrigerations.firebasestorage.app",
+      messagingSenderId: "440675185698",
+      appId: "1:440675185698:web:822eef9f078ca17a23867b"
+    };
+
+    let db = null;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+    } catch (e) {
+      console.warn("Firebase Init fallback:", e);
+    }
+
+    // Master Technicians
+    const FLEET = [
+      { id: 'tech-sameer-01', name: 'Shaik Sameer', phone: '+91 78158 51330', city: 'kadapa', role: 'Founder & Master Lead (Priority 1)', rating: '4.98', jobs: '1,428', address: '74/15/1 Lohiya Nagar, Mariapuram, Kadapa' },
+      { id: 'tech-imran-02', name: 'Shaik Imran', phone: '+91 93460 21980', city: 'kadapa', role: 'Vetted Field Partner', rating: '4.88', jobs: '340', address: 'Apsara Circle, Kadapa' },
+      { id: 'tech-venkatesh-03', name: 'K. Venkatesh', phone: '+91 98480 34120', city: 'kadapa', role: 'Refrigerator & PCB Specialist', rating: '4.82', jobs: '215', address: 'Seven Roads, Kadapa' },
+      { id: 'tech-bangalore-prasad-04', name: 'M. Prasad', phone: '+91 80732 06402', city: 'bangalore', role: 'Bangalore Branch Lead', rating: '4.92', jobs: '580', address: '#2 Sree Residency, Kammanahalli, Bangalore' },
+      { id: 'tech-bangalore-manjunath-05', name: 'R. Manjunath', phone: '+91 99002 44190', city: 'bangalore', role: 'Commercial HVAC Partner', rating: '4.85', jobs: '310', address: 'Kalyan Nagar, Bangalore' }
+    ];
+
+    let currentCityFilter = 'all';
+    let liveBookings = [];
+    let currentTab = 'dispatch';
+
+    // Auth Gate
+    const pinForm = document.getElementById('pinForm');
+    const pinInput = document.getElementById('adminPinInput');
+    const pinError = document.getElementById('pinError');
+    const authGate = document.getElementById('authGate');
+    const adminApp = document.getElementById('adminApp');
+
+    function checkAuth() {
+      if (sessionStorage.getItem('as_admin_auth') === 'true') {
+        authGate.classList.add('hidden');
+        adminApp.classList.remove('hidden');
+        initDashboard();
+      }
+    }
+
+    pinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const entered = pinInput.value.trim();
+      if (entered === '1234' || entered === '7815851330' || entered === '998877') {
+        sessionStorage.setItem('as_admin_auth', 'true');
+        authGate.classList.add('hidden');
+        adminApp.classList.remove('hidden');
+        initDashboard();
+      } else {
+        pinError.classList.remove('hidden');
+      }
+    });
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('as_admin_auth');
+      window.location.reload();
+    }
+
+    function initDashboard() {
+      renderFleet();
+      renderCustomers();
+      startFirestoreListener();
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      ['dispatch', 'customers', 'partners', 'rates'].forEach(t => {
+        const el = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        if (t === tab) {
+          el.classList.remove('hidden');
+          btn.className = "px-4 py-2 rounded-xl bg-red-600 text-white flex items-center gap-2 whitespace-nowrap transition";
+        } else {
+          el.classList.add('hidden');
+          btn.className = "px-4 py-2 rounded-xl text-slate-400 hover:text-white flex items-center gap-2 whitespace-nowrap transition";
+        }
+      });
+    }
+
+    function setCityFilter(city) {
+      currentCityFilter = city;
+      ['all', 'kadapa', 'bangalore'].forEach(c => {
+        const btn = document.getElementById(`btnFilter${c.charAt(0).toUpperCase() + c.slice(1)}`);
+        if (c === city) {
+          btn.className = "px-3 py-1.5 rounded-lg bg-red-600 text-white transition";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition";
+        }
+      });
+      renderBookings();
+    }
+
+    // Firestore Real-time Listener
+    function startFirestoreListener() {
+      if (db) {
+        db.collection('bookings').limit(50).onSnapshot((snapshot) => {
+          const list = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            data.id = doc.id;
+            list.push(data);
+          });
+          liveBookings = list;
+          renderBookings();
+          updateKPIs();
+        }, (err) => {
+          console.warn("Firestore listener error, using fallback local storage:", err);
+          loadLocalBookings();
+        });
+      } else {
+        loadLocalBookings();
+      }
+    }
+
+    function loadLocalBookings() {
+      try {
+        const local = JSON.parse(localStorage.getItem('as_bookings_v1') || '[]');
+        liveBookings = local;
+      } catch {
+        liveBookings = [];
+      }
+      renderBookings();
+      updateKPIs();
+    }
+
+    function updateKPIs() {
+      const sameerCount = liveBookings.filter(b => b.isAssignedToSameer || (b.city === 'kadapa' && !b.assignedTechnicianId)).length;
+      const partnerCount = liveBookings.filter(b => !b.isAssignedToSameer && b.city !== 'kadapa').length;
+      const totalVal = liveBookings.reduce((sum, b) => sum + (Number(b.estimatedPrice) || 0), 0);
+
+      document.getElementById('kpiSameerCount').textContent = `${sameerCount} Active`;
+      document.getElementById('kpiPartnerCount').textContent = `${partnerCount} Jobs`;
+      document.getElementById('kpiPipelineValue').textContent = `₹${totalVal.toLocaleString('en-IN')}`;
+      document.getElementById('badgeQueueCount').textContent = liveBookings.length;
+    }
+
+    function renderBookings() {
+      const container = document.getElementById('bookingsList');
+      const filtered = liveBookings.filter(b => {
+        if (currentCityFilter === 'all') return true;
+        return (b.city || '').toLowerCase() === currentCityFilter.toLowerCase();
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-slate-900 rounded-2xl border border-slate-800 text-slate-400">
+            <i class="fa-solid fa-inbox text-3xl mb-2 text-slate-600"></i>
+            <p class="text-sm font-bold">No bookings found for ${currentCityFilter.toUpperCase()}</p>
+            <p class="text-xs text-slate-500 mt-1">Bookings submitted on the website or mobile app appear here in real-time.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(b => {
+        const isSameer = b.isAssignedToSameer || b.assignedTechnicianName?.includes('Sameer');
+        const mapsLink = b.googleMapsUrl || (b.latitude && b.longitude ? `https://maps.google.com/?q=${b.latitude},${b.longitude}` : `https://maps.google.com/?q=${encodeURIComponent((b.locality || '') + ' ' + (b.city || ''))}`);
+        const phone = b.customerMobile || b.customerPhone || '';
+        const cleanPhone = phone.replace(/\D/g, '').slice(-10);
+
+        return `
+          <div class="p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3.5 hover:border-slate-700 transition">
+            
+            <!-- Header Row -->
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="font-black text-sm text-white">#${b.id}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${b.city === 'kadapa' ? 'bg-red-950 text-red-400 border border-red-800/60' : 'bg-blue-950 text-blue-400 border border-blue-800/60'}">
+                  ${b.city || 'Kadapa'}
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300">
+                  ${b.status || 'booking_received'}
+                </span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-amber-400 text-sm">₹${b.estimatedPrice || b.finalPrice || 499}</span>
+                <a href="${mapsLink}" target="_blank" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1">
+                  <i class="fa-solid fa-location-dot text-red-500"></i>
+                  <span>GPS Pin</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Customer & Service Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+              <div>
+                <span class="text-slate-500 block text-[10px] uppercase font-bold">Customer</span>
+                <strong class="text-white text-sm">${b.customerName || 'Direct Customer'}</strong>
+                <p class="text-slate-400 font-mono mt-0.5">+91 ${cleanPhone}</p>
+              </div>
+
+              <div>
+                <span class="text-slate-500 block text-[10px] uppercase font-bold">Service & Slot</span>
+                <strong class="text-slate-200">${b.serviceTitle || b.serviceName || 'Appliance Service'}</strong>
+                <p class="text-slate-400 mt-0.5">${b.timeSlot || 'Immediate Visit'}</p>
+              </div>
+
+              <div class="sm:col-span-2 lg:col-span-1">
+                <span class="text-slate-500 block text-[10px] uppercase font-bold">Doorstep Address</span>
+                <span class="text-slate-300 font-medium">${b.fullAddress || b.addressDetails || b.locality || 'Kadapa'}</span>
+              </div>
+            </div>
+
+            <!-- Action Toolbar -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+              
+              <!-- Direct Communication Actions -->
+              <div class="flex items-center gap-2">
+                <a href="tel:${cleanPhone}" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-phone"></i>
+                  <span>Call Customer</span>
+                </a>
+                <a href="https://wa.me/91${cleanPhone}?text=${encodeURIComponent(`Hello ${b.customerName || 'Customer'}, I am from AS REFRIGERATIONS. We have received your booking ${b.id} for ${b.serviceTitle || 'Service'}. Our technician is being dispatched.`)}" target="_blank" class="px-3 py-1.5 rounded-xl bg-green-700 hover:bg-green-600 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-brands fa-whatsapp text-sm"></i>
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+
+              <!-- Dispatcher Assignment -->
+              <div class="flex items-center gap-2">
+                ${b.city === 'kadapa' ? `
+                  ${isSameer ? `
+                    <span class="px-2.5 py-1 rounded-lg bg-red-950 text-red-300 text-xs font-bold border border-red-800/80 flex items-center gap-1">
+                      <i class="fa-solid fa-crown text-amber-400"></i> Sameer (Priority 1)
+                    </span>
+                  ` : `
+                    <button onclick="claimSameer('${b.id}')" class="px-2.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition flex items-center gap-1">
+                      <i class="fa-solid fa-crown"></i> Claim (Sameer)
+                    </button>
+                  `}
+                ` : `
+                  <span class="px-2.5 py-1 rounded-lg bg-blue-950 text-blue-300 text-xs font-bold border border-blue-800/80">
+                    Bangalore Branch (Prasad)
+                  </span>
+                `}
+
+                <!-- Status Dropdown -->
+                <select onchange="updateStatus('${b.id}', this.value)" class="bg-slate-950 border border-slate-700 text-white text-xs font-bold rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-red-500">
+                  <option value="booking_received" ${b.status === 'booking_received' ? 'selected' : ''}>1. Received</option>
+                  <option value="under_review" ${b.status === 'under_review' ? 'selected' : ''}>2. Under Review</option>
+                  <option value="technician_assigned" ${b.status === 'technician_assigned' ? 'selected' : ''}>3. Assigned</option>
+                  <option value="technician_on_the_way" ${b.status === 'technician_on_the_way' ? 'selected' : ''}>4. En Route</option>
+                  <option value="service_in_progress" ${b.status === 'service_in_progress' ? 'selected' : ''}>5. In Progress</option>
+                  <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>6. Completed</option>
+                  <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    function claimSameer(bookingId) {
+      if (db) {
+        db.collection('bookings').document(bookingId).update({
+          assignedTechnicianId: 'tech-sameer-01',
+          assignedTechnicianName: 'Shaik Sameer',
+          assignedTechnicianPhone: '+91 78158 51330',
+          isAssignedToSameer: true,
+          status: 'technician_assigned'
+        });
+      }
+      // Update local storage
+      try {
+        const local = JSON.parse(localStorage.getItem('as_bookings_v1') || '[]');
+        const idx = local.findIndex(b => b.id === bookingId);
+        if (idx >= 0) {
+          local[idx].isAssignedToSameer = true;
+          local[idx].assignedTechnicianName = 'Shaik Sameer';
+          local[idx].status = 'technician_assigned';
+          localStorage.setItem('as_bookings_v1', JSON.stringify(local));
+        }
+      } catch {}
+      renderBookings();
+    }
+
+    function updateStatus(bookingId, newStatus) {
+      if (db) {
+        db.collection('bookings').document(bookingId).update({
+          status: newStatus
+        });
+      }
+      try {
+        const local = JSON.parse(localStorage.getItem('as_bookings_v1') || '[]');
+        const idx = local.findIndex(b => b.id === bookingId);
+        if (idx >= 0) {
+          local[idx].status = newStatus;
+          localStorage.setItem('as_bookings_v1', JSON.stringify(local));
+        }
+      } catch {}
+    }
+
+    function refreshBookings() {
+      startFirestoreListener();
+    }
+
+    // Customer Directory
+    function renderCustomers() {
+      let customers = [];
+      try {
+        customers = JSON.parse(localStorage.getItem('as_customers_v1') || '[]');
+      } catch {}
+      if (customers.length === 0) {
+        customers = [
+          { name: 'S. Venkata Subba Reddy', mobile: '9848011223', pin: '1234', city: 'kadapa' },
+          { name: 'Ananya Sharma', mobile: '9880522331', pin: '1234', city: 'bangalore' },
+          { name: 'K. Raghunath Reddy', mobile: '9440188776', pin: '1234', city: 'kadapa' }
+        ];
+      }
+
+      const tbody = document.getElementById('customersTableBody');
+      tbody.innerHTML = customers.map(c => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="py-3 px-4 font-bold text-white">${c.name}</td>
+          <td class="py-3 px-4 font-mono text-slate-300">+91 ${c.mobile}</td>
+          <td class="py-3 px-4 uppercase text-[11px] text-slate-400 font-bold">${c.city || 'Kadapa'}</td>
+          <td class="py-3 px-4 font-mono font-bold text-amber-400">${c.pin || '1234'}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="resetPinPrompt('${c.mobile}', '${c.name}')" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 font-bold text-[11px] transition">
+              Reset PIN
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function resetPinPrompt(mobile, name) {
+      const newPin = prompt(`Enter new 4-digit security PIN for ${name} (+91 ${mobile}):`, "1234");
+      if (!newPin || newPin.trim().length !== 4) {
+        alert("PIN must be exactly 4 digits.");
+        return;
+      }
+      try {
+        let customers = JSON.parse(localStorage.getItem('as_customers_v1') || '[]');
+        const idx = customers.findIndex(c => c.mobile === mobile);
+        if (idx >= 0) {
+          customers[idx].pin = newPin.trim();
+          localStorage.setItem('as_customers_v1', JSON.stringify(customers));
+        }
+      } catch {}
+      renderCustomers();
+      const waUrl = `https://wa.me/91${mobile}?text=${encodeURIComponent(`Hello ${name}, Shaik Sameer from AS REFRIGERATIONS has reset your account security PIN. Your new 4-digit login PIN is: ${newPin.trim()}.`)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    // Technician Fleet
+    function renderFleet() {
+      const grid = document.getElementById('fleetGrid');
+      grid.innerHTML = FLEET.map(f => `
+        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-red-600/20 text-red-400 flex items-center justify-center font-bold text-sm">
+                ${f.name.charAt(0)}
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm">${f.name}</h4>
+                <p class="text-[11px] text-slate-400">${f.role}</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${f.city === 'kadapa' ? 'bg-red-950 text-red-400' : 'bg-blue-950 text-blue-400'}">
+              ${f.city}
+            </span>
+          </div>
+
+          <div class="text-xs text-slate-400 space-y-1">
+            <p><i class="fa-solid fa-phone text-slate-500 mr-1.5"></i> <span class="font-mono text-slate-300">${f.phone}</span></p>
+            <p><i class="fa-solid fa-location-dot text-slate-500 mr-1.5"></i> <span>${f.address}</span></p>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-emerald-400 font-bold"><i class="fa-solid fa-star text-amber-400 mr-1"></i>${f.rating} rating</span>
+            <span class="text-slate-400 font-semibold">${f.jobs} jobs completed</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Check auth on load
+    checkAuth();
+  </script>
+</body>
+</html>
