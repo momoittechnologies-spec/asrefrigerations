@@ -56,6 +56,19 @@ export function App() {
   const [qrModalOpen, setQrModalOpen] = useState(false);
   const [portalsModalOpen, setPortalsModalOpen] = useState(false);
 
+  // URL Hash Auto-Open for Admin Console (#admin, #portals, #dispatch)
+  React.useEffect(() => {
+    const checkHash = () => {
+      const h = window.location.hash.toLowerCase();
+      if (h === '#admin' || h === '#portals' || h === '#dispatch' || h === '#control') {
+        setPortalsModalOpen(true);
+      }
+    };
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
+  }, []);
+
   // Filter & Service selection states
   const [selectedCategory, setSelectedCategory] = useState<ServiceItem['category']>('ac');
   const [preSelectedService, setPreSelectedService] = useState<ServiceItem | null>(null);

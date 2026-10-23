@@ -187,6 +187,14 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <span>Join as Partner</span>
             </a>
+            <button
+              onClick={onOpenPortals}
+              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 hover:text-white text-amber-300 border border-amber-400/30 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+              title="Open Admin Dispatch & Business Control Panel"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span>Admin Console</span>
+            </button>
           </nav>
 
           {/* Right: Hotline & Primary Booking CTA */}
@@ -323,7 +331,7 @@ export const Header: React.FC<HeaderProps> = ({
               }}
               className="p-3 rounded-xl bg-white/5 text-slate-200 border border-white/10 font-bold hover:bg-white/10 transition text-left cursor-pointer"
             >
-              💼 Portals Hub
+              💼 Admin & Portals Hub
             </button>
             <button
               onClick={() => {
