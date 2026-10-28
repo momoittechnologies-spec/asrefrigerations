@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Language } from './data/translations';
 import { CityId } from './data/citiesData';
-import { ServiceItem, SERVICES_DATA, getServicesForCity } from './data/servicesData';
+import { ServiceItem, SERVICES_DATA, getServicesForCity, matchServiceForIssue } from './data/servicesData';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ApplianceCategoryGrid } from './components/ApplianceCategoryGrid';
@@ -93,15 +93,8 @@ export function App() {
     if (data.city && data.city !== selectedCity) {
       handleSelectCity(data.city);
     }
-    const catMap: Record<string, ServiceItem['category']> = {
-      AC: 'ac',
-      Refrigerator: 'fridge',
-      'Washing Machine': 'washing_machine',
-      Electrical: 'electrical'
-    };
-    const cat = catMap[data.appliance] || 'ac';
     const cityServices = getServicesForCity(data.city || selectedCity);
-    const matched = cityServices.find((s: ServiceItem) => s.category === cat) || cityServices[0];
+    const matched = matchServiceForIssue(data.appliance, data.issue, cityServices);
 
     setPreSelectedService(matched);
     setPreSelectedQuantity(1);

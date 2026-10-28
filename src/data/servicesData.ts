@@ -629,109 +629,220 @@ export function detectCityFromLocation(query?: string, lat?: number, lng?: numbe
 
 export function getServicesForCity(city: 'kadapa' | 'bangalore' = 'kadapa'): ServiceItem[] {
   if (city === 'bangalore') {
-    return SERVICES_DATA.map((svc) => {
-      // 1. Gas charging 22, 32, 410 anything: 2500rs
-      if (svc.id === 'ac-gas-32') {
-        return {
-          ...svc,
-          name: 'AC R-32 Gas Charging (All Gases Flat ₹2,500)',
-          price: 2500,
-          description: 'Vacuum leak testing, Nitrogen pressure check, and 100% genuine R-32 refill. Flat ₹2,500 Bangalore branch rate.'
-        };
-      }
-      if (svc.id === 'ac-gas-410') {
-        return {
-          ...svc,
-          name: 'AC R-410A Gas Charging (All Gases Flat ₹2,500)',
-          price: 2500,
-          description: 'Precision digital scale refill with genuine R-410A refrigerant. Flat ₹2,500 Bangalore branch rate.'
-        };
-      }
-      if (svc.id === 'ac-gas-22') {
-        return {
-          ...svc,
-          name: 'AC R-22 Gas Charging (All Gases Flat ₹2,500)',
-          price: 2500,
-          description: 'Dedicated R-22 gas charging for conventional split and window ACs. Flat ₹2,500 Bangalore branch rate.'
-        };
-      }
-      // 2. Jet wash service: 550rs
-      if (svc.id === 'ac-jet-wash') {
-        return {
-          ...svc,
-          price: 550,
-          description: 'High-pressure water jet cleaning for deep dust, outdoor condenser fin flush & 2x cooling boost. Bangalore branch rate.'
-        };
-      }
-      // 3. Foam wash: 600rs
-      if (svc.id === 'ac-foam-wash') {
-        return {
-          ...svc,
-          popular: false,
-          price: 600,
-          description: 'Special active foam spray kills 99.9% germs, eliminates bad odors, and dissolves stubborn grime. Bangalore branch rate.'
-        };
-      }
-      // 4. Uninstallation: 850rs
-      if (svc.id === 'ac-uninstallation') {
-        return {
-          ...svc,
-          price: 850,
-          description: 'Safe gas lock uninstallation and professional bracket removal. Bangalore branch rate.'
-        };
-      }
-      // 5. Installation: 1700rs
-      if (svc.id === 'ac-fitting-only') {
-        return {
-          ...svc,
-          price: 1700,
-          description: 'Professional indoor and outdoor bracket mounting with precise leveling and vacuum check. Bangalore branch rate.'
-        };
-      }
-      // 6. Water leak: 599rs
-      if (svc.id === 'ac-water-leak') {
-        return {
-          ...svc,
-          price: 599,
-          description: 'Fix indoor unit water leaking / dripping, flush clogged condensate drain pipe, and align drain tray. Bangalore rate.'
-        };
-      }
-      // 7. AC repair visiting charges: 350rs (mention "Complete check-up to identify issues before repair")
-      if (svc.id === 'ac-visit') {
-        return {
-          ...svc,
-          price: 350,
-          description: 'Complete check-up to identify issues before repair. (Doorstep visit by Kammanahalli Bangalore technician).'
-        };
-      }
-      // 8. Chemical wash: 1800rs for Bangalore
-      if (svc.id === 'ac-chemical-wash') {
-        return {
-          ...svc,
-          price: 1800,
-          description: 'Industrial coil-safe chemical wash for heavily choked cooling coils. Bangalore branch rate: ₹1,800.'
-        };
-      }
-      // 9. Single Door Fridge Service: 1500rs for Bangalore
-      if (svc.id === 'fridge-single-134' || svc.id === 'fridge-single-600') {
-        return {
-          ...svc,
-          price: 1500,
-          description: svc.description + ' Bangalore single door fridge rate: ₹1,500.'
-        };
-      }
-      // 10. Double Door Fridge Service: 2000rs for Bangalore
-      if (svc.id === 'fridge-double-600' || svc.id === 'fridge-double-134') {
-        return {
-          ...svc,
-          price: 2000,
-          description: svc.description + ' Bangalore double door frost-free rate: ₹2,000.'
-        };
-      }
-      return svc;
-    });
+    // Note: 'ac-jet-wash' removed for Bangalore per business requirement
+    return SERVICES_DATA
+      .filter((svc) => svc.id !== 'ac-jet-wash')
+      .map((svc) => {
+        // 1. Gas charging 22, 32, 410 anything: Flat 2500rs
+        if (svc.id === 'ac-gas-32') {
+          return {
+            ...svc,
+            popular: true,
+            name: 'AC R-32 Gas Charging (All Gases Flat ₹2,500)',
+            price: 2500,
+            description: 'Vacuum leak testing, Nitrogen pressure check, and 100% genuine R-32 refill. Flat ₹2,500 Bangalore branch rate.'
+          };
+        }
+        if (svc.id === 'ac-gas-410') {
+          return {
+            ...svc,
+            name: 'AC R-410A Gas Charging (All Gases Flat ₹2,500)',
+            price: 2500,
+            description: 'Precision digital scale refill with genuine R-410A refrigerant. Flat ₹2,500 Bangalore branch rate.'
+          };
+        }
+        if (svc.id === 'ac-gas-22') {
+          return {
+            ...svc,
+            name: 'AC R-22 Gas Charging (All Gases Flat ₹2,500)',
+            price: 2500,
+            description: 'Dedicated R-22 gas charging for conventional split and window ACs. Flat ₹2,500 Bangalore branch rate.'
+          };
+        }
+        // 2. Foam wash: 600rs (Popular in Bangalore)
+        if (svc.id === 'ac-foam-wash') {
+          return {
+            ...svc,
+            popular: true,
+            price: 600,
+            description: 'Special active foam spray kills 99.9% germs, eliminates bad odors, and dissolves stubborn grime. Bangalore branch rate: ₹600.'
+          };
+        }
+        // 3. Uninstallation: 850rs
+        if (svc.id === 'ac-uninstallation') {
+          return {
+            ...svc,
+            price: 850,
+            description: 'Safe gas lock uninstallation and professional bracket removal. Bangalore branch rate: ₹850.'
+          };
+        }
+        // 4. Installation: 1700rs
+        if (svc.id === 'ac-fitting-only') {
+          return {
+            ...svc,
+            price: 1700,
+            description: 'Professional indoor and outdoor bracket mounting with precise leveling and vacuum check. Bangalore branch rate: ₹1,700.'
+          };
+        }
+        // 5. Complete Uninstallation & Re-Installation: Changed from 2200 to 2550 in Bangalore
+        if (svc.id === 'ac-uninstallation-fitting') {
+          return {
+            ...svc,
+            price: 2550,
+            description: 'Safe gas lock uninstallation from old location and professional alignment installation at new home. Bangalore branch rate: ₹2,550.'
+          };
+        }
+        // 6. Water leak: 599rs
+        if (svc.id === 'ac-water-leak') {
+          return {
+            ...svc,
+            price: 599,
+            description: 'Fix indoor unit water leaking / dripping, flush clogged condensate drain pipe, and align drain tray. Bangalore rate: ₹599.'
+          };
+        }
+        // 7. AC repair visiting charges: 299rs (100% waived in final repair bill)
+        if (svc.id === 'ac-visit') {
+          return {
+            ...svc,
+            price: 299,
+            name: 'AC Inspection & Visiting Charge',
+            description: 'Complete check-up to identify issues before repair. (Doorstep visit charge ₹299 is 100% waived in final repair bill upon approval).'
+          };
+        }
+        // 8. Chemical wash: 1800rs for Bangalore
+        if (svc.id === 'ac-chemical-wash') {
+          return {
+            ...svc,
+            price: 1800,
+            description: 'Industrial coil-safe chemical wash for heavily choked cooling coils. Bangalore branch rate: ₹1,800.'
+          };
+        }
+        // 9. Single Door Fridge Service: 1500rs for Bangalore
+        if (svc.id === 'fridge-single-134' || svc.id === 'fridge-single-600') {
+          return {
+            ...svc,
+            price: 1500,
+            description: svc.description + ' Bangalore single door fridge rate: ₹1,500.'
+          };
+        }
+        // 10. Double Door Fridge Service: 2000rs for Bangalore
+        if (svc.id === 'fridge-double-600' || svc.id === 'fridge-double-134') {
+          return {
+            ...svc,
+            price: 2000,
+            description: svc.description + ' Bangalore double door frost-free rate: ₹2,000.'
+          };
+        }
+        // 11. Fridge / Washing Machine visiting charge in Bangalore: 299rs
+        if (svc.id === 'fridge-visit' || svc.id === 'wm-checkup') {
+          return {
+            ...svc,
+            price: 299,
+            description: 'Complete doorstep diagnosis. (₹299 visiting charge is 100% waived in final repair bill upon approval).'
+          };
+        }
+        return svc;
+      });
   }
 
   // Kadapa rates
   return SERVICES_DATA;
+}
+
+
+export function matchServiceForIssue(
+  appliance: string,
+  issue: string,
+  cityServices: ServiceItem[]
+): ServiceItem {
+  const normIssue = (issue || '').toLowerCase();
+  const normAppliance = (appliance || '').toLowerCase();
+
+  // 1. AC Issues
+  if (normAppliance.includes('ac') || normAppliance.includes('air')) {
+    if (normIssue.includes('leak') || normIssue.includes('water') || normIssue.includes('drain')) {
+      const match = cityServices.find((s) => s.id === 'ac-water-leak');
+      if (match) return match;
+    }
+    if (normIssue.includes('foam') || normIssue.includes('antibacterial')) {
+      const match = cityServices.find((s) => s.id === 'ac-foam-wash');
+      if (match) return match;
+    }
+    if (normIssue.includes('jet') || normIssue.includes('pump wash')) {
+      const match = cityServices.find((s) => s.id === 'ac-jet-wash') || cityServices.find((s) => s.id === 'ac-foam-wash');
+      if (match) return match;
+    }
+    if (normIssue.includes('gas') || normIssue.includes('refill') || normIssue.includes('r32') || normIssue.includes('r410') || normIssue.includes('r22')) {
+      const match = cityServices.find((s) => s.id === 'ac-gas-32') || cityServices.find((s) => s.category === 'ac' && s.id.includes('gas'));
+      if (match) return match;
+    }
+    if (normIssue.includes('uninstallation & new fitting') || normIssue.includes('re-installation') || (normIssue.includes('fitting') && normIssue.includes('uninstall'))) {
+      const match = cityServices.find((s) => s.id === 'ac-uninstallation-fitting');
+      if (match) return match;
+    }
+    if (normIssue.includes('uninstall')) {
+      const match = cityServices.find((s) => s.id === 'ac-uninstallation');
+      if (match) return match;
+    }
+    if (normIssue.includes('install') || normIssue.includes('fitting')) {
+      const match = cityServices.find((s) => s.id === 'ac-fitting-only');
+      if (match) return match;
+    }
+    if (normIssue.includes('not cooling') || normIssue.includes('warm') || normIssue.includes('noise') || normIssue.includes('pcb') || normIssue.includes('power')) {
+      const match = cityServices.find((s) => s.id === 'ac-visit');
+      if (match) return match;
+    }
+    return cityServices.find((s) => s.id === 'ac-visit') || cityServices.find((s) => s.category === 'ac') || cityServices[0];
+  }
+
+  // 2. Refrigerator Issues
+  if (normAppliance.includes('fridge') || normAppliance.includes('refrigerator')) {
+    if (normIssue.includes('gas') || normIssue.includes('refill') || normIssue.includes('r134') || normIssue.includes('r600')) {
+      const match = cityServices.find((s) => s.id === 'fridge-single-134') || cityServices.find((s) => s.id === 'fridge-single-600');
+      if (match) return match;
+    }
+    if (normIssue.includes('double door') || normIssue.includes('frost')) {
+      const match = cityServices.find((s) => s.id === 'fridge-double-600');
+      if (match) return match;
+    }
+    if (normIssue.includes('compressor')) {
+      const match = cityServices.find((s) => s.id === 'fridge-compressor') || cityServices.find((s) => s.id === 'fridge-visit');
+      if (match) return match;
+    }
+    const match = cityServices.find((s) => s.id === 'fridge-visit');
+    if (match) return match;
+    return cityServices.find((s) => s.category === 'fridge') || cityServices[0];
+  }
+
+  // 3. Washing Machine Issues
+  if (normAppliance.includes('washing') || normAppliance.includes('machine') || normAppliance.includes('wm')) {
+    if (normIssue.includes('descale') || normIssue.includes('clean') || normIssue.includes('wash')) {
+      const match = cityServices.find((s) => s.id === 'wm-service-cleaning');
+      if (match) return match;
+    }
+    if (normIssue.includes('pcb') || normIssue.includes('board') || normIssue.includes('error')) {
+      const match = cityServices.find((s) => s.id === 'wm-pcb-repair');
+      if (match) return match;
+    }
+    const match = cityServices.find((s) => s.id === 'wm-checkup') || cityServices.find((s) => s.id === 'wm-visit');
+    if (match) return match;
+    return cityServices.find((s) => s.category === 'washing_machine') || cityServices[0];
+  }
+
+  // 4. Electrical Issues
+  if (normAppliance.includes('electrical')) {
+    if (normIssue.includes('geyser') || normIssue.includes('heater') || normIssue.includes('coil')) {
+      const match = cityServices.find((s) => s.id === 'geyser-repair');
+      if (match) return match;
+    }
+    if (normIssue.includes('microwave') || normIssue.includes('oven')) {
+      const match = cityServices.find((s) => s.id === 'micro-repair');
+      if (match) return match;
+    }
+    const match = cityServices.find((s) => s.id === 'elec-visit');
+    if (match) return match;
+    return cityServices.find((s) => s.category === 'electrical') || cityServices[0];
+  }
+
+  return cityServices[0];
 }

@@ -148,7 +148,7 @@ export const CITIES_DATA: Record<CityId, CityConfig> = {
     workshopAddress: '#2, Sree Residency, Venkateshappa Layout, Kammanahalli, Bangalore – 560084',
     pincode: '560084',
     googleMapsQuery: '2+Sree+Residency,+Venkateshappa+Layout,+Kammanahalli,+Bangalore',
-    diagnosticFee: 350,
+    diagnosticFee: 299,
     expressDispatchTime: '60 Mins Express Arrival',
     coverageScope: 'Kammanahalli Branch Hub & Adjacent Neighborhoods Only',
     coverageNote: 'The Bangalore branch operates from #2 Sree Residency, Venkateshappa Layout, Kammanahalli and exclusively serves Kammanahalli and immediate surrounding North-East Bangalore localities for rapid 60-minute doorstep turnaround.',

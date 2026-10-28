@@ -58,7 +58,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [isExpressMode, setIsExpressMode] = useState<boolean>(true);
 
   const [selectedService, setSelectedService] = useState<ServiceItem>(
-    preSelectedService || SERVICES_DATA[1] // Default to AC Jet Wash
+    preSelectedService || (selectedCity === 'bangalore' ? getServicesForCity('bangalore')[0] : SERVICES_DATA[1])
   );
   const [quantity, setQuantity] = useState<number>(preSelectedQuantity);
   const [slot, setSlot] = useState<string>('Immediate Urgent Visit (Within 60 Mins)');
@@ -103,7 +103,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const cityServices = getServicesForCity(modalCity);
     setSelectedService((current) => {
       const match = cityServices.find((s) => s.id === current.id);
-      return match || current;
+      return match || cityServices[0];
     });
   }, [modalCity]);
 
@@ -215,7 +215,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   const isFluctuatingPrice = selectedService.price <= 0;
   const rawTotal = isFluctuatingPrice ? 0 : (preSelectedPrice || selectedService.price * quantity);
-  const calculatedTotal = isFluctuatingPrice ? 0 : Math.max(350, rawTotal - discount);
+  const minVisitingFee = cityConfig.diagnosticFee;
+  const calculatedTotal = isFluctuatingPrice ? 0 : Math.max(minVisitingFee, rawTotal - discount);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -279,6 +280,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       `Phone: ${customerPhone}\n` +
       `Service: ${selectedService.name} (Qty: ${quantity})\n` +
       (isFluctuatingPrice ? `Estimated Amount: Quote on Inspection (Price fluctuates by model/capacity)\n` : `Estimated Amount: Rs. ${calculatedTotal} (Pay After Service via UPI)\n`) +
+      `Doorstep Visiting / Diagnostic Fee: Rs. ${cityConfig.diagnosticFee} (100% Waived upon repair approval)\n` +
       `Date & Slot: ${effectiveDate} [${effectiveSlot}]\n` +
       `Locality: ${area}\n` +
       `Full Address: ${streetAddress || cityConfig.name}\n` +
@@ -424,6 +426,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
             <form onSubmit={handleSubmit} className="space-y-4">
               
+              {/* Doorstep Visiting Fee Education Banner */}
+              <div className="p-3 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 flex items-start gap-2.5 text-xs text-left shadow-xs">
+                <span className="text-base shrink-0 mt-0.5">🏷️</span>
+                <div>
+                  <div className="font-black text-amber-950">
+                    Doorstep Visiting & Diagnostic Fee: <span className="text-red-700">₹{cityConfig.diagnosticFee}</span> ({cityConfig.name})
+                  </div>
+                  <div className="text-[11px] text-amber-800 leading-snug mt-0.5">
+                    100% Waived & Deducted from your repair bill upon approval. Zero hidden charges!
+                  </div>
+                </div>
+              </div>
+
               {/* Service & Estimated Price Banner */}
               <div className="p-3.5 rounded-2xl bg-gradient-to-r from-slate-50 to-red-50/30 border border-slate-200 space-y-1.5">
                 <div className="flex items-center justify-between">

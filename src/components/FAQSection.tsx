@@ -94,6 +94,17 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ selectedCity = 'kadapa' 
         answer: 'Experienced local technicians join our network to receive verified daily doorstep job leads with 0% per-job commission. Technicians keep 100% of direct customer collections via Cash or UPI, with wholesale spare parts access and technical mentorship.'
       };
     }
+    if (f.question.includes('diagnostic visiting charge work')) {
+      return {
+        ...f,
+        question: selectedCity === 'bangalore'
+          ? 'How does the ₹299 diagnostic visiting charge work in Bangalore? Is it extra?'
+          : 'How does the ₹350 diagnostic visiting charge work in Kadapa? Is it extra?',
+        answer: selectedCity === 'bangalore'
+          ? 'The ₹299 visiting charge covers thorough doorstep physical diagnosis by our Kammanahalli Bangalore senior technician. If you approve our repair quote and proceed with the service, the ₹299 is 100% waived / deducted directly from your final repair bill! You only pay for the repair. (For Kadapa, the visiting charge is ₹350, also 100% waived upon repair approval).'
+          : 'The ₹350 visiting charge covers thorough on-site physical diagnosis using digital manifold gauges and testing tools. If you approve our repair quote and proceed with the service, the ₹350 is 100% waived / adjusted directly into your final repair bill! You only pay for the repair. (For Bangalore, the visiting charge is ₹299, also 100% waived upon repair approval).'
+      };
+    }
     return f;
   });
 

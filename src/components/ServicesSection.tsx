@@ -99,13 +99,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             </div>
             <div className="lg:col-span-6 p-6 sm:p-8 text-left space-y-4">
               <span className="text-xs font-black uppercase tracking-wider text-red-400">
-                Why {cityConfig.name} Chooses AS Jet Wash
+                {selectedCity === 'bangalore' ? 'Why Bangalore Chooses AS Antibacterial Foam Wash' : `Why ${cityConfig.name} Chooses AS Jet Wash`}
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-white">
-                The High-Pressure Foam Jet Difference (2x Cooler Airflow)
+                {selectedCity === 'bangalore' ? 'The Antibacterial Foam Wash Difference (2x Cooler Airflow)' : 'The High-Pressure Foam Jet Difference (2x Cooler Airflow)'}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed font-normal">
-                Ordinary local mechanics only wipe the outer grill with a cloth. We mount a waterproof jacket bag, spray active antibacterial foam, and blast cooling fins with high-pressure water jets to flush out 100% of accumulated dust and bacteria.
+                {selectedCity === 'bangalore'
+                  ? 'Ordinary mechanics only wipe the outer grill with a dry cloth. We spray active antibacterial foam deep into the cooling coil fins to dissolve stubborn grime, eliminate bad odor, and kill 99.9% germs for pure, ice-cold air.'
+                  : 'Ordinary local mechanics only wipe the outer grill with a cloth. We mount a waterproof jacket bag, spray active antibacterial foam, and blast cooling fins with high-pressure water jets to flush out 100% of accumulated dust and bacteria.'}
               </p>
               <div className="grid grid-cols-2 gap-2 text-xs pt-1">
                 <div className="p-3 rounded-2xl bg-slate-900/90 border border-slate-800">
@@ -118,6 +120,26 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Transparent Visiting Charge Education Bar */}
+        <div className="mb-8 p-4 rounded-2xl bg-gradient-to-r from-red-50 via-sky-50 to-emerald-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl shrink-0">🏷️</span>
+            <div>
+              <div className="text-sm font-black text-slate-900">
+                Transparent Doorstep Visiting Fee: <span className="text-red-600 font-black">₹{cityConfig.diagnosticFee}</span> in {cityConfig.name}
+              </div>
+              <div className="text-xs text-slate-600">
+                100% Waived & Deducted from your repair bill when you approve the estimate. No hidden doorstep surprise!
+              </div>
+            </div>
+          </div>
+          <div className="shrink-0 flex items-center gap-2">
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300/80">
+              ✓ 100% Free If Work Done
+            </span>
           </div>
         </div>
 

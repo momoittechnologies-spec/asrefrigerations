@@ -103,7 +103,14 @@ export const Hero: React.FC<HeroProps> = ({
   }, [selectedCity]);
 
   const issueOptions: Record<string, string[]> = {
-    AC: [
+    AC: selectedCity === 'bangalore' ? [
+      'Antibacterial Foam Wash / Master Wash',
+      'AC Not Cooling / Warm Air',
+      'Gas Leakage & Refill (R32 / R410 / R22)',
+      'Water Leakage from Indoor Unit',
+      'AC Uninstallation & New Fitting',
+      'Strange Noise / PCB Error / Power Issue'
+    ] : [
       'Deep Jet Wash / Foam Cleaning',
       'AC Not Cooling / Warm Air',
       'Gas Leakage & Refill (R32 / R410 / R22)',
@@ -462,8 +469,21 @@ export const Hero: React.FC<HeroProps> = ({
                   <ArrowRight className="w-5 h-5" />
                 </button>
 
+                {/* Doorstep Visiting Fee Education Badge */}
+                <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base shrink-0">🏷️</span>
+                    <span className="text-[11px] font-medium text-amber-200">
+                      Doorstep Visiting Fee: <strong className="text-white font-bold">₹{cityConfig.diagnosticFee}</strong> ({cityConfig.name})
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-bold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/40">
+                    100% Waived in Bill
+                  </span>
+                </div>
+
                 <div className="text-[11px] text-center text-slate-400 font-medium">
-                  🔒 No advance payment needed. Visiting fee ₹350 adjustable in final repair bill!
+                  🔒 No advance payment needed. Doorstep visiting fee ₹{cityConfig.diagnosticFee} in {cityConfig.name} — 100% waived in final repair bill upon approval!
                 </div>
               </form>
             </div>
