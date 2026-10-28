@@ -157,7 +157,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     name: 'AC R-410A Gas Charging (Inverter AC)',
     nameTe: 'ఏసీ R-410A గ్యాస్ చార్జింగ్ (ఇన్వర్టర్ ఏసీ)',
     category: 'ac',
-    price: 3200,
+    price: 3000,
     duration: '45 mins',
     description: 'Full leak test & precision weighing refill with genuine R-410A refrigerant for inverter ACs.',
     descriptionTe: 'ఇన్వర్టర్ ఏసీల కోసం కచ్చితమైన ఒరిజినల్ R-410A గ్యాస్ ఫిల్లింగ్.',

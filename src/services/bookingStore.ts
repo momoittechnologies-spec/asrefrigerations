@@ -200,13 +200,51 @@ class BookingStoreService {
     }
   }
 
-  public syncBookingToFirestore(booking: BookingLead): void {
+  public async syncBookingToFirestore(booking: BookingLead): Promise<boolean> {
     try {
-      setDoc(doc(db, 'bookings', booking.id), booking, { merge: true }).catch((err) => {
-        console.warn('Firestore booking sync background error:', err);
-      });
+      const isBlr = (booking.city || '').toLowerCase() === 'bangalore';
+      const cleanLat = typeof booking.latitude === 'number' && !isNaN(booking.latitude) 
+        ? booking.latitude 
+        : (isBlr ? 13.0158 : 14.4673);
+      const cleanLng = typeof booking.longitude === 'number' && !isNaN(booking.longitude) 
+        ? booking.longitude 
+        : (isBlr ? 77.6377 : 78.8242);
+
+      const payload: Record<string, any> = {
+        id: booking.id,
+        customerName: booking.customerName || 'Customer',
+        customerMobile: (booking.customerMobile || '').replace(/\D/g, '').slice(-10),
+        serviceTitle: booking.serviceTitle,
+        applianceType: booking.applianceType,
+        city: (booking.city || 'kadapa').toLowerCase(),
+        locality: booking.locality,
+        fullAddress: booking.fullAddress,
+        latitude: cleanLat,
+        longitude: cleanLng,
+        googleMapsUrl: booking.googleMapsUrl || `https://maps.google.com/?q=${cleanLat},${cleanLng}`,
+        date: booking.date || 'Today',
+        timeSlot: booking.timeSlot || 'Immediate Urgent Visit (Within 60 Mins)',
+        estimatedPrice: booking.estimatedPrice,
+        status: booking.status || 'booking_received',
+        statusHistory: booking.statusHistory || [],
+        assignedTechnicianId: booking.assignedTechnicianId || (isBlr ? 'tech-bangalore-prasad-04' : 'tech-sameer-01'),
+        assignedTechnicianName: booking.assignedTechnicianName || (isBlr ? 'Syed (Bangalore Branch Lead)' : 'Shaik Sameer'),
+        assignedTechnicianPhone: booking.assignedTechnicianPhone || (isBlr ? '+91 80732 06402' : '+91 78158 51330'),
+        isAssignedToSameer: booking.isAssignedToSameer ?? !isBlr,
+        notes: booking.notes || '',
+        createdAt: booking.createdAt || new Date().toISOString(),
+        timestamp: Date.now()
+      };
+
+      if (booking.finalPrice !== undefined) payload.finalPrice = booking.finalPrice;
+      if (booking.paymentStatus) payload.paymentStatus = booking.paymentStatus;
+      if (booking.paymentMethod) payload.paymentMethod = booking.paymentMethod;
+
+      await setDoc(doc(db, 'bookings', booking.id), payload, { merge: true });
+      return true;
     } catch (e) {
       console.warn('Firestore booking sync error:', e);
+      return false;
     }
   }
 
@@ -405,7 +443,7 @@ class BookingStoreService {
     return stored;
   }
 
-  public createBooking(data: {
+  public async createBooking(data: {
     customerName: string;
     customerMobile: string;
     serviceTitle: string;
@@ -418,7 +456,7 @@ class BookingStoreService {
     estimatedPrice: number;
     latitude?: number;
     longitude?: number;
-  }): BookingLead {
+  }): Promise<BookingLead> {
     const bookings = this.getBookings();
     const cleanMobile = data.customerMobile.replace(/\D/g, '').slice(-10);
     const bookingId = `ASR-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -479,7 +517,11 @@ class BookingStoreService {
 
     bookings.unshift(newBooking);
     this.setStorageItem(STORAGE_KEYS.BOOKINGS, bookings);
-    this.syncBookingToFirestore(newBooking);
+    try {
+      await this.syncBookingToFirestore(newBooking);
+    } catch (e) {
+      console.warn('Sync failed:', e);
+    }
 
     // Also ensure customer account exists or gets created
     const users = this.getCustomerUsers();

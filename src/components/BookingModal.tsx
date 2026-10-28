@@ -76,6 +76,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [locating, setLocating] = useState<boolean>(false);
   const [gpsStatusText, setGpsStatusText] = useState<string | null>(null);
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
   const [bookingId, setBookingId] = useState<string>('');
   const [bookingWaUrl, setBookingWaUrl] = useState<string>('');
@@ -218,13 +219,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const minVisitingFee = cityConfig.diagnosticFee;
   const calculatedTotal = isFluctuatingPrice ? 0 : Math.max(minVisitingFee, rawTotal - discount);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!customerPhone.trim()) {
       alert('Please enter your WhatsApp phone number.');
       return;
     }
 
+    setIsSubmitting(true);
     const effectiveDate = isExpressMode ? 'Today' : (date || 'Today');
     const effectiveSlot = isExpressMode ? 'Immediate Urgent Visit (Within 60 Mins)' : slot;
     const mapsLink = gpsCoords ? `https://maps.google.com/?q=${gpsCoords.lat},${gpsCoords.lng}` : undefined;
@@ -252,63 +254,65 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       } catch {}
     }
 
-    // Save to centralized Booking Store with Sameer-First Priority Dispatch
-    const savedBooking = bookingStore.createBooking({
-      customerName: customerName.trim() || 'Customer',
-      customerMobile: customerPhone.trim(),
-      serviceTitle: selectedService.name,
-      applianceType: selectedService.category.toUpperCase(),
-      city: modalCity,
-      locality: area || cityConfig.localities[0],
-      fullAddress: streetAddress ? `${streetAddress}, ${area}, ${cityConfig.name}` : `${area}, ${cityConfig.name}`,
-      latitude: gpsCoords?.lat,
-      longitude: gpsCoords?.lng,
-      date: effectiveDate,
-      timeSlot: effectiveSlot,
-      estimatedPrice: calculatedTotal
-    });
-
-    const generatedId = savedBooking.id;
-    setBookingId(generatedId);
-
-    // Send formatted WhatsApp notification directly to Shaik Sameer / Branch
-    const msg = `*🚨 NEW DOORSTEP BOOKING - AS REFRIGERATIONS*\n` +
-      `Booking ID: ${generatedId}\n` +
-      `Mode: ${isExpressMode ? "⚡ 60-MIN EXPRESS ARRIVAL" : "📅 Scheduled Visit"}\n` +
-      `City / Branch: ${cityConfig.name} (${cityConfig.workshopName})\n` +
-      `Customer: ${customerName || 'Customer'}\n` +
-      `Phone: ${customerPhone}\n` +
-      `Service: ${selectedService.name} (Qty: ${quantity})\n` +
-      (isFluctuatingPrice ? `Estimated Amount: Quote on Inspection (Price fluctuates by model/capacity)\n` : `Estimated Amount: Rs. ${calculatedTotal} (Pay After Service via UPI)\n`) +
-      `Doorstep Visiting / Diagnostic Fee: Rs. ${cityConfig.diagnosticFee} (100% Waived upon repair approval)\n` +
-      `Date & Slot: ${effectiveDate} [${effectiveSlot}]\n` +
-      `Locality: ${area}\n` +
-      `Full Address: ${streetAddress || cityConfig.name}\n` +
-      (mapsLink ? `Google Maps GPS: ${mapsLink}\n` : '') +
-      `Notes: ${notes || 'None'}\n\n` +
-      `Please dispatch technician.`;
-
-    const waUrl = `https://wa.me/${cityConfig.phoneRaw}?text=${encodeURIComponent(msg)}`;
-    setBookingWaUrl(waUrl);
-    setBookingSuccess(true);
-
-    // Fire celebratory confetti!
     try {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
+      // Save to centralized Booking Store with Sameer-First Priority Dispatch & Firestore Sync
+      const savedBooking = await bookingStore.createBooking({
+        customerName: customerName.trim() || 'Customer',
+        customerMobile: customerPhone.trim(),
+        serviceTitle: selectedService.name,
+        applianceType: selectedService.category.toUpperCase(),
+        city: modalCity,
+        locality: area || cityConfig.localities[0],
+        fullAddress: streetAddress ? `${streetAddress}, ${area}, ${cityConfig.name}` : `${area}, ${cityConfig.name}`,
+        latitude: gpsCoords?.lat,
+        longitude: gpsCoords?.lng,
+        date: effectiveDate,
+        timeSlot: effectiveSlot,
+        estimatedPrice: calculatedTotal
       });
-    } catch {}
 
-    // Open WhatsApp directly
-    try {
-      const opened = window.open(waUrl, '_blank');
-      if (!opened || opened.closed || typeof opened.closed === 'undefined') {
-        window.location.href = waUrl;
-      }
-    } catch {
-      window.location.href = waUrl;
+      const generatedId = savedBooking.id;
+      setBookingId(generatedId);
+
+      // Format WhatsApp notification directly to Shaik Sameer / Branch
+      const msg = `*🚨 NEW DOORSTEP BOOKING - AS REFRIGERATIONS*\n` +
+        `Booking ID: ${generatedId}\n` +
+        `Mode: ${isExpressMode ? "⚡ 60-MIN EXPRESS ARRIVAL" : "📅 Scheduled Visit"}\n` +
+        `City / Branch: ${cityConfig.name} (${cityConfig.workshopName})\n` +
+        `Customer: ${customerName || 'Customer'}\n` +
+        `Phone: ${customerPhone}\n` +
+        `Service: ${selectedService.name} (Qty: ${quantity})\n` +
+        (isFluctuatingPrice ? `Estimated Amount: Quote on Inspection (Price fluctuates by model/capacity)\n` : `Estimated Amount: Rs. ${calculatedTotal} (Pay After Service via UPI)\n`) +
+        `Doorstep Visiting / Diagnostic Fee: Rs. ${cityConfig.diagnosticFee} (100% Waived upon repair approval)\n` +
+        `Date & Slot: ${effectiveDate} [${effectiveSlot}]\n` +
+        `Locality: ${area}\n` +
+        `Full Address: ${streetAddress || cityConfig.name}\n` +
+        (mapsLink ? `Google Maps GPS: ${mapsLink}\n` : '') +
+        `Notes: ${notes || 'None'}\n\n` +
+        `Please dispatch technician.`;
+
+      const waUrl = `https://wa.me/${cityConfig.phoneRaw}?text=${encodeURIComponent(msg)}`;
+      setBookingWaUrl(waUrl);
+      setIsSubmitting(false);
+      setBookingSuccess(true);
+
+      // Fire celebratory confetti!
+      try {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      } catch {}
+
+      // Open WhatsApp in new window/tab safely without abruptly unmounting current page
+      try {
+        window.open(waUrl, '_blank');
+      } catch {}
+    } catch (err) {
+      console.error('Booking submission error:', err);
+      setIsSubmitting(false);
+      alert('Network issue while securing booking. Please try again or call technician directly.');
     }
   };
 
@@ -674,13 +678,23 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black text-sm shadow-xl shadow-red-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                  disabled={isSubmitting}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black text-sm shadow-xl shadow-red-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-60"
                 >
-                  <Zap className="w-4 h-4 text-amber-300" />
-                  <span>
-                    {isExpressMode ? "Confirm 60-Min Doorstep Dispatch" : "Confirm Doorstep Service Booking"}
-                  </span>
-                  <ArrowRight className="w-4 h-4" />
+                  {isSubmitting ? (
+                    <span className="flex items-center gap-2">
+                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                      <span>Securing Central Command Dispatch...</span>
+                    </span>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4 text-amber-300" />
+                      <span>
+                        {isExpressMode ? "Confirm 60-Min Doorstep Dispatch" : "Confirm Doorstep Service Booking"}
+                      </span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
                 
                 <p className="text-[11px] text-center text-slate-500 mt-2">

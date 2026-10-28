@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeFirestore } from "firebase/firestore";
 
 // AS Refrigerations - Official Firebase Configuration (MOMO IT Managed)
 export const firebaseConfig = {
@@ -14,5 +14,7 @@ export const firebaseConfig = {
 // Initialize Firebase App
 export const app = initializeApp(firebaseConfig);
 
-// Initialize Cloud Firestore (asia-south1 Mumbai)
-export const db = getFirestore(app);
+// Initialize Cloud Firestore (asia-south1 Mumbai) with ignoreUndefinedProperties enabled
+export const db = initializeFirestore(app, {
+  ignoreUndefinedProperties: true
+});
