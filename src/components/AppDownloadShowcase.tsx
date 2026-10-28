@@ -159,7 +159,7 @@ export const AppDownloadShowcase: React.FC = () => {
               </div>
 
               <p className="text-xs text-slate-400 leading-relaxed mb-3">
-                Dedicated for Shaik Sameer & Kadapa mechanics: live leads radar, GPS turn-by-turn route, dynamic UPI QR & earnings ledger.
+                Dedicated for Shaik Sameer (Kadapa) & Syed (Bangalore) partner technicians: live leads radar, GPS turn-by-turn route, dynamic UPI QR & earnings ledger.
               </p>
 
               <div className="flex items-center gap-1.5 text-amber-400 font-black text-[11px] mb-4">

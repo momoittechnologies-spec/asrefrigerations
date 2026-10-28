@@ -6,6 +6,7 @@ export interface CityConfig {
   displayName: string;
   state: string;
   tagline: string;
+  leaderName: string;
   phone: string;
   phoneRaw: string;
   whatsappNumber: string;
@@ -30,6 +31,7 @@ export const CITIES_DATA: Record<CityId, CityConfig> = {
     displayName: 'Kadapa District (Flagship HQ)',
     state: 'Andhra Pradesh',
     tagline: '10+ Years Legacy • 50,000+ Homes Serviced • 100% District-Wide Coverage',
+    leaderName: 'Shaik Sameer',
     phone: '+91 78158 51330',
     phoneRaw: '917815851330',
     whatsappNumber: '917815851330',
@@ -137,6 +139,7 @@ export const CITIES_DATA: Record<CityId, CityConfig> = {
     displayName: 'Bangalore (Kammanahalli Branch)',
     state: 'Karnataka',
     tagline: 'Doorstep AC & Appliance Repair in Kammanahalli & Nearby Areas',
+    leaderName: 'Syed',
     phone: '+91 80732 06402',
     phoneRaw: '918073206402',
     whatsappNumber: '918073206402',
@@ -145,7 +148,7 @@ export const CITIES_DATA: Record<CityId, CityConfig> = {
     workshopAddress: '#2, Sree Residency, Venkateshappa Layout, Kammanahalli, Bangalore – 560084',
     pincode: '560084',
     googleMapsQuery: '2+Sree+Residency,+Venkateshappa+Layout,+Kammanahalli,+Bangalore',
-    diagnosticFee: 400,
+    diagnosticFee: 350,
     expressDispatchTime: '60 Mins Express Arrival',
     coverageScope: 'Kammanahalli Branch Hub & Adjacent Neighborhoods Only',
     coverageNote: 'The Bangalore branch operates from #2 Sree Residency, Venkateshappa Layout, Kammanahalli and exclusively serves Kammanahalli and immediate surrounding North-East Bangalore localities for rapid 60-minute doorstep turnaround.',

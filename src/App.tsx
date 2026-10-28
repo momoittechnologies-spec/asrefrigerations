@@ -187,7 +187,7 @@ export function App() {
         />
 
         {/* 4. Smart Appliance Diagnostic Assistant (Symptom Checker) */}
-        <DiagnosticAssistant onBookIssue={handleBookDiagnosticIssue} />
+        <DiagnosticAssistant selectedCity={selectedCity} onBookIssue={handleBookDiagnosticIssue} />
 
         {/* 5. Interactive Transparent Price Estimator */}
         <PriceCalculator

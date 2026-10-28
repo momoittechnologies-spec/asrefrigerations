@@ -10,9 +10,11 @@ import {
   Sparkles,
   HelpCircle
 } from 'lucide-react';
-import { ServiceItem, SERVICES_DATA } from '../data/servicesData';
+import { ServiceItem, getServicesForCity } from '../data/servicesData';
+import { CityId, CITIES_DATA } from '../data/citiesData';
 
 interface DiagnosticAssistantProps {
+  selectedCity?: CityId;
   onBookIssue: (service: ServiceItem, issueTitle: string) => void;
 }
 
@@ -79,7 +81,7 @@ const SYMPTOMS: Symptom[] = [
     severity: 'medium',
     estimatedCost: '₹750 – ₹1,250',
     recommendedServiceId: 'fridge-frost-repair',
-    tip: 'Very common in Kadapa double-door fridges. Easily repaired doorstep in 40 mins.'
+    tip: 'Very common in double-door fridges. Easily repaired doorstep in 40 mins.'
   },
   {
     id: 'fridge-2',
@@ -125,7 +127,9 @@ const SYMPTOMS: Symptom[] = [
   }
 ];
 
-export const DiagnosticAssistant: React.FC<DiagnosticAssistantProps> = ({ onBookIssue }) => {
+export const DiagnosticAssistant: React.FC<DiagnosticAssistantProps> = ({ selectedCity = 'kadapa', onBookIssue }) => {
+  const cityConfig = CITIES_DATA[selectedCity];
+  const cityServices = getServicesForCity(selectedCity);
   const [selectedCategory, setSelectedCategory] = useState<'ac' | 'fridge' | 'wm'>('ac');
   const [activeSymptomId, setActiveSymptomId] = useState<string>('ac-1');
 
@@ -133,7 +137,7 @@ export const DiagnosticAssistant: React.FC<DiagnosticAssistantProps> = ({ onBook
   const activeSymptom = SYMPTOMS.find((s) => s.id === activeSymptomId) || categorySymptoms[0];
 
   const handleBookSelected = () => {
-    const matchedService = SERVICES_DATA.find((s) => s.id === activeSymptom.recommendedServiceId) || SERVICES_DATA[0];
+    const matchedService = cityServices.find((s) => s.id === activeSymptom.recommendedServiceId) || cityServices[0];
     onBookIssue(matchedService, activeSymptom.symptom);
   };
 
@@ -151,7 +155,7 @@ export const DiagnosticAssistant: React.FC<DiagnosticAssistantProps> = ({ onBook
             Not Sure What’s Wrong With Your Appliance?
           </h2>
           <p className="text-sm sm:text-base text-slate-600 font-normal">
-            Select your symptom below to get an instant engineering diagnosis, estimated repair cost, and the exact solution in Kadapa.
+            Select your symptom below to get an instant engineering diagnosis, estimated repair cost, and the exact solution in {cityConfig.name}.
           </p>
         </div>
 
@@ -206,7 +210,7 @@ export const DiagnosticAssistant: React.FC<DiagnosticAssistantProps> = ({ onBook
           {/* Left Column: Symptom List */}
           <div className="lg:col-span-5 space-y-3">
             <label className="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
-              Common Symptoms Reported in Kadapa:
+              Common Symptoms Reported in {cityConfig.name}:
             </label>
             {categorySymptoms.map((symp) => {
               const isSelected = symp.id === activeSymptom.id;

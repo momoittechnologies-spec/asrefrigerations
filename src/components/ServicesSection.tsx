@@ -39,8 +39,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   };
 
   const filteredServices = filter === 'all' 
-    ? SERVICES_DATA 
-    : SERVICES_DATA.filter((s) => s.category === filter);
+    ? getServicesForCity(selectedCity) 
+    : getServicesForCity(selectedCity).filter((s) => s.category === filter);
 
   return (
     <section className="py-16 bg-white w-full max-w-full overflow-hidden" id="services">
@@ -55,7 +55,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               Doorstep Services & Transparent Pricing
             </h2>
             <p className="text-sm sm:text-base text-slate-600 mt-1">
-              Fixed rates across all areas in Kadapa. Genuine spare parts & 30-day warranty included.
+              Fixed rates across all areas in {cityConfig.name}. Genuine spare parts & 30-day warranty included.
             </p>
           </div>
 
@@ -99,7 +99,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             </div>
             <div className="lg:col-span-6 p-6 sm:p-8 text-left space-y-4">
               <span className="text-xs font-black uppercase tracking-wider text-red-400">
-                Why Kadapa Chooses AS Jet Wash
+                Why {cityConfig.name} Chooses AS Jet Wash
               </span>
               <h3 className="text-xl sm:text-2xl font-black text-white">
                 The High-Pressure Foam Jet Difference (2x Cooler Airflow)
@@ -135,7 +135,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               {service.popular && (
                 <div className="bg-red-600 text-white text-[11px] font-black uppercase tracking-wider py-1 px-4 text-center flex items-center justify-center gap-1 shadow-xs">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Most Popular in Kadapa</span>
+                  <span>Most Popular in {cityConfig.name}</span>
                 </div>
               )}
 

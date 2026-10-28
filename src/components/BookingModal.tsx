@@ -100,6 +100,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   useEffect(() => {
     setArea(CITIES_DATA[modalCity].localities[0]);
+    const cityServices = getServicesForCity(modalCity);
+    setSelectedService((current) => {
+      const match = cityServices.find((s) => s.id === current.id);
+      return match || current;
+    });
   }, [modalCity]);
 
   // Sync logged-in customer session or auto-restore last booking contact
@@ -130,7 +135,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   useEffect(() => {
     if (preSelectedService) {
-      setSelectedService(preSelectedService);
+      const cityServices = getServicesForCity(modalCity);
+      const match = cityServices.find((s) => s.id === preSelectedService.id);
+      setSelectedService(match || preSelectedService);
     }
     if (preSelectedQuantity) {
       setQuantity(preSelectedQuantity);
@@ -434,7 +441,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 {isExpressMode && (
                   <div className="text-[11px] text-red-700 bg-red-100/60 p-2 rounded-xl flex items-center gap-1.5 font-bold">
                     <span className="flex h-2 w-2 rounded-full bg-red-600 animate-ping"></span>
-                    <span>Express Priority: Shaik Sameer & Team arriving today within 60 mins.</span>
+                    <span>Express Priority: {cityConfig.leaderName} & Team arriving today within 60 mins.</span>
                   </div>
                 )}
               </div>
@@ -698,7 +705,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Master Lead:</span>
-                <span className="font-bold text-emerald-600">Shaik Sameer & Team</span>
+                <span className="font-bold text-emerald-600">{modalCity === 'bangalore' ? 'Syed & Team' : 'Shaik Sameer & Team'}</span>
               </div>
             </div>
 
@@ -734,7 +741,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition active:scale-95 text-center cursor-pointer"
               >
                 <MessageSquare className="w-5 h-5" />
-                <span>{modalCity === 'kadapa' ? 'Send Booking to Sameer on WhatsApp Now' : 'Send Booking to Bangalore Hub on WhatsApp Now'}</span>
+                <span>{modalCity === 'kadapa' ? 'Send Booking to Sameer on WhatsApp Now' : 'Send Booking to Syed on WhatsApp Now'}</span>
               </a>
             </div>
 

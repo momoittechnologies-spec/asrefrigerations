@@ -107,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({
                   </>
                 ) : (
                   <>
-                    Our certified technicians operate directly from our <strong className="text-white">Kammanahalli Branch Hub</strong>, providing 60-minute express doorstep repairs exclusively across Kammanahalli, Kalyan Nagar, Banaswadi, HBR Layout, and nearby North-East Bangalore localities. Diagnostic fee is ₹400 (100% waived in final repair bill).
+                    Our certified technicians operate directly from our <strong className="text-white">Kammanahalli Branch Hub</strong>, providing 60-minute express doorstep repairs exclusively across Kammanahalli, Kalyan Nagar, Banaswadi, HBR Layout, and nearby North-East Bangalore localities. Diagnostic fee is ₹350 (100% waived in final repair bill).
                   </>
                 )}
               </p>

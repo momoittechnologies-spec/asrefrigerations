@@ -56,7 +56,7 @@ export const ApplianceCategoryGrid: React.FC<ApplianceCategoryGridProps> = ({
       icon: Building2,
       badge: 'Commercial & Homes',
       startPrice: 'Custom Quote',
-      desc: 'Annual maintenance packages for Kadapa residences, showrooms & hospital clinics.'
+      desc: 'Annual maintenance packages for residences, showrooms & hospital clinics.'
     }
   ];
 

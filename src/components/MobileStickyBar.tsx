@@ -206,7 +206,7 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
                     24/7 Doorstep Support
                   </h3>
                   <p className="text-[11px] text-slate-500 font-medium">
-                    Shaik Sameer & Team • Kadapa District
+                    {cityConfig.leaderName} & Team • {cityConfig.name}
                   </p>
                 </div>
               </div>
@@ -224,7 +224,7 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
               
               {/* Call Lead Button */}
               <a
-                href="tel:+917815851330"
+                href={`tel:+91${cityConfig.phoneRaw}`}
                 className="p-3.5 rounded-2xl bg-slate-900 text-white flex items-center justify-between active:scale-98 transition shadow-md"
               >
                 <div className="flex items-center gap-3">
@@ -233,7 +233,7 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
                   </div>
                   <div>
                     <div className="text-[10px] uppercase font-bold text-slate-400">Direct Hotline</div>
-                    <div className="text-sm font-black text-white">+91 78158 51330</div>
+                    <div className="text-sm font-black text-white">{cityConfig.phone}</div>
                   </div>
                 </div>
                 <span className="text-xs font-bold text-red-400 bg-red-950/60 px-2.5 py-1 rounded-lg border border-red-800/60">
