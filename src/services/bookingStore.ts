@@ -101,6 +101,8 @@ class BookingStoreService {
         assignedTechnicianName: booking.assignedTechnicianName || (isBlr ? 'Syed (Bangalore Branch Lead)' : 'Shaik Sameer'),
         assignedTechnicianPhone: booking.assignedTechnicianPhone || (isBlr ? '+91 80732 06402' : '+91 78158 51330'),
         isAssignedToSameer: booking.isAssignedToSameer ?? !isBlr,
+        source: booking.source || 'website',
+        bookingSource: booking.bookingSource || 'website',
         notes: booking.notes || '',
         createdAt: booking.createdAt || new Date().toISOString(),
         timestamp: Date.now()
@@ -366,6 +368,8 @@ class BookingStoreService {
       assignedTechnicianName: assignedTech.name,
       assignedTechnicianPhone: assignedTech.phone,
       isAssignedToSameer: isSameer,
+      source: 'website',
+      bookingSource: 'website',
       notes,
       createdAt: new Date().toISOString()
     };

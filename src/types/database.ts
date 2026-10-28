@@ -60,6 +60,8 @@ export interface BookingLead {
   paymentStatus?: PaymentStatus;
   upiTransactionRef?: string;
   paidAt?: string;
+  source?: 'website' | 'customer_app' | 'partner_app' | string;
+  bookingSource?: 'website' | 'customer_app' | 'partner_app' | string;
   createdAt: string;
   updatedAt?: string;
 }

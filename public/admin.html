@@ -469,6 +469,7 @@
                 <thead class="bg-[#070b14] text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800 font-mono">
                   <tr>
                     <th class="py-3 px-3">Lead ID & Booked Time</th>
+                    <th class="py-3 px-3">Source</th>
                     <th class="py-3 px-3">Territory</th>
                     <th class="py-3 px-3">Customer Contact</th>
                     <th class="py-3 px-3">Service & Urgency</th>
@@ -1559,6 +1560,17 @@
         const isExpress = b.isExpress || (b.timeSlot || '').toLowerCase().includes('urgent') || (b.timeSlot || '').toLowerCase().includes('immediate');
         const mapsLink = b.googleMapsUrl || (b.latitude && b.longitude ? `https://maps.google.com/?q=${b.latitude},${b.longitude}` : `https://maps.google.com/?q=${encodeURIComponent((b.locality || '') + ' ' + (b.city || ''))}`);
         
+        // Accurate Source Detection & Badging
+        const sourceStr = (b.source || b.bookingSource || '').toLowerCase();
+        const isCustomerApp = sourceStr === 'customer_app' || (sourceStr.includes('app') && !sourceStr.includes('partner') && !sourceStr.includes('admin'));
+        const isPartnerApp = sourceStr.includes('partner');
+        const isWeb = !isCustomerApp && !isPartnerApp;
+        const sourceBadge = isCustomerApp 
+          ? `<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-cyan-950 text-cyan-300 border border-cyan-700/80 flex items-center gap-1 shadow-sm" title="Booked via AS Refrigerations Customer Mobile App"><i class="fa-solid fa-mobile-screen-button text-cyan-400"></i> App Booking</span>`
+          : (isPartnerApp 
+              ? `<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-purple-950 text-purple-300 border border-purple-700/80 flex items-center gap-1 shadow-sm" title="Booked via Partner App"><i class="fa-solid fa-screwdriver-wrench text-purple-400"></i> Partner App</span>`
+              : `<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-950 text-emerald-300 border border-emerald-700/80 flex items-center gap-1 shadow-sm" title="Booked directly on Website"><i class="fa-solid fa-globe text-emerald-400"></i> Web Booking</span>`);
+        
         // Comprehensive WhatsApp template with verified booking timestamps & location
         const dispatcherSig = isSameer 
           ? `Shaik Sameer (AS REFRIGERATIONS Kadapa HQ)` 
@@ -1581,6 +1593,7 @@
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div class="flex items-center gap-2">
                 <span class="font-mono font-bold text-white text-xs">#${b.id}</span>
+                ${sourceBadge}
                 <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${b.city === 'kadapa' ? 'bg-red-950 text-red-400 border border-red-800/60' : 'bg-blue-950 text-blue-400 border border-blue-800/60'}">
                   ${b.city || 'Kadapa'}
                 </span>
@@ -1633,6 +1646,17 @@
                   <i class="fa-brands fa-whatsapp"></i>
                   <span>WhatsApp</span>
                 </a>
+                ${isWeb ? `
+                  <button onclick="sendAppDownloadWhatsApp('${b.id}')" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95" title="Send WhatsApp invitation to download Mobile App with Live GPS Radar & ₹100 Discount Coupon">
+                    <i class="fa-brands fa-whatsapp text-emerald-200"></i>
+                    <span>📲 Invite to App</span>
+                  </button>
+                ` : `
+                  <span class="px-2.5 py-1.5 rounded-xl bg-cyan-950/80 text-cyan-300 border border-cyan-800/80 text-[11px] font-bold flex items-center gap-1" title="Customer booked via Mobile App">
+                    <i class="fa-solid fa-circle-check text-cyan-400"></i>
+                    <span>App User</span>
+                  </span>
+                `}
               </div>
 
               <div class="flex items-center gap-2">
@@ -1688,6 +1712,17 @@
         const isExpress = b.isExpress || (b.timeSlot || '').toLowerCase().includes('urgent');
         const mapsLink = b.googleMapsUrl || (b.latitude && b.longitude ? `https://maps.google.com/?q=${b.latitude},${b.longitude}` : `https://maps.google.com/?q=${encodeURIComponent((b.locality || '') + ' ' + (b.city || ''))}`);
         
+        // Accurate Source Detection & Badging
+        const sourceStr = (b.source || b.bookingSource || '').toLowerCase();
+        const isCustomerApp = sourceStr === 'customer_app' || (sourceStr.includes('app') && !sourceStr.includes('partner') && !sourceStr.includes('admin'));
+        const isPartnerApp = sourceStr.includes('partner');
+        const isWeb = !isCustomerApp && !isPartnerApp;
+        const sourceBadge = isCustomerApp 
+          ? `<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-cyan-950 text-cyan-300 border border-cyan-700/80 flex items-center gap-1 shadow-sm"><i class="fa-solid fa-mobile-screen-button text-cyan-400"></i> App</span>`
+          : (isPartnerApp 
+              ? `<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-purple-950 text-purple-300 border border-purple-700/80 flex items-center gap-1 shadow-sm"><i class="fa-solid fa-screwdriver-wrench text-purple-400"></i> Partner</span>`
+              : `<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-950 text-emerald-300 border border-emerald-700/80 flex items-center gap-1 shadow-sm"><i class="fa-solid fa-globe text-emerald-400"></i> Website</span>`);
+        
         const dispatcherSig = isSameer 
           ? `Shaik Sameer (AS REFRIGERATIONS Kadapa HQ)` 
           : `Syed (AS REFRIGERATIONS Bangalore Branch)`;
@@ -1710,6 +1745,9 @@
               <span class="font-mono font-bold text-white block">#${b.id}</span>
               <span class="text-[10px] text-amber-300/90 font-mono block"><i class="fa-regular fa-clock text-amber-400 mr-1"></i>${timeInfo.short}</span>
               <span class="text-[9px] text-slate-500 font-mono block">${timeInfo.relative}</span>
+            </td>
+            <td class="py-3 px-3">
+              ${sourceBadge}
             </td>
             <td class="py-3 px-3">
               <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${b.city === 'kadapa' ? 'bg-red-950 text-red-400' : 'bg-blue-950 text-blue-400'}">
@@ -1758,6 +1796,15 @@
                 <a href="https://wa.me/91${phone}?text=${encodeURIComponent(waMsg)}" target="_blank" class="p-1.5 rounded-lg bg-green-700/30 text-green-400 hover:bg-green-700 hover:text-white transition" title="WhatsApp">
                   <i class="fa-brands fa-whatsapp"></i>
                 </a>
+                ${isWeb ? `
+                  <button onclick="sendAppDownloadWhatsApp('${b.id}')" class="p-1.5 rounded-lg bg-teal-600/30 text-teal-300 hover:bg-teal-600 hover:text-white transition cursor-pointer" title="Invite customer to download Mobile App with Live GPS Radar & ₹100 Coupon">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                  </button>
+                ` : `
+                  <span class="p-1.5 rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-800/50" title="Booked via Customer Mobile App">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                  </span>
+                `}
               </div>
             </td>
           </tr>
@@ -2180,6 +2227,8 @@
         isAssignedToSameer: city === 'kadapa' && isSameer,
         assignedTechnicianName: city === 'kadapa' ? 'Shaik Sameer' : 'Syed (Bangalore Lead)',
         assignedTechnicianPhone: city === 'kadapa' ? '+91 78158 51330' : '+91 80732 06402',
+        source: 'admin_portal',
+        bookingSource: 'admin_portal',
         timestamp: Date.now()
       };
 
@@ -2269,6 +2318,43 @@
       const techName = b.assignedTechnicianName || (b.city === 'kadapa' ? 'Shaik Sameer' : 'Syed (Branch Lead)');
 
       const msg = `*🧾 SERVICE RECEIPT - AS REFRIGERATIONS*\nInvoice No: #INV-${b.id}\nCustomer: ${b.customerName}\nTerritory: ${(b.city || 'Kadapa').toUpperCase()}\nService: ${b.serviceTitle}\nTotal Paid: Rs. ${amount}\nGuarantee: 30-Day Doorstep Service Guarantee\nTechnician: ${techName}\nBranch Helpline: ${helplinePhone}\n\nThank you for choosing AS Refrigerations!`;
+      window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Send WhatsApp App Invitation to Website Bookers
+    function sendAppDownloadWhatsApp(bookingId) {
+      const b = liveBookings.find(x => x.id === bookingId);
+      if (!b) return;
+      const phone = (b.customerMobile || b.customerPhone || '').replace(/\D/g, '').slice(-10);
+      if (!phone) {
+        alert("Customer phone number is missing.");
+        return;
+      }
+      const custName = b.customerName || 'Valued Customer';
+      const service = b.serviceTitle || b.serviceName || 'Appliance Service';
+      const city = (b.city || 'Kadapa').toUpperCase();
+      const appApkUrl = 'https://asrefrigerations.com/downloads/as-refrigerations-customer.apk';
+      const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
+      const senderName = isSameer ? 'Shaik Sameer' : 'Syed';
+
+      const msg = `*AS REFRIGERATIONS - OFFICIAL MOBILE APP INVITATION* 📲\n` +
+        `----------------------------------------\n` +
+        `Hello ${custName},\n` +
+        `Thank you for choosing AS Refrigerations (${city}) for *${service}*!\n\n` +
+        `To track your technician live on map and unlock exclusive member perks, install the official *AS Refrigerations Customer App*:\n\n` +
+        `🚀 *Key App Benefits:*\n` +
+        `• 📡 *Live GPS Radar:* Watch your assigned technician's live route to your doorstep\n` +
+        `• ⚡ *60-Minute Express SLA:* Priority emergency technician visits\n` +
+        `• 🎁 *Flat ₹100 OFF Voucher:* Use promo code *APP100* on your next doorstep booking\n` +
+        `• 📄 *Digital Receipts & Warranty:* Access your 30-day service guarantee cards anytime\n` +
+        `• 💬 *Direct Dispatcher Hotline:* Instant direct connection with branch leadership\n\n` +
+        `📲 *Download the Android App (Direct Download):*\n` +
+        `${appApkUrl}\n\n` +
+        `----------------------------------------\n` +
+        `_Best Regards,_\n` +
+        `*${senderName}*\n` +
+        `AS Refrigerations — Kadapa & Bangalore`;
+
       window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
