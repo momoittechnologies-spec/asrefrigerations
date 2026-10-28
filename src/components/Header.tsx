@@ -187,14 +187,14 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <span>Join as Partner</span>
             </a>
-            <a
-              href="/admin"
-              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 hover:text-white text-amber-300 border border-amber-400/30 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
-              title="Open Admin Dispatch & Business Control Panel"
+            <button
+              onClick={onOpenPortals}
+              className="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+              title="Track your active service booking and technician live status"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span>Admin Console</span>
-            </a>
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Track Booking</span>
+            </button>
           </nav>
 
           {/* Right: Hotline & Primary Booking CTA */}
@@ -324,24 +324,18 @@ export const Header: React.FC<HeaderProps> = ({
             >
               📸 Work Reels
             </a>
-            <a
-              href="/admin"
-              className="p-3 rounded-xl bg-red-950/60 text-amber-300 border border-amber-500/40 font-bold hover:bg-red-900/60 transition text-left flex items-center justify-between"
-            >
-              <span className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
-                <span>👑 Admin Control Panel</span>
-              </span>
-              <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Master</span>
-            </a>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenPortals();
               }}
-              className="p-3 rounded-xl bg-white/5 text-slate-200 border border-white/10 font-bold hover:bg-white/10 transition text-left cursor-pointer"
+              className="p-3 rounded-xl bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 font-bold hover:bg-emerald-900/60 transition text-left flex items-center justify-between cursor-pointer"
             >
-              💼 Simulation Portals Hub
+              <span className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <span>🔍 Track Booking Status</span>
+              </span>
+              <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Live Radar</span>
             </button>
             <button
               onClick={() => {

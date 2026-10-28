@@ -53,6 +53,7 @@ export const Hero: React.FC<HeroProps> = ({
   const [name, setName] = useState('');
   const [gpsDetecting, setGpsDetecting] = useState(false);
   const [detectedToast, setDetectedToast] = useState<string | null>(null);
+  const [gpsGuideOpen, setGpsGuideOpen] = useState<boolean>(false);
 
   const handleHeroGpsDetect = () => {
     if (!navigator.geolocation) {
@@ -91,6 +92,7 @@ export const Hero: React.FC<HeroProps> = ({
       },
       () => {
         setGpsDetecting(false);
+        setGpsGuideOpen(true);
       },
       { timeout: 8000, enableHighAccuracy: true }
     );
@@ -368,7 +370,7 @@ export const Hero: React.FC<HeroProps> = ({
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-                      3. Locality / Landmark ({cityConfig.name})
+                      3. Doorstep Landmark / Street ({cityConfig.name})
                     </label>
                     <span className="text-[10px] text-slate-400 font-medium">Type Colony or 1-Tap GPS</span>
                   </div>
@@ -386,11 +388,7 @@ export const Hero: React.FC<HeroProps> = ({
                       type="text"
                       list="hero-locality-suggestions"
                       required
-                      placeholder={
-                        selectedCity === 'bangalore'
-                          ? 'e.g. Kammanahalli, Banaswadi, Kalyan Nagar...'
-                          : 'e.g. Mariapuram, Chinna Chowk, RIMS, Proddatur...'
-                      }
+                      placeholder="e.g. Flat 302, Near Church / Main Road"
                       value={area}
                       onChange={(e) => setArea(e.target.value)}
                       className="w-full bg-slate-950/90 border border-slate-800 rounded-xl pl-9 pr-24 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"

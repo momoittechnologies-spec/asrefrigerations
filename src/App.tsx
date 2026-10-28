@@ -52,6 +52,23 @@ export function App() {
   };
 
   // Modal open states
+  const [isOffline, setIsOffline] = useState<boolean>(() => {
+    return typeof navigator !== 'undefined' ? !navigator.onLine : false;
+  });
+
+  React.useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [qrModalOpen, setQrModalOpen] = useState(false);
   const [portalsModalOpen, setPortalsModalOpen] = useState(false);
@@ -138,6 +155,14 @@ export function App() {
 
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-red-500 selection:text-white">
+      {/* Network Offline Warning Alert */}
+      {isOffline && (
+        <div className="sticky top-0 z-[100] w-full bg-red-600 text-white text-xs sm:text-sm font-black py-2.5 px-4 text-center shadow-lg flex items-center justify-center gap-2">
+          <span>⚠️</span>
+          <span>No Internet Connection. Please check your mobile data or Wi-Fi connectivity to ensure real-time updates.</span>
+        </div>
+      )}
+
       {/* 1. Sticky Navigation Bar */}
       <Header
         lang={lang}
@@ -284,6 +309,7 @@ export function App() {
         preSelectedQuantity={preSelectedQuantity}
         preSelectedPrice={preSelectedPrice}
         preFilledContact={preFilledContact}
+        onOpenPortals={() => setPortalsModalOpen(true)}
       />
 
       {/* First-Visit & Instant City Selection Gateway Modal */}

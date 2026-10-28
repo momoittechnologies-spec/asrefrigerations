@@ -38,6 +38,7 @@ interface BookingModalProps {
     area?: string;
     notes?: string;
   } | null;
+  onOpenPortals?: () => void;
 }
 
 export const BookingModal: React.FC<BookingModalProps> = ({
@@ -49,10 +50,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   preSelectedService,
   preSelectedQuantity = 1,
   preSelectedPrice,
-  preFilledContact
+  preFilledContact,
+  onOpenPortals
 }) => {
   const [modalCity, setModalCity] = useState<CityId>(selectedCity);
   const cityConfig = CITIES_DATA[modalCity];
+  const [locationErrorGuide, setLocationErrorGuide] = useState<boolean>(false);
 
   // Booking mode: Express 60-min priority dispatch (default) vs scheduled
   const [isExpressMode, setIsExpressMode] = useState<boolean>(true);
@@ -206,7 +209,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       },
       () => {
         setLocating(false);
-        setGpsStatusText('Could not auto-detect location. Please type your area and address below.');
+        setLocationErrorGuide(true);
+        setGpsStatusText('Could not auto-detect location. Please enable device GPS or check instructions below.');
       },
       { timeout: 10000, enableHighAccuracy: true }
     );
@@ -616,62 +620,54 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 )}
               </div>
 
-              {/* Smart Locality / Area Input with Quick-Pick Chips */}
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-bold text-slate-700 flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-red-600" />
-                    Locality / Colony / Area in {cityConfig.name} <span className="text-red-500">*</span>
-                  </label>
-                  {gpsCoords && (
-                    <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
-                      <CheckCircle2 className="w-3 h-3" /> GPS Linked
+              {/* Device Location Services Guidance (if detection fails or user taps help) */}
+              {locationErrorGuide && (
+                <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-300 text-left text-xs text-amber-900 space-y-2 animate-fadeIn">
+                  <div className="font-black flex items-center justify-between text-amber-950">
+                    <span className="flex items-center gap-1.5">
+                      <Navigation className="w-4 h-4 text-amber-600" />
+                      <span>How to Enable Device Location / GPS:</span>
                     </span>
-                  )}
-                </div>
-                <input
-                  type="text"
-                  required
-                  placeholder={`e.g. ${modalCity === 'kadapa' ? 'Mariapuram, Proddatur, Pulivendula, Chinna Chowk...' : 'Kammanahalli, Kalyan Nagar, Banaswadi...'}`}
-                  value={area}
-                  onChange={(e) => setArea(e.target.value)}
-                  className="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-red-500 font-bold bg-white"
-                />
-
-                {/* 1-Tap Quick Area Suggestion Chips */}
-                <div className="mt-2 flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Popular:</span>
-                  {cityConfig.localities.slice(0, 6).map((loc) => (
                     <button
-                      key={loc}
                       type="button"
-                      onClick={() => setArea(loc)}
-                      className={`text-[10px] px-2.5 py-1 rounded-lg border transition cursor-pointer font-semibold ${
-                        area.toLowerCase() === loc.toLowerCase()
-                          ? 'bg-red-600 text-white border-red-600 font-bold shadow-xs'
-                          : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'
-                      }`}
+                      onClick={() => setLocationErrorGuide(false)}
+                      className="text-amber-700 hover:text-amber-950 text-xs font-bold px-1"
                     >
-                      {loc}
+                      ✕
                     </button>
-                  ))}
+                  </div>
+                  <ol className="list-decimal list-inside space-y-1 text-[11px] text-amber-800 font-medium">
+                    <li>Swipe down from the top of your mobile screen to open <strong>Quick Settings</strong>.</li>
+                    <li>Ensure <strong>Location / GPS</strong> is toggled <strong>ON</strong>.</li>
+                    <li>If prompted by your mobile browser, tap <strong>Allow</strong> to share your precise doorstep coordinates.</li>
+                    <li>Tap the <strong>Auto-Fetch Exact Address via Mobile GPS</strong> card above again.</li>
+                  </ol>
                 </div>
-              </div>
+              )}
 
               {/* Exact Doorstep / House / Landmark Details */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1">
                   <Navigation className="w-3.5 h-3.5 text-slate-500" />
-                  House No. / Flat / Landmark / Street Address <span className="text-red-500">*</span>
+                  House No. / Flat / Landmark / Street Address in {cityConfig.name} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Flat 302, Sri Balaji Towers, Near Church"
+                  placeholder="e.g. Flat 302, Sri Balaji Towers, Near Church / Main Road"
                   value={streetAddress}
                   onChange={(e) => setStreetAddress(e.target.value)}
                   className="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-red-500 bg-white"
                 />
+                {!gpsCoords && !locationErrorGuide && (
+                  <button
+                    type="button"
+                    onClick={() => setLocationErrorGuide(true)}
+                    className="mt-1.5 text-[11px] text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>ℹ️ 1-Tap location detection not working? Tap for GPS setup instructions</span>
+                  </button>
+                )}
               </div>
 
               {/* Submit CTA Button */}
@@ -718,6 +714,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 Booking ID: <strong className="text-slate-900">{bookingId}</strong>
               </p>
             </div>
+
+            {/* Live Order Tracking CTA Button */}
+            {onOpenPortals && (
+              <button
+                type="button"
+                onClick={() => {
+                  handleResetAndClose();
+                  onOpenPortals();
+                }}
+                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition active:scale-95 text-center cursor-pointer"
+              >
+                <span>🔍 Track Live Booking Status (#{bookingId})</span>
+              </button>
+            )}
 
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs space-y-1.5">
               <div className="flex justify-between">

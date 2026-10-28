@@ -292,23 +292,14 @@ export const Footer: React.FC<FooterProps> = ({
                   <span>🔧 Join Partner Program</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href="/admin"
-                  className="hover:text-amber-400 transition flex items-center gap-1.5 text-amber-300 font-bold"
-                  title="Open Full-Screen Business Command Center"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-                  <span>👑 Admin Command Center</span>
-                </a>
-              </li>
               {onOpenPortals && (
                 <li>
                   <button
                     onClick={onOpenPortals}
-                    className="hover:text-purple-400 transition flex items-center gap-1.5 text-purple-400 font-bold cursor-pointer text-left"
+                    className="hover:text-emerald-400 transition flex items-center gap-1.5 text-emerald-400 font-bold cursor-pointer text-left"
+                    title="Track your active service booking and technician live status"
                   >
-                    <span>💼 Portals Simulation Hub</span>
+                    <span>🔍 Track Booking / My Orders</span>
                   </button>
                 </li>
               )}
@@ -645,12 +636,14 @@ export const Footer: React.FC<FooterProps> = ({
             </button>
             <span className="text-slate-600">•</span>
             <a
-              href="/admin"
-              className="text-amber-400/90 hover:text-amber-300 transition font-bold flex items-center gap-1"
-              title="Shaik Sameer Master Dispatch Command Center"
+              href="/partner-agreement.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-slate-200 transition font-bold flex items-center gap-1"
+              title="Official AS Refrigerations Partner Onboarding Agreement"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span>Admin Portal</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
+              <span>Partner Agreement</span>
             </a>
           </div>
 
