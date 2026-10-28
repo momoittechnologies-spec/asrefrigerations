@@ -19,7 +19,7 @@ const STORAGE_KEYS = {
   PARTNER_SESSION: 'as_partner_session_v1'
 };
 
-// Initial Seed Technicians
+// Initial Seed Technicians - Active Leadership
 export const TECHNICIANS_REGISTRY: TechnicianProfile[] = [
   {
     id: 'tech-sameer-01',
@@ -35,152 +35,22 @@ export const TECHNICIANS_REGISTRY: TechnicianProfile[] = [
     workshopAddress: '74/15/1 Lohiya Nagar, Mariapuram, Kadapa'
   },
   {
-    id: 'tech-imran-02',
-    name: 'Shaik Imran',
-    phone: '+91 93460 21980',
-    city: 'kadapa',
-    priority: 2, // VETTED PARTNER
-    skills: ['AC Jet Wash', 'General AC Service', 'Copper Piping'],
-    rating: 4.88,
-    totalJobsCompleted: 340,
-    isActive: true,
-    isMasterLead: false,
-    workshopAddress: 'Apsara Circle, Kadapa'
-  },
-  {
-    id: 'tech-venkatesh-03',
-    name: 'K. Venkatesh',
-    phone: '+91 98480 34120',
-    city: 'kadapa',
-    priority: 2, // VETTED PARTNER
-    skills: ['Refrigerator Frost Free', 'Defrost Timer', 'Gas Refill'],
-    rating: 4.82,
-    totalJobsCompleted: 215,
-    isActive: true,
-    isMasterLead: false,
-    workshopAddress: 'Seven Roads, Kadapa'
-  },
-  {
-    id: 'tech-bangalore-prasad-04',
-    name: 'M. Prasad',
+    id: 'tech-bangalore-syed-02',
+    name: 'Syed',
     phone: '+91 80732 06402',
     city: 'bangalore',
     priority: 1, // BANGALORE BRANCH LEAD
-    skills: ['Inverter AC Repair', 'Daikin/Voltas PCB', 'Jet Wash'],
-    rating: 4.92,
-    totalJobsCompleted: 580,
+    skills: ['Inverter AC Repair', 'Daikin/Voltas PCB', 'Chemical Wash', 'Gas Charging'],
+    rating: 4.95,
+    totalJobsCompleted: 620,
     isActive: true,
     isMasterLead: false,
     workshopAddress: '#2 Sree Residency, Kammanahalli, Bangalore'
-  },
-  {
-    id: 'tech-bangalore-manjunath-05',
-    name: 'R. Manjunath',
-    phone: '+91 99002 44190',
-    city: 'bangalore',
-    priority: 2, // BANGALORE FIELD PARTNER
-    skills: ['Commercial HVAC', 'Washing Machine', 'Refrigerator'],
-    rating: 4.85,
-    totalJobsCompleted: 310,
-    isActive: true,
-    isMasterLead: false,
-    workshopAddress: 'Kalyan Nagar, Bangalore'
   }
 ];
 
-// Initial Seed Bookings
-const SEED_BOOKINGS: BookingLead[] = [
-  {
-    id: 'ASR-9481',
-    customerName: 'S. Venkata Subba Reddy',
-    customerMobile: '9848011223',
-    serviceTitle: 'Inverter AC Foam Jet Wash + Cooling Check',
-    applianceType: 'AC',
-    city: 'kadapa',
-    locality: 'Mariapuram',
-    fullAddress: 'Plot 42, Near Church, Mariapuram, Kadapa',
-    latitude: 14.4673,
-    longitude: 78.8242,
-    googleMapsUrl: 'https://maps.google.com/?q=14.4673,78.8242',
-    date: 'Today',
-    timeSlot: 'Morning (09:00 AM - 12:00 PM)',
-    estimatedPrice: 499,
-    finalPrice: 1149,
-    quoteItemization: [
-      { item: 'AC Foam Jet Wash & Filter Cleaning', price: 499 },
-      { item: 'Capacitor Replacement (45µF Heavy Duty)', price: 650 }
-    ],
-    quoteStatus: 'approved',
-    paymentStatus: 'PENDING',
-    status: 'technician_on_the_way',
-    statusHistory: [
-      { status: 'booking_received', timestamp: 'Today 08:30 AM', updatedBy: 'System' },
-      { status: 'under_review', timestamp: 'Today 08:35 AM', updatedBy: 'Shaik Sameer' },
-      { status: 'technician_assigned', timestamp: 'Today 08:40 AM', updatedBy: 'Shaik Sameer' },
-      { status: 'technician_on_the_way', timestamp: 'Today 09:10 AM', updatedBy: 'Shaik Sameer' }
-    ],
-    assignedTechnicianId: 'tech-sameer-01',
-    assignedTechnicianName: 'Shaik Sameer',
-    assignedTechnicianPhone: '+91 80749 45415',
-    isAssignedToSameer: true,
-    notes: 'Sameer Bhai is handling this priority customer directly. En route with jet wash pump.',
-    createdAt: new Date(Date.now() - 3600000).toISOString()
-  },
-  {
-    id: 'ASR-9482',
-    customerName: 'K. Raghunath Reddy',
-    customerMobile: '9440188776',
-    serviceTitle: 'Double Door Refrigerator Not Cooling + Gas Check',
-    applianceType: 'Refrigerator',
-    city: 'kadapa',
-    locality: 'Seven Roads',
-    fullAddress: 'Door No 3/410, Near Seven Roads Circle, Kadapa',
-    latitude: 14.4751,
-    longitude: 78.8293,
-    googleMapsUrl: 'https://maps.google.com/?q=14.4751,78.8293',
-    date: 'Today',
-    timeSlot: 'Afternoon (01:00 PM - 04:00 PM)',
-    estimatedPrice: 850,
-    status: 'technician_assigned',
-    statusHistory: [
-      { status: 'booking_received', timestamp: 'Today 10:15 AM', updatedBy: 'System' },
-      { status: 'under_review', timestamp: 'Today 10:20 AM', updatedBy: 'Shaik Sameer' },
-      { status: 'technician_assigned', timestamp: 'Today 10:30 AM', updatedBy: 'Shaik Sameer' }
-    ],
-    assignedTechnicianId: 'tech-venkatesh-03',
-    assignedTechnicianName: 'K. Venkatesh (Partner)',
-    assignedTechnicianPhone: '+91 98480 34120',
-    isAssignedToSameer: false,
-    notes: 'Sameer Bhai engaged in Mariapuram; delegated to vetted partner Venkatesh.',
-    createdAt: new Date(Date.now() - 7200000).toISOString()
-  },
-  {
-    id: 'ASR-9483',
-    customerName: 'Ananya Sharma',
-    customerMobile: '9880522331',
-    serviceTitle: 'Split AC Deep Jet Cleaning & Filter Wash',
-    applianceType: 'AC',
-    city: 'bangalore',
-    locality: 'Kammanahalli',
-    fullAddress: '#14, 3rd Cross, Ramaiah Layout, Kammanahalli, Bangalore 560084',
-    latitude: 13.0158,
-    longitude: 77.6377,
-    googleMapsUrl: 'https://maps.google.com/?q=13.0158,77.6377',
-    date: 'Today',
-    timeSlot: 'Evening (04:00 PM - 07:00 PM)',
-    estimatedPrice: 599,
-    status: 'booking_received',
-    statusHistory: [
-      { status: 'booking_received', timestamp: 'Today 11:45 AM', updatedBy: 'System' }
-    ],
-    assignedTechnicianId: 'tech-bangalore-prasad-04',
-    assignedTechnicianName: 'M. Prasad (Bangalore Branch Lead)',
-    assignedTechnicianPhone: '+91 97410 88210',
-    isAssignedToSameer: false,
-    notes: 'Kammanahalli branch route dispatched.',
-    createdAt: new Date(Date.now() - 1800000).toISOString()
-  }
-];
+// Production Live Bookings (Clean Initial State - Dispatches load from Firestore)
+const SEED_BOOKINGS: BookingLead[] = [];
 
 class BookingStoreService {
   private getStorageItem<T>(key: string, defaultValue: T): T {
@@ -227,7 +97,7 @@ class BookingStoreService {
         estimatedPrice: booking.estimatedPrice,
         status: booking.status || 'booking_received',
         statusHistory: booking.statusHistory || [],
-        assignedTechnicianId: booking.assignedTechnicianId || (isBlr ? 'tech-bangalore-prasad-04' : 'tech-sameer-01'),
+        assignedTechnicianId: booking.assignedTechnicianId || (isBlr ? 'tech-bangalore-syed-02' : 'tech-sameer-01'),
         assignedTechnicianName: booking.assignedTechnicianName || (isBlr ? 'Syed (Bangalore Branch Lead)' : 'Shaik Sameer'),
         assignedTechnicianPhone: booking.assignedTechnicianPhone || (isBlr ? '+91 80732 06402' : '+91 78158 51330'),
         isAssignedToSameer: booking.isAssignedToSameer ?? !isBlr,
@@ -250,22 +120,7 @@ class BookingStoreService {
 
   // --- CUSTOMER PIN AUTHENTICATION ---
   public getCustomerUsers(): CustomerUser[] {
-    return this.getStorageItem<CustomerUser[]>(STORAGE_KEYS.CUSTOMERS, [
-      {
-        mobile: '9848011223',
-        name: 'S. Venkata Subba Reddy',
-        pin: '1234',
-        city: 'kadapa',
-        createdAt: new Date().toISOString()
-      },
-      {
-        mobile: '9880522331',
-        name: 'Ananya Sharma',
-        pin: '1234',
-        city: 'bangalore',
-        createdAt: new Date().toISOString()
-      }
-    ]);
+    return this.getStorageItem<CustomerUser[]>(STORAGE_KEYS.CUSTOMERS, []);
   }
 
   public registerCustomer(mobile: string, name: string, pin: string, city: CityId): CustomerUser {
@@ -474,10 +329,10 @@ class BookingStoreService {
       notes = 'Shaik Sameer claimed Priority 1 dispatch for Kadapa. Customer requested ' + data.locality + '.';
     } else {
       // Bangalore Branch Lead
-      const bangaloreLead = TECHNICIANS_REGISTRY.find(t => t.id === 'tech-bangalore-prasad-04')!;
+      const bangaloreLead = TECHNICIANS_REGISTRY.find(t => t.city === 'bangalore')!;
       assignedTech = bangaloreLead;
       isSameer = false;
-      notes = 'Bangalore Branch Lead M. Prasad assigned for Kammanahalli/Bangalore territory.';
+      notes = 'Bangalore Branch Lead Syed assigned for Kammanahalli/Bangalore territory.';
     }
 
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
