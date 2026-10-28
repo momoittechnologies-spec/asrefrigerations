@@ -640,7 +640,7 @@
                   <span>AS Refrigerations Partner Onboarding & Fee Protocol</span>
                 </h4>
                 <p class="text-slate-300 text-[11px] leading-relaxed">
-                  Every applicant must provide: (1) 12-digit Aadhaar Card, (2) 10-char PAN Card, (3) Alternative Mobile Number, and (4) pay the ₹8,000 Annual Partner License Fee deposited to UPI <span class="font-mono text-amber-400 font-bold">7815851330-2@ibl</span>. Once confirmed, 1-click Activation adds them to the live dispatch roster.
+                  Every applicant must provide: (1) 12-digit Aadhaar Card, (2) 10-char PAN Card, (3) Alternative Mobile Number, and (4) pay the ₹8,000 Monthly Partner License Fee deposited to UPI <span class="font-mono text-amber-400 font-bold">7815851330-2@ibl</span>. Once confirmed, 1-click Activation adds them to the live dispatch roster.
                 </p>
               </div>
             </div>
@@ -2433,7 +2433,7 @@
           <!-- Annual Onboarding Fee Section -->
           <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1">
             <div class="flex items-center justify-between">
-              <span class="font-bold text-slate-300">Annual Onboarding Fee (₹8,000)</span>
+              <span class="font-bold text-slate-300">Monthly Onboarding Fee (₹8,000 / mo)</span>
               ${app.status === 'ACTIVE' 
                 ? `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>CONFIRMED</span>` 
                 : (app.feeUtr 
@@ -2528,7 +2528,7 @@
     function approveKycAndRequestFee(appId) {
       const app = partnerApplicationsList.find(a => a.id === appId);
       if (!app) return;
-      if (!confirm(`Approve KYC documents for ${app.fullName} and request ₹8,000 Annual Onboarding Fee?`)) return;
+      if (!confirm(`Approve KYC documents for ${app.fullName} and request ₹8,000 Monthly Onboarding Fee?`)) return;
 
       const cleanPhone = (app.phone || '').replace(/\\D/g, '').slice(-10);
       if (db) {
@@ -2538,7 +2538,7 @@
           reviewer: currentSessionUser ? currentSessionUser.name : 'Shaik Sameer'
         }, { merge: true }).then(() => {
           showAdminToast(`KYC Approved for ${app.fullName}!`);
-          const msg = `Hello ${app.fullName}, your KYC documents (Aadhaar & PAN) for the AS Refrigerations Partner Network have been verified and APPROVED! Please open your AS Refrigerations Partner App to complete the ₹8,000 Annual Onboarding Fee via UPI (7815851330-2@ibl) and submit your 12-digit UTR.`;
+          const msg = `Hello ${app.fullName}, your KYC documents (Aadhaar & PAN) for the AS Refrigerations Partner Network have been verified and APPROVED! Please open your AS Refrigerations Partner App to complete the ₹8,000 Monthly Onboarding Fee via UPI (7815851330-2@ibl) and submit your 12-digit UTR.`;
           window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
         }).catch(err => {
           alert('Failed to update status: ' + err.message);
@@ -2604,7 +2604,7 @@
       renderFleetCards();
 
       showAdminToast(`Partner ${app.fullName} activated successfully!`);
-      const congratsMsg = `Congratulations ${app.fullName}! Your ₹8,000 annual onboarding fee has been confirmed and your AS Refrigerations Partner Account is now ACTIVE. You can now log into the AS Refrigerations Partner App with your Mobile (${cleanPhone}) and 4-digit PIN to start accepting doorstep repair leads!`;
+      const congratsMsg = `Congratulations ${app.fullName}! Your ₹8,000 monthly onboarding fee has been confirmed and your AS Refrigerations Partner Account is now ACTIVE. You can now log into the AS Refrigerations Partner App with your Mobile (${cleanPhone}) and 4-digit PIN to start accepting doorstep repair leads!`;
       window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(congratsMsg)}`, '_blank');
     }
 
@@ -2612,7 +2612,7 @@
       const app = partnerApplicationsList.find(a => a.id === appId);
       if (!app) return;
       const cleanPhone = (app.phone || '').replace(/\\D/g, '').slice(-10);
-      const msg = `Hi ${app.fullName}, your AS Refrigerations partner KYC is approved! Please pay the ₹8,000 annual onboarding fee to UPI ID: 7815851330-2@ibl (Shaik Sameer) and enter your 12-digit UTR in your Partner App to activate your account.`;
+      const msg = `Hi ${app.fullName}, your AS Refrigerations partner KYC is approved! Please pay the ₹8,000 monthly onboarding fee to UPI ID: 7815851330-2@ibl (Shaik Sameer) and enter your 12-digit UTR in your Partner App to activate your account.`;
       window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
