@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { Star, ShieldCheck, CheckCircle2, MessageSquare, ExternalLink } from 'lucide-react';
-import { GOOGLE_REVIEWS } from '../data/servicesData';
+import { getReviewsForCity } from '../data/servicesData';
+import { CityId, CITIES_DATA } from '../data/citiesData';
 import { Language, TRANSLATIONS } from '../data/translations';
 
 interface GoogleReviewsProps {
   lang: Language;
+  selectedCity?: CityId;
 }
 
-export const GoogleReviews: React.FC<GoogleReviewsProps> = ({ lang }) => {
+export const GoogleReviews: React.FC<GoogleReviewsProps> = ({ lang, selectedCity = 'kadapa' }) => {
+  const cityConfig = CITIES_DATA[selectedCity];
   const t = TRANSLATIONS[lang];
   const [activeFilter, setActiveFilter] = useState<'all' | 'AC' | 'Fridge' | 'Washing Machine'>('all');
 
   const filteredReviews = activeFilter === 'all'
-    ? GOOGLE_REVIEWS
-    : GOOGLE_REVIEWS.filter((r) => r.service.toLowerCase().includes(activeFilter.toLowerCase()));
+    ? getReviewsForCity(selectedCity)
+    : getReviewsForCity(selectedCity).filter((r) => r.service.toLowerCase().includes(activeFilter.toLowerCase()));
 
   return (
     <section className="py-16 bg-white border-b border-slate-200 w-full max-w-full overflow-hidden" id="reviews">
@@ -30,7 +33,7 @@ export const GoogleReviews: React.FC<GoogleReviewsProps> = ({ lang }) => {
               {t.reviewsTitle}
             </h2>
             <p className="text-sm sm:text-base text-slate-600 mt-1">
-              Read what your neighbours across Kadapa have to say about our punctuality and repair quality.
+              Read what your neighbours across {selectedCity === 'bangalore' ? 'Bangalore (Kammanahalli & Nearby)' : 'Kadapa District'} have to say about our punctuality and repair quality.
             </p>
           </div>
 
@@ -49,7 +52,7 @@ export const GoogleReviews: React.FC<GoogleReviewsProps> = ({ lang }) => {
                 </div>
               </div>
               <div className="text-xs text-slate-600 font-semibold">
-                Based on <span className="font-bold text-slate-900">928+ Google Reviews</span> in Kadapa
+                Based on <span className="font-bold text-slate-900">928+ Google Reviews</span> ({selectedCity === 'bangalore' ? 'Bangalore Branch & HQ' : 'Kadapa'})
               </div>
             </div>
             <a

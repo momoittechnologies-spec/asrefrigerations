@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CityId, CITIES_DATA } from '../data/citiesData';
 import { 
   HelpCircle, 
   ChevronDown, 
@@ -63,15 +64,42 @@ const FAQS: FAQItem[] = [
   }
 ];
 
-export const FAQSection: React.FC = () => {
+interface FAQSectionProps {
+  selectedCity?: CityId;
+}
+
+export const FAQSection: React.FC<FAQSectionProps> = ({ selectedCity = 'kadapa' }) => {
+  const cityConfig = CITIES_DATA[selectedCity];
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
   const categories = ['all', 'Doorstep Service', 'Billing & Charges', 'AC Cleaning', 'Gas Charging', 'Warranty & Guarantee'];
 
+  const cityFaqs = FAQS.map(f => {
+    if (f.question.includes('How fast can an AS Refrigerations technician reach my home')) {
+      return {
+        ...f,
+        question: selectedCity === 'bangalore' 
+          ? 'How fast can an AS Refrigerations technician reach my home in Bangalore?' 
+          : 'How fast can an AS Refrigerations technician reach my home in Kadapa?',
+        answer: selectedCity === 'bangalore'
+          ? 'We guarantee rapid doorstep arrival within 60 minutes across Kammanahalli, Kalyan Nagar, Banaswadi, HRBR Layout, Hennur, HBR, Ramamurthy Nagar, and nearby North-East Bangalore localities from our Kammanahalli Branch Hub.'
+          : 'We guarantee rapid doorstep arrival within 60 minutes across Kadapa City Central (Mariapuram, Chinna Chowk, RIMS Road, RTC Bus Stand, Yerramukkapalli, Co-operative Colony, Nagarajupalli, etc.) and provide same-day doorstep service across all towns and mandals in Kadapa District (Proddatur, Pulivendula, Badvel, Rayachoty, Jammalamadugu, Mydukur & beyond).'
+      };
+    }
+    if (f.question.includes('Partner Program')) {
+      return {
+        ...f,
+        question: selectedCity === 'bangalore' ? 'How does the AS Partner Program work for Bangalore technicians?' : 'How does the AS Partner Program work for local Kadapa technicians?',
+        answer: 'Experienced local technicians join our network to receive verified daily doorstep job leads with 0% per-job commission. Technicians keep 100% of direct customer collections via Cash or UPI, with wholesale spare parts access and technical mentorship.'
+      };
+    }
+    return f;
+  });
+
   const filteredFaqs = activeCategory === 'all'
-    ? FAQS
-    : FAQS.filter((f) => f.category === activeCategory);
+    ? cityFaqs
+    : cityFaqs.filter((f) => f.category === activeCategory);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -93,7 +121,7 @@ export const FAQSection: React.FC = () => {
           </h2>
 
           <p className="text-slate-600 text-sm sm:text-base font-normal">
-            Everything you need to know about our Kadapa doorstep repair service, pricing transparency, and 30-day warranty.
+            Everything you need to know about our {cityConfig.name} doorstep repair service, pricing transparency, and 30-day warranty.
           </p>
         </div>
 
@@ -147,7 +175,7 @@ export const FAQSection: React.FC = () => {
                     <p>{faq.answer}</p>
                     <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-emerald-700">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Verified AS Refrigerations Kadapa Company Policy</span>
+                      <span>Verified AS Refrigerations Company Policy • {cityConfig.name}</span>
                     </div>
                   </div>
                 )}

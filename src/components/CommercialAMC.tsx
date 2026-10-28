@@ -1,13 +1,16 @@
 import React from 'react';
 import { Building2, ShieldCheck, Check, Clock, Phone, Sparkles } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../data/translations';
+import { CityId, CITIES_DATA } from '../data/citiesData';
 
 interface CommercialAMCProps {
   lang: Language;
+  selectedCity?: CityId;
   onOpenBooking: () => void;
 }
 
-export const CommercialAMC: React.FC<CommercialAMCProps> = ({ lang, onOpenBooking }) => {
+export const CommercialAMC: React.FC<CommercialAMCProps> = ({ lang, selectedCity = 'kadapa', onOpenBooking }) => {
+  const cityConfig = CITIES_DATA[selectedCity];
   const t = TRANSLATIONS[lang];
 
   return (
@@ -24,7 +27,7 @@ export const CommercialAMC: React.FC<CommercialAMCProps> = ({ lang, onOpenBookin
             {t.amcTitle}
           </h2>
           <p className="text-sm sm:text-base text-slate-300 mt-2">
-            Tailored maintenance contracts for Kadapa households, hospitals, banks, retail showrooms, clinics, and school institutions.
+            Tailored maintenance contracts for {cityConfig.name} households, hospitals, banks, retail showrooms, clinics, and school institutions.
           </p>
         </div>
 

@@ -215,7 +215,7 @@ export function App() {
         />
 
         {/* 8. Verified Google Reviews (928+ Reviews on GMB Profile) */}
-        <GoogleReviews lang={lang} />
+        <GoogleReviews lang={lang} selectedCity={selectedCity} />
 
         {/* 9. Native Android App Download Showcase */}
         <AppDownloadShowcase />
@@ -231,14 +231,15 @@ export function App() {
         {/* 11. Annual Maintenance Contracts (AMC) */}
         <CommercialAMC
           lang={lang}
+          selectedCity={selectedCity}
           onOpenBooking={() => setBookingModalOpen(true)}
         />
 
         {/* 12. Technician Partner Network */}
-        <PartnerNetwork lang={lang} />
+        <PartnerNetwork lang={lang} selectedCity={selectedCity} />
 
         {/* 13. Frequently Asked Questions (FAQ) */}
-        <FAQSection />
+        <FAQSection selectedCity={selectedCity} />
       </main>
 
       {/* Modern Footer */}

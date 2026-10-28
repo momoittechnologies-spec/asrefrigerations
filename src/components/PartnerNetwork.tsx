@@ -13,12 +13,15 @@ import {
 } from 'lucide-react';
 import { PARTNER_TIERS } from '../data/servicesData';
 import { Language, TRANSLATIONS } from '../data/translations';
+import { CityId, CITIES_DATA } from '../data/citiesData';
 
 interface PartnerNetworkProps {
   lang: Language;
+  selectedCity?: CityId;
 }
 
-export const PartnerNetwork: React.FC<PartnerNetworkProps> = ({ lang }) => {
+export const PartnerNetwork: React.FC<PartnerNetworkProps> = ({ lang, selectedCity = 'kadapa' }) => {
+  const cityConfig = CITIES_DATA[selectedCity];
   const t = TRANSLATIONS[lang];
 
   // Application Modal States
@@ -59,14 +62,14 @@ export const PartnerNetwork: React.FC<PartnerNetworkProps> = ({ lang }) => {
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold uppercase tracking-wider mb-3">
             <Zap className="w-3.5 h-3.5 text-amber-400" />
-            <span>Kadapa Technician Partner Recruitment</span>
+            <span>{cityConfig.name} Technician Partner Recruitment</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
             Zero Commission Partner Network • <span className="text-red-500">Keep 100% of Your Earnings</span>
           </h2>
           <p className="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
-            Are you a skilled AC, fridge, or washing machine technician in Kadapa? Join Master Shaik Sameer’s verified partner network. Receive direct daily customer calls with <strong>zero per-job cuts</strong>.
+            Are you a skilled AC, fridge, or washing machine technician in {cityConfig.name}? Join our verified technician partner network. Receive direct daily customer calls with <strong>zero per-job cuts</strong>.
           </p>
         </div>
 
@@ -85,7 +88,7 @@ export const PartnerNetwork: React.FC<PartnerNetworkProps> = ({ lang }) => {
               <div className="absolute bottom-4 left-4 right-4 bg-slate-950/90 backdrop-blur-md p-3.5 rounded-2xl border border-slate-800 text-left">
                 <div className="flex items-center gap-2 text-xs font-black text-amber-400">
                   <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>Real Daily Leads in Kadapa</span>
+                  <span>Real Daily Leads in {cityConfig.name}</span>
                 </div>
                 <div className="text-[11px] text-slate-300 mt-0.5 font-medium">
                   Direct WhatsApp dispatch to your phone • Verified customers only
@@ -251,7 +254,7 @@ export const PartnerNetwork: React.FC<PartnerNetworkProps> = ({ lang }) => {
                   Join AS Refrigerations Partner Network
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Start receiving verified customer leads daily across Kadapa with zero commission.
+                  Start receiving verified customer leads daily across {cityConfig.name} with zero commission.
                 </p>
               </div>
             </div>

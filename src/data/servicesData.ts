@@ -479,6 +479,68 @@ export const GOOGLE_REVIEWS: ReviewItem[] = [
   }
 ];
 
+export const BANGALORE_REVIEWS: ReviewItem[] = [
+  {
+    id: 'blr-rev-1',
+    name: 'Karthik R.',
+    location: 'HRBR Layout, Bangalore',
+    rating: 5,
+    date: 'Recent',
+    service: 'AC Jet Wash Service',
+    comment: 'Punctual and very neat high-pressure jet wash. Used protective bag on indoor AC, zero mess on wall. Airflow is ice cold now. Syed arrived within 40 minutes.'
+  },
+  {
+    id: 'blr-rev-2',
+    name: 'Ananya Sharma',
+    location: 'Kammanahalli, Bangalore',
+    rating: 5,
+    date: 'Recent',
+    service: 'Fridge Gas Refill & Service',
+    comment: 'Our double door fridge stopped cooling in the bottom section. Technician Syed detected the leak, replaced the filter drier, and refilled gas on the spot. Clear upfront ₹2,000 rate.'
+  },
+  {
+    id: 'blr-rev-3',
+    name: 'Praveen Kumar',
+    location: 'Banaswadi, Bangalore',
+    rating: 5,
+    date: '1 week ago',
+    service: 'AC Installation & Fitting',
+    comment: 'Shifted my split AC to our new Banaswadi flat. Safe gas pump down, level mounting, and vacuum check. Transparent ₹1,700 flat charge.'
+  },
+  {
+    id: 'blr-rev-4',
+    name: 'Vinod N.',
+    location: 'Kalyan Nagar, Bangalore',
+    rating: 5,
+    date: '2 weeks ago',
+    service: 'AC Water Leakage Clearing',
+    comment: 'Indoor unit was leaking water onto bedroom floor. Drain hose flushed with pressure pump and tray cleared. Problem solved in 30 mins.'
+  },
+  {
+    id: 'blr-rev-5',
+    name: 'Deepak Hegde',
+    location: 'HBR Layout, Bangalore',
+    rating: 5,
+    date: '3 weeks ago',
+    service: 'AC R-32 Gas Charging',
+    comment: 'Full nitrogen pressure test and 100% genuine R-32 gas refill. Honest flat ₹2,500 rate without any hidden charges. 30-day warranty card provided.'
+  },
+  {
+    id: 'blr-rev-6',
+    name: 'Sowmya M.',
+    location: 'Hennur, Bangalore',
+    rating: 5,
+    date: '1 month ago',
+    service: 'Washing Machine Repair',
+    comment: 'Front load washing machine spin error. Diagnosed and fixed the drain pump issue right at doorstep. Very polite technician.'
+  }
+];
+
+export function getReviewsForCity(city: 'kadapa' | 'bangalore' = 'kadapa'): ReviewItem[] {
+  return city === 'bangalore' ? BANGALORE_REVIEWS : GOOGLE_REVIEWS;
+}
+
+
 export const PARTNER_TIERS = [
   {
     id: 'tier-fridge',
@@ -605,6 +667,7 @@ export function getServicesForCity(city: 'kadapa' | 'bangalore' = 'kadapa'): Ser
       if (svc.id === 'ac-foam-wash') {
         return {
           ...svc,
+          popular: false,
           price: 600,
           description: 'Special active foam spray kills 99.9% germs, eliminates bad odors, and dissolves stubborn grime. Bangalore branch rate.'
         };
