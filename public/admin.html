@@ -580,15 +580,85 @@
 
         <!-- ================= VIEW 5: FLEET & PARTNERS ================= -->
         <section id="viewFleet" class="space-y-4 hidden">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
-              <h2 class="text-lg font-black text-white" id="fleetHeaderTitle">Technician Fleet & Branch Partners</h2>
-              <p class="text-xs text-slate-400" id="fleetHeaderSubtitle">Active roster of field service personnel across territories.</p>
+              <h2 class="text-lg font-black text-white" id="fleetHeaderTitle">Technician Fleet & Partner Network</h2>
+              <p class="text-xs text-slate-400" id="fleetHeaderSubtitle">Active field service personnel, verification desk & ₹8,000 onboarding engine.</p>
+            </div>
+            <!-- Subtab Switcher -->
+            <div class="flex items-center gap-2 bg-[#070b14] p-1.5 rounded-2xl border border-slate-800">
+              <button id="subTabActiveFleet" onclick="switchFleetSubTab('active')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-amber-500 text-slate-950 cursor-pointer">
+                <i class="fa-solid fa-users-gear"></i>
+                <span>Active Fleet</span>
+              </button>
+              <button id="subTabOnboarding" onclick="switchFleetSubTab('onboarding')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-400 hover:text-white cursor-pointer">
+                <i class="fa-solid fa-id-card-clip"></i>
+                <span>Partner Applications & KYC</span>
+                <span id="pendingPartnerAppsBadge" class="ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950 hidden">0</span>
+              </button>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="fleetGridContainer">
-            <!-- Dynamically rendered -->
+          <!-- Active Fleet Subtab Panel -->
+          <div id="panelActiveFleet" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="fleetGridContainer">
+              <!-- Dynamically rendered active fleet cards -->
+            </div>
+          </div>
+
+          <!-- Partner Applications & KYC Onboarding Subtab Panel -->
+          <div id="panelPartnerOnboarding" class="space-y-4 hidden">
+            <!-- Metric Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div class="p-3.5 rounded-2xl bg-[#0a0f1d] border border-slate-800 space-y-1">
+                <span class="text-slate-400 font-bold">Total Applicants</span>
+                <p class="text-lg font-black text-white" id="statTotalApps">0</p>
+                <span class="text-[10px] text-slate-500">All submitted applications</span>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-[#0a0f1d] border border-amber-500/30 space-y-1">
+                <span class="text-amber-400 font-bold">KYC Pending Review</span>
+                <p class="text-lg font-black text-amber-400" id="statPendingKyc">0</p>
+                <span class="text-[10px] text-slate-500">Requires Aadhaar/PAN check</span>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-[#0a0f1d] border border-purple-500/30 space-y-1">
+                <span class="text-purple-400 font-bold">₹8,000 Fee Submitted</span>
+                <p class="text-lg font-black text-purple-400" id="statFeePending">0</p>
+                <span class="text-[10px] text-slate-500">Awaiting UTR confirmation</span>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-[#0a0f1d] border border-emerald-500/30 space-y-1">
+                <span class="text-emerald-400 font-bold">Active Partners</span>
+                <p class="text-lg font-black text-emerald-400" id="statActivePartners">0</p>
+                <span class="text-[10px] text-slate-500">Certified field partners</span>
+              </div>
+            </div>
+
+            <!-- Policy & Protocol Box -->
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-950/20 via-[#0a0f1d] to-[#0a0f1d] border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs">
+              <div class="space-y-1">
+                <h4 class="font-black text-amber-400 flex items-center gap-2">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <span>AS Refrigerations Partner Onboarding & Fee Protocol</span>
+                </h4>
+                <p class="text-slate-300 text-[11px] leading-relaxed">
+                  Every applicant must provide: (1) 12-digit Aadhaar Card, (2) 10-char PAN Card, (3) Alternative Mobile Number, and (4) pay the ₹8,000 Annual Partner License Fee deposited to UPI <span class="font-mono text-amber-400 font-bold">7815851330-2@ibl</span>. Once confirmed, 1-click Activation adds them to the live dispatch roster.
+                </p>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs" id="appFilterChips">
+              <button onclick="setApplicationFilter('ALL')" class="app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-amber-500 text-slate-950 cursor-pointer" data-filter="ALL">All Applicants</button>
+              <button onclick="setApplicationFilter('PENDING_REVIEW')" class="app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-slate-900 border border-slate-800 text-slate-400 hover:text-white cursor-pointer" data-filter="PENDING_REVIEW">KYC Pending</button>
+              <button onclick="setApplicationFilter('KYC_APPROVED')" class="app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-slate-900 border border-slate-800 text-slate-400 hover:text-white cursor-pointer" data-filter="KYC_APPROVED">KYC Approved (Fee Pending)</button>
+              <button onclick="setApplicationFilter('FEE_PAID_PENDING_APPROVAL')" class="app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-slate-900 border border-slate-800 text-slate-400 hover:text-white cursor-pointer" data-filter="FEE_PAID_PENDING_APPROVAL">Fee Paid (Verify UTR)</button>
+              <button onclick="setApplicationFilter('ACTIVE')" class="app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-slate-900 border border-slate-800 text-slate-400 hover:text-white cursor-pointer" data-filter="ACTIVE">Active Certified</button>
+              <button onclick="setApplicationFilter('REJECTED')" class="app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-slate-900 border border-slate-800 text-slate-400 hover:text-white cursor-pointer" data-filter="REJECTED">Rejected</button>
+            </div>
+
+            <!-- Applications Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="applicationsGridContainer">
+              <!-- Dynamically populated -->
+            </div>
           </div>
         </section>
 
@@ -864,6 +934,29 @@
         <button onclick="submitSettleBill()" class="flex-1 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20 active:scale-95">
           <i class="fa-solid fa-check-double"></i>
           <span>Save Bill & Send Digital WhatsApp Receipt</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 4: DOCUMENT LIGHTBOX ================= -->
+  <div id="docViewerModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#0a0f1d] border border-slate-800 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div>
+          <h3 class="font-black text-white text-sm" id="docModalTitle">KYC Document Preview</h3>
+          <p class="text-xs text-slate-400" id="docModalSubtitle">Applicant verification</p>
+        </div>
+        <button onclick="closeDocModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-4 flex-1 overflow-auto flex items-center justify-center bg-black/50">
+        <img id="docModalImg" src="" alt="KYC Document" class="max-w-full max-h-[68vh] rounded-xl object-contain border border-slate-800 shadow-2xl" />
+      </div>
+      <div class="p-3 border-t border-slate-800 flex items-center justify-end">
+        <button onclick="closeDocModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold cursor-pointer">
+          Close Preview
         </button>
       </div>
     </div>
@@ -1418,6 +1511,7 @@
       renderTariffCards();
       renderCrmTable();
       startFirestoreSubscription();
+      startPartnerApplicationsSubscription();
     }
 
     // 9. Firestore Subscription
@@ -2114,6 +2208,432 @@
         </div>
         `;
       }).join('');
+    }
+
+    // ================= PARTNER APPLICATIONS & ONBOARDING ENGINE =================
+    let partnerApplicationsList = [];
+    let currentAppFilter = 'ALL';
+
+    function switchFleetSubTab(tab) {
+      const btnActive = document.getElementById('subTabActiveFleet');
+      const btnOnboarding = document.getElementById('subTabOnboarding');
+      const panelActive = document.getElementById('panelActiveFleet');
+      const panelOnboarding = document.getElementById('panelPartnerOnboarding');
+
+      if (tab === 'active') {
+        btnActive.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-amber-500 text-slate-950 cursor-pointer";
+        btnOnboarding.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
+        panelActive.classList.remove('hidden');
+        panelOnboarding.classList.add('hidden');
+      } else {
+        btnActive.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-400 hover:text-white cursor-pointer";
+        btnOnboarding.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-amber-500 text-slate-950 cursor-pointer";
+        panelActive.classList.add('hidden');
+        panelOnboarding.classList.remove('hidden');
+        renderPartnerApplications();
+      }
+    }
+
+    function setApplicationFilter(filter) {
+      currentAppFilter = filter;
+      document.querySelectorAll('.app-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === filter) {
+          btn.className = "app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-amber-500 text-slate-950 cursor-pointer";
+        } else {
+          btn.className = "app-filter-btn px-3 py-1.5 rounded-xl font-bold transition bg-slate-900 border border-slate-800 text-slate-400 hover:text-white cursor-pointer";
+        }
+      });
+      renderPartnerApplications();
+    }
+
+    function startPartnerApplicationsSubscription() {
+      if (!db) return;
+      try {
+        db.collection('partner_applications').onSnapshot((snapshot) => {
+          const list = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            list.push({ id: doc.id, ...data });
+          });
+          list.sort((a, b) => (b.submittedAt || 0) - (a.submittedAt || 0));
+          partnerApplicationsList = list;
+          updatePartnerAppStats();
+          renderPartnerApplications();
+        }, (err) => {
+          console.error("Firestore partner_applications listener error:", err);
+        });
+      } catch (e) {
+        console.error("Error setting up partner_applications listener:", e);
+      }
+    }
+
+    function updatePartnerAppStats() {
+      const total = partnerApplicationsList.length;
+      const pendingKyc = partnerApplicationsList.filter(a => a.status === 'PENDING_REVIEW').length;
+      const feePending = partnerApplicationsList.filter(a => a.status === 'FEE_PAID_PENDING_APPROVAL').length;
+      const active = partnerApplicationsList.filter(a => a.status === 'ACTIVE').length;
+
+      const badge = document.getElementById('pendingPartnerAppsBadge');
+      const totalPending = pendingKyc + feePending;
+      if (badge) {
+        badge.innerText = totalPending;
+        if (totalPending > 0) {
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+
+      if (document.getElementById('statTotalApps')) document.getElementById('statTotalApps').innerText = total;
+      if (document.getElementById('statPendingKyc')) document.getElementById('statPendingKyc').innerText = pendingKyc;
+      if (document.getElementById('statFeePending')) document.getElementById('statFeePending').innerText = feePending;
+      if (document.getElementById('statActivePartners')) document.getElementById('statActivePartners').innerText = active;
+    }
+
+    function renderPartnerApplications() {
+      const container = document.getElementById('applicationsGridContainer');
+      if (!container) return;
+
+      const filtered = partnerApplicationsList.filter(a => {
+        if (currentAppFilter === 'ALL') return true;
+        return a.status === currentAppFilter;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-1 md:col-span-2 p-8 rounded-2xl bg-[#0a0f1d] border border-slate-800 text-center space-y-2">
+            <i class="fa-solid fa-id-card text-3xl text-slate-600"></i>
+            <h4 class="font-bold text-white text-sm">No Partner Applications in this filter</h4>
+            <p class="text-xs text-slate-400">Applications submitted from the Partner App will appear here in realtime.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(app => {
+        const cleanPhone = (app.phone || '').replace(/\\D/g, '').slice(-10);
+        const cleanAlt = (app.altPhone || '').replace(/\\D/g, '').slice(-10);
+        const dateStr = app.submittedAt ? new Date(app.submittedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Recent';
+
+        let statusBadge = '';
+        if (app.status === 'PENDING_REVIEW') {
+          statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-950 text-amber-400 border border-amber-700/60 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> KYC Pending Review</span>`;
+        } else if (app.status === 'KYC_APPROVED') {
+          statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-sky-950 text-sky-400 border border-sky-700/60 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span> KYC Approved (Fee Pending)</span>`;
+        } else if (app.status === 'FEE_PAID_PENDING_APPROVAL') {
+          statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-purple-950 text-purple-400 border border-purple-700/60 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce"></span> ₹8,000 Paid (Verify UTR)</span>`;
+        } else if (app.status === 'ACTIVE') {
+          statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-950 text-emerald-400 border border-emerald-700/60 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active Certified Partner</span>`;
+        } else {
+          statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-red-950 text-red-400 border border-red-700/60">Rejected</span>`;
+        }
+
+        const specialties = Array.isArray(app.specialties) ? app.specialties.join(', ') : (app.specialties || 'All Appliances');
+
+        return `
+        <div class="p-4 rounded-2xl bg-[#0a0f1d] border border-slate-800 space-y-3.5 shadow-lg">
+          <!-- Header -->
+          <div class="flex items-start justify-between gap-2 border-b border-slate-800/80 pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-black text-white text-base">${app.fullName || 'Partner Applicant'}</h4>
+                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-slate-800 text-slate-300 border border-slate-700">
+                  ${app.city || 'Kadapa'}
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Applied: <span class="font-mono text-slate-300">${dateStr}</span></p>
+            </div>
+            <div>${statusBadge}</div>
+          </div>
+
+          <!-- Contact & Credentials Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+              <span class="text-[10px] text-slate-500 font-bold uppercase">Primary Mobile & WhatsApp</span>
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-white font-bold">+91 ${cleanPhone}</span>
+                <div class="flex items-center gap-1.5">
+                  <a href="tel:+91${cleanPhone}" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center" title="Call">
+                    <i class="fa-solid fa-phone text-[10px]"></i>
+                  </a>
+                  <a href="https://wa.me/91${cleanPhone}" target="_blank" class="w-6 h-6 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-emerald-400 flex items-center justify-center" title="WhatsApp">
+                    <i class="fa-brands fa-whatsapp text-[11px]"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+              <span class="text-[10px] text-amber-400/90 font-bold uppercase">Alternative Mobile (Mandatory)</span>
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-white font-bold">+91 ${cleanAlt || 'Not provided'}</span>
+                ${cleanAlt ? `
+                <div class="flex items-center gap-1.5">
+                  <a href="tel:+91${cleanAlt}" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center" title="Call Alt">
+                    <i class="fa-solid fa-phone text-[10px]"></i>
+                  </a>
+                  <a href="https://wa.me/91${cleanAlt}" target="_blank" class="w-6 h-6 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-emerald-400 flex items-center justify-center" title="WhatsApp Alt">
+                    <i class="fa-brands fa-whatsapp text-[11px]"></i>
+                  </a>
+                </div>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience & Skills -->
+          <div class="text-xs text-slate-400 space-y-1 bg-slate-900/50 p-2.5 rounded-xl border border-slate-800/80">
+            <p><strong class="text-slate-300">Specialties:</strong> <span class="text-white">${specialties}</span></p>
+            <p><strong class="text-slate-300">Experience:</strong> <span class="text-white">${app.experienceYears || 3} years in field service</span></p>
+            <p><strong class="text-slate-300">Login PIN Set:</strong> <span class="font-mono text-amber-400 font-bold">•••• (${app.pin || '1234'})</span></p>
+          </div>
+
+          <!-- KYC Document Inspection Strip -->
+          <div class="space-y-2">
+            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-file-shield text-amber-400"></i>
+              <span>Submitted KYC Documents</span>
+            </span>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <!-- Aadhaar Document Card -->
+              <div class="p-2.5 rounded-xl bg-[#070b14] border border-slate-800 flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-300 text-[11px]">Aadhaar Card</span>
+                    <i class="fa-solid fa-id-badge text-amber-400"></i>
+                  </div>
+                  <p class="font-mono text-[11px] text-slate-400 font-bold mt-1">${app.aadhaarNumber || 'Not provided'}</p>
+                </div>
+                ${app.aadhaarDocBase64 ? `
+                  <button onclick="viewKycDoc('${app.id}', 'AADHAAR', '${encodeURIComponent(app.fullName || '')}', '${app.aadhaarNumber}')" class="w-full py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold text-[11px] transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-eye text-[10px]"></i>
+                    <span>Inspect Aadhaar</span>
+                  </button>
+                ` : `<span class="text-[10px] text-red-400 italic">No document image</span>`}
+              </div>
+
+              <!-- PAN Document Card -->
+              <div class="p-2.5 rounded-xl bg-[#070b14] border border-slate-800 flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-300 text-[11px]">PAN Card</span>
+                    <i class="fa-solid fa-credit-card text-sky-400"></i>
+                  </div>
+                  <p class="font-mono text-[11px] text-slate-400 font-bold mt-1">${app.panNumber || 'Not provided'}</p>
+                </div>
+                ${app.panDocBase64 ? `
+                  <button onclick="viewKycDoc('${app.id}', 'PAN', '${encodeURIComponent(app.fullName || '')}', '${app.panNumber}')" class="w-full py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 font-bold text-[11px] transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-eye text-[10px]"></i>
+                    <span>Inspect PAN</span>
+                  </button>
+                ` : `<span class="text-[10px] text-red-400 italic">No document image</span>`}
+              </div>
+            </div>
+          </div>
+
+          <!-- Annual Onboarding Fee Section -->
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-300">Annual Onboarding Fee (₹8,000)</span>
+              ${app.status === 'ACTIVE' 
+                ? `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>CONFIRMED</span>` 
+                : (app.feeUtr 
+                  ? `<span class="text-purple-400 font-bold font-mono">UTR: ${app.feeUtr}</span>` 
+                  : `<span class="text-amber-400 font-bold">Awaiting Payment</span>`)}
+            </div>
+            ${app.feeUtr ? `<p class="text-[11px] text-slate-400">Payment submitted by applicant. VPA Target: <span class="font-mono text-amber-400">7815851330-2@ibl</span></p>` : ''}
+          </div>
+
+          <!-- Admin Decision Action Buttons -->
+          <div class="pt-2 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+            ${app.status === 'PENDING_REVIEW' ? `
+              <div class="flex items-center gap-2 w-full">
+                <button onclick="approveKycAndRequestFee('${app.id}')" class="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer shadow-lg shadow-emerald-950">
+                  <i class="fa-solid fa-check"></i>
+                  <span>Approve KYC & Request ₹8k Fee</span>
+                </button>
+                <button onclick="rejectPartnerApp('${app.id}')" class="py-2 px-3 rounded-xl bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800 font-bold text-xs transition cursor-pointer">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            ` : ''}
+
+            ${app.status === 'KYC_APPROVED' ? `
+              <div class="flex items-center gap-2 w-full">
+                <button onclick="sendFeeReminderWhatsApp('${app.id}')" class="flex-1 py-2 px-3 rounded-xl bg-sky-950 hover:bg-sky-900 text-sky-300 border border-sky-800 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <i class="fa-brands fa-whatsapp"></i>
+                  <span>WhatsApp ₹8k Fee Reminder</span>
+                </button>
+                <button onclick="confirmFeeAndActivate('${app.id}')" class="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <i class="fa-solid fa-bolt"></i>
+                  <span>Direct Activate</span>
+                </button>
+              </div>
+            ` : ''}
+
+            ${app.status === 'FEE_PAID_PENDING_APPROVAL' ? `
+              <button onclick="confirmFeeAndActivate('${app.id}')" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-950">
+                <i class="fa-solid fa-stamp"></i>
+                <span>Confirm ₹8,000 Payment & ACTIVATE Partner</span>
+              </button>
+            ` : ''}
+
+            ${app.status === 'ACTIVE' ? `
+              <div class="flex items-center justify-between w-full">
+                <span class="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>Onboarded & Live in Fleet</span>
+                </span>
+                <a href="https://wa.me/91${cleanPhone}?text=Hello%20${encodeURIComponent(app.fullName || '')},%20AS%20Refrigerations%20dispatch%20desk%20here." target="_blank" class="py-1 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+                  <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                  <span>Message Partner</span>
+                </a>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+        `;
+      }).join('');
+    }
+
+    // Modal Document Viewer
+    function viewKycDoc(appId, docType, encodedName, docNumber) {
+      const app = partnerApplicationsList.find(a => a.id === appId);
+      if (!app) return;
+      const modal = document.getElementById('docViewerModal');
+      const title = document.getElementById('docModalTitle');
+      const subtitle = document.getElementById('docModalSubtitle');
+      const img = document.getElementById('docModalImg');
+
+      const name = decodeURIComponent(encodedName);
+      if (docType === 'AADHAAR') {
+        title.innerText = `Aadhaar Card Preview - ${name}`;
+        subtitle.innerText = `Aadhaar Number: ${docNumber || app.aadhaarNumber}`;
+        img.src = app.aadhaarDocBase64 || '';
+      } else {
+        title.innerText = `PAN Card Preview - ${name}`;
+        subtitle.innerText = `PAN Number: ${docNumber || app.panNumber}`;
+        img.src = app.panDocBase64 || '';
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeDocModal() {
+      const modal = document.getElementById('docViewerModal');
+      if (modal) modal.classList.add('hidden');
+      const img = document.getElementById('docModalImg');
+      if (img) img.src = '';
+    }
+
+    // Admin Decision Actions
+    function approveKycAndRequestFee(appId) {
+      const app = partnerApplicationsList.find(a => a.id === appId);
+      if (!app) return;
+      if (!confirm(`Approve KYC documents for ${app.fullName} and request ₹8,000 Annual Onboarding Fee?`)) return;
+
+      const cleanPhone = (app.phone || '').replace(/\\D/g, '').slice(-10);
+      if (db) {
+        db.collection('partner_applications').document(cleanPhone).set({
+          status: 'KYC_APPROVED',
+          reviewedAt: Date.now(),
+          reviewer: currentSessionUser ? currentSessionUser.name : 'Shaik Sameer'
+        }, { merge: true }).then(() => {
+          showAdminToast(`KYC Approved for ${app.fullName}!`);
+          const msg = `Hello ${app.fullName}, your KYC documents (Aadhaar & PAN) for the AS Refrigerations Partner Network have been verified and APPROVED! Please open your AS Refrigerations Partner App to complete the ₹8,000 Annual Onboarding Fee via UPI (7815851330-2@ibl) and submit your 12-digit UTR.`;
+          window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+        }).catch(err => {
+          alert('Failed to update status: ' + err.message);
+        });
+      }
+    }
+
+    function confirmFeeAndActivate(appId) {
+      const app = partnerApplicationsList.find(a => a.id === appId);
+      if (!app) return;
+      const cleanPhone = (app.phone || '').replace(/\\D/g, '').slice(-10);
+
+      const promptMsg = app.feeUtr 
+        ? `Confirm receipt of ₹8,000 (UTR: ${app.feeUtr}) into AS REFRIGERATIONS (7815851330-2@ibl) and ACTIVATE partner ${app.fullName}?` 
+        : `Confirm receipt of ₹8,000 into AS REFRIGERATIONS (7815851330-2@ibl) and ACTIVATE partner ${app.fullName}?`;
+
+      if (!confirm(promptMsg)) return;
+
+      const city = (app.city || 'kadapa').toLowerCase();
+      const newPartnerDoc = {
+        id: 'partner-' + cleanPhone,
+        name: app.fullName,
+        phone: '+91 ' + cleanPhone,
+        altPhone: '+91 ' + (app.altPhone || '').replace(/\\D/g, '').slice(-10),
+        city: city,
+        role: `Certified Partner Technician (${Array.isArray(app.specialties) ? app.specialties.join(', ') : 'AC, Fridge'})`,
+        rating: '5.0',
+        jobs: '0',
+        address: `${app.city || 'Kadapa'} Territory`,
+        status: 'AVAILABLE',
+        isActive: true,
+        isOnline: true,
+        radarActive: true,
+        pin: app.pin || '1234',
+        feePaid: 8000,
+        feeUtr: app.feeUtr || 'ADMIN_CONFIRMED',
+        activatedAt: Date.now(),
+        lat: city === 'bangalore' ? 13.0158 : 14.4673,
+        lng: city === 'bangalore' ? 77.6377 : 78.8242
+      };
+
+      if (db) {
+        // 1. Update partner_applications
+        db.collection('partner_applications').document(cleanPhone).set({
+          status: 'ACTIVE',
+          feeStatus: 'VERIFIED',
+          activatedAt: Date.now()
+        }, { merge: true });
+
+        // 2. Write to partners collection for mobile app login
+        db.collection('partners').document(cleanPhone).set(newPartnerDoc, { merge: true });
+      }
+
+      // 3. Add to local fleet roster so they can be assigned leads immediately
+      const fleet = getStoredFleet();
+      const existingIdx = fleet.findIndex(f => (f.phone || '').replace(/\\D/g, '').slice(-10) === cleanPhone);
+      if (existingIdx >= 0) {
+        fleet[existingIdx] = { ...fleet[existingIdx], ...newPartnerDoc };
+      } else {
+        fleet.push(newPartnerDoc);
+      }
+      saveStoredFleet(fleet);
+      renderFleetCards();
+
+      showAdminToast(`Partner ${app.fullName} activated successfully!`);
+      const congratsMsg = `Congratulations ${app.fullName}! Your ₹8,000 annual onboarding fee has been confirmed and your AS Refrigerations Partner Account is now ACTIVE. You can now log into the AS Refrigerations Partner App with your Mobile (${cleanPhone}) and 4-digit PIN to start accepting doorstep repair leads!`;
+      window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(congratsMsg)}`, '_blank');
+    }
+
+    function sendFeeReminderWhatsApp(appId) {
+      const app = partnerApplicationsList.find(a => a.id === appId);
+      if (!app) return;
+      const cleanPhone = (app.phone || '').replace(/\\D/g, '').slice(-10);
+      const msg = `Hi ${app.fullName}, your AS Refrigerations partner KYC is approved! Please pay the ₹8,000 annual onboarding fee to UPI ID: 7815851330-2@ibl (Shaik Sameer) and enter your 12-digit UTR in your Partner App to activate your account.`;
+      window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function rejectPartnerApp(appId) {
+      const app = partnerApplicationsList.find(a => a.id === appId);
+      if (!app) return;
+      const reason = prompt("Enter reason for rejection (e.g., Unclear Aadhaar card, Invalid PAN number):", "Document verification failed. Please upload clearer photo.");
+      if (!reason) return;
+
+      const cleanPhone = (app.phone || '').replace(/\\D/g, '').slice(-10);
+      if (db) {
+        db.collection('partner_applications').document(cleanPhone).set({
+          status: 'REJECTED',
+          rejectionReason: reason,
+          rejectedAt: Date.now()
+        }, { merge: true }).then(() => {
+          showAdminToast(`Application rejected.`);
+          const msg = `Hello ${app.fullName}, your partner application for AS Refrigerations was not approved for the following reason: "${reason}". Please open the Partner App to re-submit with correct documents.`;
+          window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+        });
+      }
     }
 
     // 17. Tariffs Render
