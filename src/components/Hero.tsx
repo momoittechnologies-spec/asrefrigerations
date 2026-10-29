@@ -265,38 +265,70 @@ export const Hero: React.FC<HeroProps> = ({
               </span>
             </div>
 
-            {/* Native Mobile App VIP Loyalty Banner */}
-            <div className="pt-2">
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-slate-900 border border-emerald-500/40 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0 text-xl shadow-xs">
-                    📱
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-black text-white text-sm">AS Customer Android App</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500 text-slate-950 uppercase tracking-wide">
-                        ₹100 OFF
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-300 mt-0.5">
-                      Live GPS arrival radar, 1-tap re-booking & 0% doorstep UPI bills.
-                    </p>
-                  </div>
-                </div>
+            {/* Native Mobile App VIP Loyalty Banner - Mobile-First & Desktop Optimized */}
+            <div className="pt-3">
+              <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-950/80 via-slate-900 to-slate-950 border border-emerald-500/40 shadow-2xl relative overflow-hidden text-left">
+                {/* Decorative ambient glow */}
+                <div className="absolute -top-12 -right-12 w-36 h-36 bg-emerald-500/15 rounded-full blur-2xl pointer-events-none" />
 
-                <div className="flex items-center gap-2.5 shrink-0 flex-wrap sm:flex-nowrap">
-                  <GooglePlayBadge
-                    width="198.59px"
-                    height="57.36px"
-                    className="shrink-0"
-                  />
-                  <a
-                    href="#mobile-app"
-                    className="inline-flex items-center justify-center px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold transition shrink-0"
-                  >
-                    App Details →
-                  </a>
+                <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  {/* Left: App Identity & Rating */}
+                  <div className="flex items-start sm:items-center gap-3.5">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-800/90 p-1.5 border border-emerald-500/40 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/10">
+                      <img 
+                        src="/as-logo-square.png" 
+                        alt="AS Refrigerations App Icon" 
+                        className="w-full h-full object-cover rounded-xl"
+                        loading="eager"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-black text-white text-sm sm:text-base tracking-tight">
+                          AS Customer Android App
+                        </span>
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500 text-slate-950 uppercase tracking-wide shrink-0 shadow-xs">
+                          ₹100 OFF
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-300 mt-0.5 leading-relaxed">
+                        Live GPS technician arrival radar, 1-tap re-booking &amp; 0% doorstep UPI bills.
+                      </p>
+                      
+                      {/* Trust badge row on mobile */}
+                      <div className="flex items-center gap-2 mt-1.5 text-[11px] font-bold">
+                        <span className="text-amber-400">★ 4.9 (928+ reviews)</span>
+                        <span className="text-slate-600">•</span>
+                        <span className="text-emerald-400 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3" />
+                          <span>Google Play Official</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Touch-optimized Action Area */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-2.5 shrink-0 pt-2 sm:pt-0 border-t border-slate-800/80 sm:border-0 w-full sm:w-auto">
+                    <div className="w-full sm:w-auto flex justify-center">
+                      <GooglePlayBadge
+                        width="198.59px"
+                        height="57.36px"
+                        className="w-[185px] sm:w-[198.59px] h-auto aspect-[198.59/57.36] shadow-xl hover:shadow-emerald-500/20"
+                      />
+                    </div>
+                    <a
+                      href="#mobile-app"
+                      className="text-xs text-slate-400 hover:text-emerald-300 transition py-1 text-center font-bold sm:hidden"
+                    >
+                      View Features &amp; Partner APK →
+                    </a>
+                    <a
+                      href="#mobile-app"
+                      className="hidden sm:inline-flex items-center justify-center px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold transition shrink-0"
+                    >
+                      App Details →
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

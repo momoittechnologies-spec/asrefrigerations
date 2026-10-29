@@ -13,11 +13,12 @@ import {
   Clock,
   ArrowRight,
   CheckCircle2,
-  ExternalLink
+  ExternalLink,
+  Zap,
+  Check
 } from 'lucide-react';
 import { GooglePlayBadge } from './GooglePlayBadge';
 
-// No simulator prop — this component is self-contained.
 export const AppDownloadShowcase: React.FC = () => {
   const features = [
     {
@@ -76,10 +77,10 @@ export const AppDownloadShowcase: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-14 sm:mb-20">
+        <div className="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-black uppercase tracking-wider">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>Now on Google Play Store • Official Android App</span>
+            <span>Now on Google Play Store • Official Android Apps</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
@@ -95,50 +96,79 @@ export const AppDownloadShowcase: React.FC = () => {
         {/* Download Cards - 3 Column Grid for Customer (Play Store), Partner (APK) & iOS (Coming Soon) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
 
-          {/* 1. Customer App (Google Play Store Official Badge) */}
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-emerald-500/50 hover:border-emerald-400 transition-all duration-300 shadow-2xl relative overflow-hidden group flex flex-col justify-between">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+          {/* 1. Customer App (Google Play Store Official Spotlight Card) */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-2 border-emerald-500/60 hover:border-emerald-400 transition-all duration-300 shadow-2xl relative overflow-hidden group flex flex-col justify-between">
+            {/* Top spotlight ribbon */}
+            <div className="absolute top-0 right-0 bg-gradient-to-l from-emerald-500 to-teal-500 text-slate-950 font-black text-[10px] uppercase px-3.5 py-1 rounded-bl-xl shadow-md flex items-center gap-1">
+              <Sparkles className="w-3 h-3 fill-slate-950" />
+              <span>Google Play Verified</span>
+            </div>
 
             <div>
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-11 h-11 rounded-xl bg-slate-800 p-2 border border-emerald-500/30 flex items-center justify-center shrink-0 shadow-md">
-                    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none">
-                      <path d="M4 3.5C4 2.8 4.6 2.3 5.3 2.6L16.2 9.2L12 13.4L4 3.5Z" fill="#00D2FF"/>
-                      <path d="M16.2 9.2L20.5 11.8C21.2 12.2 21.2 13.2 20.5 13.6L16.2 16.2L12 12.7L16.2 9.2Z" fill="#FFCE00"/>
-                      <path d="M4 21.9C4 22.6 4.6 23.1 5.3 22.8L16.2 16.2L12 12L4 21.9Z" fill="#FF3A44"/>
-                      <path d="M12 12.7L4 3.5C3.8 3.8 3.7 4.2 3.7 4.7V20.7C3.7 21.2 3.8 21.6 4 21.9L12 12.7Z" fill="#00E676"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-extrabold block">Customer App</span>
-                    <h4 className="text-base font-black text-white leading-tight">AS REFRIGERATIONS</h4>
-                  </div>
+              {/* App Identity Row */}
+              <div className="flex items-center gap-3.5 mb-4 pt-1">
+                <div className="w-14 h-14 rounded-2xl bg-slate-800 p-1.5 border border-emerald-500/40 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                  <img 
+                    src="/as-logo-square.png" 
+                    alt="AS Refrigerations Customer App" 
+                    className="w-full h-full object-cover rounded-xl"
+                  />
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                  Google Play
+                <div>
+                  <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-extrabold block">
+                    Customer App
+                  </span>
+                  <h4 className="text-lg font-black text-white leading-tight">
+                    AS REFRIGERATIONS
+                  </h4>
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    Doorstep AC &amp; Appliance Service
+                  </span>
+                </div>
+              </div>
+
+              {/* Rating & Stats Pill */}
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 mb-4 text-xs">
+                <div className="flex items-center gap-1.5 text-amber-400 font-black">
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <span>4.9 / 5.0</span>
+                </div>
+                <span className="text-slate-600">•</span>
+                <span className="text-slate-300 font-semibold">16 MB</span>
+                <span className="text-slate-600">•</span>
+                <span className="text-emerald-400 font-bold flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Play Protect</span>
                 </span>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed mb-3">
+              <p className="text-xs text-slate-300 leading-relaxed mb-4">
                 Fast-track 60-min express repair booking, live 6-stage technician GPS radar, and direct 0% UPI door payment with instant ₹100 app discount.
               </p>
 
-              <div className="flex items-center gap-1.5 text-amber-400 font-black text-[11px] mb-5">
-                <Star className="w-3.5 h-3.5 fill-amber-400" />
-                <span>4.9 / 5.0 · Google Play Store · Android 7.0+</span>
+              {/* Micro feature chips */}
+              <div className="grid grid-cols-2 gap-2 mb-5 text-[11px] font-semibold text-slate-300">
+                <div className="flex items-center gap-1.5 p-1.5 rounded-lg bg-white/5 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span className="truncate">Live GPS Radar</span>
+                </div>
+                <div className="flex items-center gap-1.5 p-1.5 rounded-lg bg-white/5 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span className="truncate">Instant ₹100 Off</span>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-2.5 pt-2">
-              {/* Official Google Play Badge */}
-              <GooglePlayBadge
-                url="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
-                width={204}
-                height={59}
-                className="w-full max-w-[204px]"
-              />
+            {/* CTA: Official Google Play Badge */}
+            <div className="flex flex-col items-center gap-3 pt-3 border-t border-slate-800/80">
+              <div className="w-full flex justify-center">
+                <GooglePlayBadge
+                  url="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
+                  width="198.59px"
+                  height="57.36px"
+                  className="w-[190px] sm:w-[198.59px] h-auto aspect-[198.59/57.36] shadow-xl shadow-emerald-950/60"
+                />
+              </div>
 
               {/* Direct APK fallback link */}
               <a
@@ -154,85 +184,127 @@ export const AppDownloadShowcase: React.FC = () => {
           </div>
 
           {/* 2. Partner Android APK Card (Kept as APK since Partner App is in review) */}
-          <div className="p-6 rounded-2xl bg-slate-900/90 border-2 border-amber-500/40 hover:border-amber-500/70 transition-all duration-300 shadow-xl relative overflow-hidden group flex flex-col justify-between">
+          <div className="p-6 sm:p-7 rounded-3xl bg-slate-900/90 border-2 border-amber-500/40 hover:border-amber-500/70 transition-all duration-300 shadow-xl relative overflow-hidden group flex flex-col justify-between">
+            <div className="absolute top-0 right-0 bg-amber-500/20 text-amber-300 font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl border-b border-l border-amber-500/30">
+              Field APK
+            </div>
+
             <div>
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-11 h-11 rounded-xl bg-slate-800 p-2 border border-amber-500/30 flex items-center justify-center shrink-0 shadow-md">
-                    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none">
-                      <path d="M4 3.5C4 2.8 4.6 2.3 5.3 2.6L16.2 9.2L12 13.4L4 3.5Z" fill="#00D2FF"/>
-                      <path d="M16.2 9.2L20.5 11.8C21.2 12.2 21.2 13.2 20.5 13.6L16.2 16.2L12 12.7L16.2 9.2Z" fill="#FFCE00"/>
-                      <path d="M4 21.9C4 22.6 4.6 23.1 5.3 22.8L16.2 16.2L12 12L4 21.9Z" fill="#FF3A44"/>
-                      <path d="M12 12.7L4 3.5C3.8 3.8 3.7 4.2 3.7 4.7V20.7C3.7 21.2 3.8 21.6 4 21.9L12 12.7Z" fill="#00E676"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-amber-400 uppercase tracking-wider font-extrabold block">Technician Hub</span>
-                    <h4 className="text-base font-black text-white leading-tight">AS PARTNER</h4>
-                  </div>
+              {/* App Identity Row */}
+              <div className="flex items-center gap-3.5 mb-4 pt-1">
+                <div className="w-14 h-14 rounded-2xl bg-slate-800 p-1.5 border border-amber-500/30 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/10">
+                  <img 
+                    src="/as-logo-square.png" 
+                    alt="AS Refrigerations Partner App" 
+                    className="w-full h-full object-cover rounded-xl"
+                  />
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
-                  Field APK
-                </span>
+                <div>
+                  <span className="text-[10px] text-amber-400 uppercase tracking-wider font-extrabold block">
+                    Technician Hub
+                  </span>
+                  <h4 className="text-lg font-black text-white leading-tight">
+                    AS PARTNER
+                  </h4>
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    Service Dispatch &amp; Quotations
+                  </span>
+                </div>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed mb-3">
+              {/* Rating & Stats Pill */}
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 mb-4 text-xs">
+                <div className="flex items-center gap-1.5 text-amber-400 font-black">
+                  <Star className="w-4 h-4 fill-amber-400" />
+                  <span>Field Edition</span>
+                </div>
+                <span className="text-slate-600">•</span>
+                <span className="text-slate-300 font-semibold">18.2 MB</span>
+                <span className="text-slate-600">•</span>
+                <span className="text-amber-400 font-bold">In Review</span>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed mb-4">
                 Dedicated for Shaik Sameer (Kadapa) &amp; Syed (Bangalore) partner technicians: live leads radar, GPS turn-by-turn route, dynamic UPI QR &amp; earnings ledger.
               </p>
 
-              <div className="flex items-center gap-1.5 text-amber-400 font-black text-[11px] mb-5">
-                <Star className="w-3.5 h-3.5 fill-amber-400" />
-                <span>Field Partner Edition · Android 7.0+ · 18.2 MB</span>
+              {/* Micro feature chips */}
+              <div className="grid grid-cols-2 gap-2 mb-5 text-[11px] font-semibold text-slate-300">
+                <div className="flex items-center gap-1.5 p-1.5 rounded-lg bg-white/5 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span className="truncate">Instant Leads Radar</span>
+                </div>
+                <div className="flex items-center gap-1.5 p-1.5 rounded-lg bg-white/5 border border-white/5">
+                  <Check className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span className="truncate">NPCI Dynamic QR</span>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-2 pt-2">
+            {/* Action CTA */}
+            <div className="flex flex-col items-center gap-2 pt-3 border-t border-slate-800/80">
               <a
                 href="/downloads/as-refrigerations-partner.apk"
                 download="as-refrigerations-partner.apk"
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-black text-xs shadow-lg shadow-amber-600/25 active:scale-95 transition"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-black text-xs shadow-lg shadow-amber-600/25 active:scale-95 transition"
               >
                 <Download className="w-4 h-4" />
                 <span>Download Partner APK</span>
               </a>
               <span className="text-[10px] text-slate-400">
-                Google Play listing in review
+                Play Store listing currently in Google review
               </span>
             </div>
           </div>
 
           {/* 3. iOS Coming Soon Card */}
-          <div className="p-6 rounded-2xl bg-slate-900/90 border-2 border-slate-700/60 hover:border-sky-500/40 transition-all duration-300 shadow-xl relative overflow-hidden group flex flex-col justify-between">
+          <div className="p-6 sm:p-7 rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-sky-500/40 transition-all duration-300 shadow-xl relative overflow-hidden group flex flex-col justify-between">
+            <div className="absolute top-0 right-0 bg-sky-500/20 text-sky-300 font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl border-b border-l border-sky-500/30">
+              Q1 2027
+            </div>
+
             <div>
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-11 h-11 rounded-xl bg-slate-800 p-2 border border-slate-700 flex items-center justify-center shrink-0 shadow-md">
-                    <svg viewBox="0 0 24 24" className="w-7 h-7 fill-white">
-                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.84c.62-.76 1.05-1.81.93-2.84-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.74-.96 2.76 1.02.08 2.07-.53 2.7-1.29z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">Apple Ecosystem</span>
-                    <h4 className="text-base font-black text-white leading-tight">Apple App Store</h4>
-                  </div>
+              {/* App Identity Row */}
+              <div className="flex items-center gap-3.5 mb-4 pt-1">
+                <div className="w-14 h-14 rounded-2xl bg-slate-800 p-2 border border-slate-700 flex items-center justify-center shrink-0 shadow-md">
+                  <svg viewBox="0 0 24 24" className="w-8 h-8 fill-white">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.84c.62-.76 1.05-1.81.93-2.84-.91.04-2.02.61-2.67 1.37-.58.67-1.1 1.74-.96 2.76 1.02.08 2.07-.53 2.7-1.29z"/>
+                  </svg>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-sky-500/20 text-sky-400 border border-sky-500/30 shrink-0">
-                  Q1 2027
-                </span>
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">
+                    Apple Ecosystem
+                  </span>
+                  <h4 className="text-lg font-black text-white leading-tight">
+                    Apple App Store
+                  </h4>
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    iOS &amp; iPadOS Client
+                  </span>
+                </div>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed mb-3">
+              {/* Stats Pill */}
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 mb-4 text-xs text-sky-400 font-semibold">
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Swift &amp; SwiftUI</span>
+                </div>
+                <span className="text-slate-600">•</span>
+                <span>In Planning</span>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed mb-4">
                 Native Swift &amp; SwiftUI iOS client for iPhone &amp; iPad. Scheduled under Apple Developer Organization Program.
               </p>
 
-              <div className="flex items-center gap-1.5 text-sky-400 font-semibold text-[11px] mb-5">
-                <Clock className="w-3.5 h-3.5" />
-                <span>Development begins Q4 2026</span>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-400 leading-relaxed mb-4">
+                Scheduled release for iPhone users following Android launch in South India.
               </div>
             </div>
 
-            <div className="pt-2">
-              <div className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800/80 text-slate-400 font-black text-xs border border-slate-700 cursor-not-allowed select-none">
+            <div className="pt-3 border-t border-slate-800/80">
+              <div className="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-slate-800/80 text-slate-400 font-black text-xs border border-slate-700 cursor-not-allowed select-none">
                 <span>🍏 iOS App — Coming Soon</span>
               </div>
             </div>

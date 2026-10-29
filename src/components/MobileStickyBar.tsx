@@ -241,26 +241,40 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
                 </span>
               </a>
 
-              {/* Download Android App Button */}
+              {/* Official Google Play Store App Button */}
               <a
                 href="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setSupportSheetOpen(false)}
-                className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 text-white flex items-center justify-between active:scale-98 transition shadow-md"
+                className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border border-emerald-500/50 text-white flex items-center justify-between active:scale-98 transition shadow-xl group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center font-bold text-base">
-                    📱
+                  <div className="w-11 h-11 rounded-xl bg-slate-800 p-1 border border-emerald-500/30 flex items-center justify-center shrink-0 shadow-md">
+                    <img 
+                      src="/as-logo-square.png" 
+                      alt="AS App Icon" 
+                      className="w-full h-full object-cover rounded-lg"
+                    />
                   </div>
                   <div className="text-left">
-                    <div className="text-[10px] uppercase font-bold text-emerald-200">Official Android App</div>
-                    <div className="text-sm font-black text-white">Get on Google Play</div>
+                    <div className="text-[10px] uppercase font-extrabold text-emerald-400 flex items-center gap-1.5">
+                      <span>Google Play</span>
+                      <span className="text-amber-400">★ 4.9</span>
+                    </div>
+                    <div className="text-sm font-black text-white leading-tight">AS Refrigerations App</div>
+                    <div className="text-[11px] text-slate-300">Live GPS Radar • ₹100 Off</div>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-emerald-950 bg-white px-2.5 py-1 rounded-lg">
-                  Play Store
-                </span>
+                <div className="shrink-0 pl-2">
+                  <img
+                    src="/google-play-badge.svg"
+                    alt="Get it on Google Play"
+                    className="h-9 w-auto object-contain drop-shadow"
+                    width="110"
+                    height="32"
+                  />
+                </div>
               </a>
 
               {/* WhatsApp Chat Button */}
