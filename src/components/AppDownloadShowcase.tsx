@@ -183,16 +183,17 @@ export const AppDownloadShowcase: React.FC = () => {
             </div>
           </div>
 
-          {/* 2. Partner Android APK Card (Kept as APK since Partner App is in review) */}
-          <div className="p-6 sm:p-7 rounded-3xl bg-slate-900/90 border-2 border-amber-500/40 hover:border-amber-500/70 transition-all duration-300 shadow-xl relative overflow-hidden group flex flex-col justify-between">
-            <div className="absolute top-0 right-0 bg-amber-500/20 text-amber-300 font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl border-b border-l border-amber-500/30">
-              Field APK
+          {/* 2. Partner Android App (Google Play Store Badge + Direct APK) */}
+          <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-2 border-amber-500/50 hover:border-amber-400 transition-all duration-300 shadow-xl relative overflow-hidden group flex flex-col justify-between">
+            <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-yellow-500 text-slate-950 font-black text-[10px] uppercase px-3.5 py-1 rounded-bl-xl shadow-md flex items-center gap-1">
+              <Sparkles className="w-3 h-3 fill-slate-950" />
+              <span>Google Play Partner</span>
             </div>
 
             <div>
               {/* App Identity Row */}
               <div className="flex items-center gap-3.5 mb-4 pt-1">
-                <div className="w-14 h-14 rounded-2xl bg-slate-800 p-1.5 border border-amber-500/30 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/10">
+                <div className="w-14 h-14 rounded-2xl bg-slate-800 p-1.5 border border-amber-500/40 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/10">
                   <img 
                     src="/as-logo-square.png" 
                     alt="AS Refrigerations Partner App" 
@@ -221,7 +222,10 @@ export const AppDownloadShowcase: React.FC = () => {
                 <span className="text-slate-600">•</span>
                 <span className="text-slate-300 font-semibold">18.2 MB</span>
                 <span className="text-slate-600">•</span>
-                <span className="text-amber-400 font-bold">In Review</span>
+                <span className="text-emerald-400 font-bold flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Play Protect</span>
+                </span>
               </div>
 
               <p className="text-xs text-slate-300 leading-relaxed mb-4">
@@ -241,19 +245,27 @@ export const AppDownloadShowcase: React.FC = () => {
               </div>
             </div>
 
-            {/* Action CTA */}
-            <div className="flex flex-col items-center gap-2 pt-3 border-t border-slate-800/80">
+            {/* Action CTA: Official Google Play Badge + Fallback APK */}
+            <div className="flex flex-col items-center gap-3 pt-3 border-t border-slate-800/80">
+              <div className="w-full flex justify-center">
+                <GooglePlayBadge
+                  url="https://play.google.com/store/apps/details?id=com.asrefrigerations.partner"
+                  width="198.59px"
+                  height="57.36px"
+                  className="w-[190px] sm:w-[198.59px] h-auto aspect-[198.59/57.36] shadow-xl shadow-amber-950/60"
+                  analyticsLabel="Google Play Partner App"
+                />
+              </div>
+
               <a
                 href="/downloads/as-refrigerations-partner.apk"
                 download="as-refrigerations-partner.apk"
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-black text-xs shadow-lg shadow-amber-600/25 active:scale-95 transition"
+                className="text-[11px] text-slate-400 hover:text-amber-300 underline font-semibold flex items-center gap-1 transition"
+                title="Download direct Partner APK file"
               >
-                <Download className="w-4 h-4" />
-                <span>Download Partner APK</span>
+                <Download className="w-3 h-3" />
+                <span>Or download direct Partner APK (18 MB)</span>
               </a>
-              <span className="text-[10px] text-slate-400">
-                Play Store listing currently in Google review
-              </span>
             </div>
           </div>
 
