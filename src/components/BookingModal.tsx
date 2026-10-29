@@ -398,12 +398,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               </div>
               <a
-                href="/downloads/as-refrigerations-customer.apk"
-                download="as-refrigerations-customer.apk"
+                href="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] shrink-0 transition flex items-center gap-1 shadow-xs"
               >
-                <span>Get App</span>
-                <Download className="w-3 h-3" />
+                <span>Google Play</span>
               </a>
             </div>
 
@@ -808,12 +808,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </p>
 
               <a
-                href="/downloads/as-refrigerations-customer.apk"
-                download="as-refrigerations-customer.apk"
-                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition active:scale-95"
+                href="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 rounded-xl bg-slate-950 border border-emerald-500/50 hover:border-emerald-400 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition active:scale-95"
               >
-                <Download className="w-4 h-4" />
-                <span>Download AS Customer App (18 MB)</span>
+                <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none">
+                  <path d="M4 3.5C4 2.8 4.6 2.3 5.3 2.6L16.2 9.2L12 13.4L4 3.5Z" fill="#00D2FF"/>
+                  <path d="M16.2 9.2L20.5 11.8C21.2 12.2 21.2 13.2 20.5 13.6L16.2 16.2L12 12.7L16.2 9.2Z" fill="#FFCE00"/>
+                  <path d="M4 21.9C4 22.6 4.6 23.1 5.3 22.8L16.2 16.2L12 12L4 21.9Z" fill="#FF3A44"/>
+                  <path d="M12 12.7L4 3.5C3.8 3.8 3.7 4.2 3.7 4.7V20.7C3.7 21.2 3.8 21.6 4 21.9L12 12.7Z" fill="#00E676"/>
+                </svg>
+                <span>Get Customer App on Google Play</span>
               </a>
             </div>
 

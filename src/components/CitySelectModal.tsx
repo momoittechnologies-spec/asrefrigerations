@@ -237,13 +237,19 @@ export const CitySelectModal: React.FC<CitySelectModalProps> = ({
             </div>
           </div>
           <a
-            href="/downloads/as-refrigerations-customer.apk"
-            download="as-refrigerations-customer.apk"
+            href="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shrink-0 shadow-md shadow-emerald-600/20 active:scale-95 transition cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-950 border border-emerald-500/50 hover:border-emerald-400 text-white font-black text-xs shrink-0 shadow-md shadow-emerald-600/20 active:scale-95 transition cursor-pointer"
           >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download APK</span>
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="none">
+              <path d="M4 3.5C4 2.8 4.6 2.3 5.3 2.6L16.2 9.2L12 13.4L4 3.5Z" fill="#00D2FF"/>
+              <path d="M16.2 9.2L20.5 11.8C21.2 12.2 21.2 13.2 20.5 13.6L16.2 16.2L12 12.7L16.2 9.2Z" fill="#FFCE00"/>
+              <path d="M4 21.9C4 22.6 4.6 23.1 5.3 22.8L16.2 16.2L12 12L4 21.9Z" fill="#FF3A44"/>
+              <path d="M12 12.7L4 3.5C3.8 3.8 3.7 4.2 3.7 4.7V20.7C3.7 21.2 3.8 21.6 4 21.9L12 12.7Z" fill="#00E676"/>
+            </svg>
+            <span>Google Play</span>
           </a>
         </div>
       </div>

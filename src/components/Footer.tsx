@@ -202,8 +202,10 @@ export const Footer: React.FC<FooterProps> = ({
                 </div>
                 <div className="grid grid-cols-2 gap-2 pt-1">
                   <a
-                    href="/downloads/as-refrigerations-customer.apk"
-                    download="as-refrigerations-customer.apk"
+                    href="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Get Customer App on Google Play Store"
                     className="p-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/50 transition flex items-center gap-2 group text-left"
                   >
                     <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none">
@@ -214,7 +216,7 @@ export const Footer: React.FC<FooterProps> = ({
                     </svg>
                     <div>
                       <div className="text-[9px] text-emerald-400 font-bold leading-none">Customer App</div>
-                      <div className="text-[11px] font-bold text-white group-hover:text-emerald-400 transition leading-tight">APK Download</div>
+                      <div className="text-[11px] font-bold text-white group-hover:text-emerald-400 transition leading-tight">Google Play</div>
                     </div>
                   </a>
 

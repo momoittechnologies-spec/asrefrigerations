@@ -243,8 +243,9 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
 
               {/* Download Android App Button */}
               <a
-                href="/downloads/as-refrigerations-customer.apk"
-                download="as-refrigerations-customer.apk"
+                href="https://play.google.com/store/apps/details?id=com.asrefrigerations.customer"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setSupportSheetOpen(false)}
                 className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 text-white flex items-center justify-between active:scale-98 transition shadow-md"
               >
@@ -253,12 +254,12 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
                     📱
                   </div>
                   <div className="text-left">
-                    <div className="text-[10px] uppercase font-bold text-emerald-200">Native Android App</div>
-                    <div className="text-sm font-black text-white">Download APK (v1.0)</div>
+                    <div className="text-[10px] uppercase font-bold text-emerald-200">Official Android App</div>
+                    <div className="text-sm font-black text-white">Get on Google Play</div>
                   </div>
                 </div>
                 <span className="text-xs font-bold text-emerald-950 bg-white px-2.5 py-1 rounded-lg">
-                  18 MB • Direct Install
+                  Play Store
                 </span>
               </a>
 
