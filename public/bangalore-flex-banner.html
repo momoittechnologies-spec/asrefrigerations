@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AS Refrigerations — Bangalore Flex Banner Design Studio (Print-Ready 8x4 Ft & Standee)</title>
+  <title>AS Refrigerations — Bangalore Flex Banner Design Studio</title>
   <link rel="icon" type="image/png" href="/as-logo-square.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,7 +57,7 @@
       border: 1.5px solid var(--primary);
       border-radius: 14px;
       padding: 6px;
-      object-contain: contain;
+      object-fit: contain;
     }
     .brand-title h1 {
       font-size: 24px;
@@ -116,6 +116,27 @@
     .btn-secondary:hover {
       background: #334155;
       color: #FFF;
+    }
+
+    /* Comparison Banner Alert */
+    .recommendation-alert {
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.15), rgba(56, 189, 248, 0.15));
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 14px 20px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .alert-text {
+      font-size: 13px;
+      color: #E2E8F0;
+    }
+    .alert-text strong {
+      color: #10B981;
     }
 
     /* Tabs */
@@ -200,6 +221,15 @@
       border-radius: 20px;
       border: 1px solid rgba(56, 189, 248, 0.3);
     }
+    .badge-rec {
+      font-size: 11px;
+      font-weight: 800;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34D399;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
     .banner-frame-container {
       width: 100%;
       background: #030712;
@@ -279,7 +309,7 @@
         color: #000;
         padding: 0;
       }
-      header, .tabs-bar, .stage-header, .grid-info, footer {
+      header, .tabs-bar, .stage-header, .grid-info, .recommendation-alert {
         display: none !important;
       }
       .preview-card {
@@ -316,11 +346,8 @@
         </div>
       </div>
       <div class="header-actions">
-        <a href="/bangalore-flex-banner-8x4ft.svg" download="as-refrigerations-bangalore-8x4ft.svg" class="btn btn-primary" title="Download master vector SVG for flex printing">
-          <span>⬇️</span> Download 8x4 Ft SVG
-        </a>
-        <a href="/bangalore-standee-banner-3x6ft.svg" download="as-refrigerations-bangalore-standee-3x6ft.svg" class="btn btn-emerald" title="Download vertical standee banner SVG">
-          <span>⬇️</span> Download Standee SVG
+        <a href="/bangalore-flex-banner-minimal-8x4ft.svg" download="as-refrigerations-bangalore-minimal-8x4ft.svg" class="btn btn-primary" title="Download Minimal Executive 8x4 Ft SVG">
+          <span>⬇️</span> Download Minimal SVG (Best)
         </a>
         <button onclick="window.print()" class="btn btn-secondary" title="Direct print or Save to PDF">
           <span>🖨️</span> Print / Save PDF
@@ -328,54 +355,88 @@
       </div>
     </header>
 
+    <!-- Why Minimalist Works Better for Outdoor Flex -->
+    <div class="recommendation-alert">
+      <div class="alert-text">
+        <strong>💡 The 3-Second Outdoor Rule:</strong> People driving by in cars or scooters on Kammanahalli roads only look at a banner for 3 seconds. The <strong>Minimal Executive Edition</strong> removes clutter, makes the phone number <strong>30% bigger</strong>, and focuses on 3 clean offerings with generous breathing room.
+      </div>
+    </div>
+
     <!-- Tabs Navigation -->
     <div class="tabs-bar">
-      <button class="tab-btn active" onclick="switchTab('horizontal')">
-        <span>🖼️ Horizontal 8x4 Ft Flex Banner</span>
-        <span class="pill">Primary Outdoor Board</span>
+      <button class="tab-btn active" onclick="switchTab('minimal')">
+        <span>✨ Minimal Executive 8x4 Ft</span>
+        <span class="pill">Recommended</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('detailed')">
+        <span>📋 Detailed Menu 8x4 Ft</span>
+        <span class="pill">Full Catalog</span>
       </button>
       <button class="tab-btn" onclick="switchTab('vertical')">
-        <span>📜 Vertical 3x6 Ft Rollup Standee</span>
-        <span class="pill">Showroom Standee</span>
+        <span>📜 Vertical 3x6 Ft Standee</span>
+        <span class="pill">Showroom</span>
       </button>
       <button class="tab-btn" onclick="switchTab('mockup')">
-        <span>🏬 Real Storefront Mockup</span>
+        <span>🏬 Storefront Simulation</span>
         <span class="pill">Photorealistic</span>
       </button>
     </div>
 
-    <!-- VIEW 1: HORIZONTAL 8x4 FT FLEX BANNER -->
-    <section id="view-horizontal" class="preview-card">
+    <!-- VIEW 1: MINIMAL EXECUTIVE 8x4 FT (RECOMMENDED) -->
+    <section id="view-minimal" class="preview-card">
       <div class="stage-header">
         <div class="stage-title">
-          <span>8 ft × 4 ft Outdoor Commercial Flex Signboard</span>
-          <span class="badge-size">Standard 2:1 Ratio • 2400 × 1200 Vector ViewBox</span>
+          <span>Minimal &amp; High-Impact 8 ft × 4 ft Flex Banner</span>
+          <span class="badge-rec">⭐ Recommended for High Visibility</span>
+          <span class="badge-size">2400 × 1200 Vector ViewBox</span>
         </div>
         <div class="header-actions">
-          <a href="/bangalore-flex-banner-8x4ft.svg" target="_blank" class="btn btn-secondary">
-            <span>🔍</span> Open Raw Vector SVG
+          <a href="/bangalore-flex-banner-minimal-8x4ft.svg" target="_blank" class="btn btn-secondary">
+            <span>🔍</span> Open Raw Vector
           </a>
-          <a href="/bangalore-flex-banner-8x4ft.svg" download="as-refrigerations-bangalore-8x4ft.svg" class="btn btn-primary">
-            <span>⬇️</span> Download 8x4 Ft Master SVG
+          <a href="/bangalore-flex-banner-minimal-8x4ft.svg" download="as-refrigerations-bangalore-minimal-8x4ft.svg" class="btn btn-primary">
+            <span>⬇️</span> Download Minimal 8x4 Ft SVG
           </a>
         </div>
       </div>
 
       <div class="banner-frame-container">
-        <img src="/bangalore-flex-banner-8x4ft.svg" alt="AS Refrigerations Bangalore 8x4 Ft Flex Banner" class="banner-img" />
+        <img src="/bangalore-flex-banner-minimal-8x4ft.svg" alt="AS Refrigerations Bangalore Minimal 8x4 Ft Flex Banner" class="banner-img" />
       </div>
     </section>
 
-    <!-- VIEW 2: VERTICAL 3x6 FT ROLLUP STANDEE -->
+    <!-- VIEW 2: DETAILED 8x4 FT FLEX BANNER -->
+    <section id="view-detailed" class="preview-card" style="display: none;">
+      <div class="stage-header">
+        <div class="stage-title">
+          <span>Detailed Informational 8 ft × 4 ft Flex Banner (Full Menu)</span>
+          <span class="badge-size">Itemized 15 Services &amp; Prices</span>
+        </div>
+        <div class="header-actions">
+          <a href="/bangalore-flex-banner-8x4ft.svg" target="_blank" class="btn btn-secondary">
+            <span>🔍</span> Open Raw Vector
+          </a>
+          <a href="/bangalore-flex-banner-8x4ft.svg" download="as-refrigerations-bangalore-detailed-8x4ft.svg" class="btn btn-secondary">
+            <span>⬇️</span> Download Detailed 8x4 Ft SVG
+          </a>
+        </div>
+      </div>
+
+      <div class="banner-frame-container">
+        <img src="/bangalore-flex-banner-8x4ft.svg" alt="AS Refrigerations Bangalore Detailed 8x4 Ft Flex Banner" class="banner-img" />
+      </div>
+    </section>
+
+    <!-- VIEW 3: VERTICAL 3x6 FT ROLLUP STANDEE -->
     <section id="view-vertical" class="preview-card" style="display: none;">
       <div class="stage-header">
         <div class="stage-title">
           <span>3 ft × 6 ft Vertical Rollup Standee Banner</span>
-          <span class="badge-size">1:2 Ratio • Ideal for Workshop Entrance & Kiosks</span>
+          <span class="badge-size">1:2 Ratio • Ideal for Workshop Entrance &amp; Kiosks</span>
         </div>
         <div class="header-actions">
           <a href="/bangalore-standee-banner-3x6ft.svg" target="_blank" class="btn btn-secondary">
-            <span>🔍</span> Open Raw Vector SVG
+            <span>🔍</span> Open Raw Vector
           </a>
           <a href="/bangalore-standee-banner-3x6ft.svg" download="as-refrigerations-bangalore-standee-3x6ft.svg" class="btn btn-emerald">
             <span>⬇️</span> Download 3x6 Ft Standee SVG
@@ -390,7 +451,7 @@
       </div>
     </section>
 
-    <!-- VIEW 3: REAL OUTDOOR MOCKUP -->
+    <!-- VIEW 4: REAL OUTDOOR MOCKUP -->
     <section id="view-mockup" class="preview-card" style="display: none;">
       <div class="stage-header">
         <div class="stage-title">
@@ -398,14 +459,14 @@
           <span class="badge-size">16:9 4K Photographic Render</span>
         </div>
         <div class="header-actions">
-          <a href="/bangalore-flex-banner-mockup.jpg" download="as-refrigerations-bangalore-storefront-mockup.jpg" class="btn btn-primary">
-            <span>⬇️</span> Download Real Mockup (JPG)
+          <a href="/bangalore-flex-banner-minimal-mockup.jpg" download="as-refrigerations-bangalore-minimal-mockup.jpg" class="btn btn-primary">
+            <span>⬇️</span> Download Minimal Mockup (JPG)
           </a>
         </div>
       </div>
 
       <div class="banner-frame-container">
-        <img src="/bangalore-flex-banner-mockup.jpg" alt="Realistic Storefront Mockup in Kammanahalli Bangalore" class="banner-img" />
+        <img src="/bangalore-flex-banner-minimal-mockup.jpg" alt="Realistic Storefront Mockup in Kammanahalli Bangalore" class="banner-img" />
       </div>
     </section>
 
@@ -449,7 +510,7 @@
 
       <!-- Card 2: Bangalore Local Details Verified -->
       <div class="info-card">
-        <h3>📍 Bangalore Branch Identity & Contact Check</h3>
+        <h3>📍 Bangalore Branch Identity &amp; Contact Check</h3>
         <ul class="info-list">
           <li>
             <span>Branch Lead / Specialist:</span>
@@ -484,7 +545,7 @@
 
       <!-- Card 3: Key Services Displayed -->
       <div class="info-card">
-        <h3>🛠️ Services & Bangalore Transparent Rates</h3>
+        <h3>🛠️ Services &amp; Bangalore Transparent Rates</h3>
         <ul class="info-list">
           <li>
             <span>AC Deep Foam Jet Spray Wash:</span>
@@ -492,11 +553,7 @@
           </li>
           <li>
             <span>AC Gas Refill (R32 / R410A / R22):</span>
-            <strong class="emerald">₹2,500 (Full Vacuum & Nitrogen)</strong>
-          </li>
-          <li>
-            <span>AC Installation / Uninstallation:</span>
-            <strong>₹1,350 / ₹800</strong>
+            <strong class="emerald">₹2,500 (Full Vacuum &amp; Nitrogen)</strong>
           </li>
           <li>
             <span>Single Door Fridge Service:</span>
@@ -507,12 +564,12 @@
             <strong class="emerald">₹2,000</strong>
           </li>
           <li>
-            <span>Washing Machine Front & Top Load:</span>
-            <strong>Direct Drive • PCB • Bearing • Motor</strong>
+            <span>Washing Machine Front &amp; Top Load:</span>
+            <strong>Inverter • PCB • Drum • Motor</strong>
           </li>
           <li>
             <span>Digital App Integration:</span>
-            <strong class="highlight">Google Play Store & WhatsApp QR Codes</strong>
+            <strong class="highlight">Google Play Store &amp; WhatsApp QR Codes</strong>
           </li>
         </ul>
       </div>
@@ -524,13 +581,17 @@
   <script>
     function switchTab(tab) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('view-horizontal').style.display = 'none';
+      document.getElementById('view-minimal').style.display = 'none';
+      document.getElementById('view-detailed').style.display = 'none';
       document.getElementById('view-vertical').style.display = 'none';
       document.getElementById('view-mockup').style.display = 'none';
 
-      if (tab === 'horizontal') {
+      if (tab === 'minimal') {
         event.currentTarget.classList.add('active');
-        document.getElementById('view-horizontal').style.display = 'block';
+        document.getElementById('view-minimal').style.display = 'block';
+      } else if (tab === 'detailed') {
+        event.currentTarget.classList.add('active');
+        document.getElementById('view-detailed').style.display = 'block';
       } else if (tab === 'vertical') {
         event.currentTarget.classList.add('active');
         document.getElementById('view-vertical').style.display = 'block';
