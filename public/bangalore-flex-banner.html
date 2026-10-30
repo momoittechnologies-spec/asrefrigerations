@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AS Refrigerations — Bangalore Flex Banner Design Studio (Print-Ready 8x4 Ft & Standee)</title>
+  <link rel="icon" type="image/png" href="/as-logo-square.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070B14;
+      --card: #0F172A;
+      --card-border: #1E293B;
+      --primary: #EF4444;
+      --accent: #38BDF8;
+      --emerald: #10B981;
+      --gold: #F59E0B;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: #F8FAFC;
+      line-height: 1.5;
+      padding: 24px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+    }
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      background: #0F172A;
+      border: 1.5px solid var(--primary);
+      border-radius: 14px;
+      padding: 6px;
+      object-contain: contain;
+    }
+    .brand-title h1 {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    .brand-title h1 span {
+      color: var(--primary);
+    }
+    .brand-title p {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #FFF;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
+    }
+    .btn-primary:hover {
+      background: #DC2626;
+      transform: translateY(-1px);
+    }
+    .btn-emerald {
+      background: var(--emerald);
+      color: #FFF;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    .btn-emerald:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #1E293B;
+      color: #E2E8F0;
+      border: 1px solid #334155;
+    }
+    .btn-secondary:hover {
+      background: #334155;
+      color: #FFF;
+    }
+
+    /* Tabs */
+    .tabs-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      background: #0F172A;
+      padding: 6px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      width: fit-content;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      background: transparent;
+      color: #94A3B8;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1E293B;
+      color: #FFF;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .tab-btn.active span.pill {
+      background: var(--primary);
+      color: #FFF;
+    }
+    .tab-btn span.pill {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: #334155;
+      color: #CBD5E1;
+      font-weight: 800;
+    }
+
+    /* Banner Stage */
+    .preview-card {
+      background: #0B1120;
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      margin-bottom: 32px;
+    }
+    .stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .stage-title {
+      font-size: 18px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-size {
+      font-size: 11px;
+      font-weight: 800;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .banner-frame-container {
+      width: 100%;
+      background: #030712;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
+    }
+    .banner-img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      display: block;
+    }
+    .standee-frame {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Specs & Printing Details Grid */
+    .grid-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+    }
+    .info-card h3 {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #FFF;
+    }
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+      color: #CBD5E1;
+    }
+    .info-list li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 8px;
+    }
+    .info-list li strong {
+      color: #FFF;
+    }
+    .info-list li .highlight {
+      color: var(--gold);
+      font-weight: 800;
+    }
+    .info-list li .emerald {
+      color: var(--emerald);
+      font-weight: 800;
+    }
+
+    /* Print media setup */
+    @media print {
+      body {
+        background: #FFF;
+        color: #000;
+        padding: 0;
+      }
+      header, .tabs-bar, .stage-header, .grid-info, footer {
+        display: none !important;
+      }
+      .preview-card {
+        border: none;
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      .banner-frame-container {
+        padding: 0;
+        border: none;
+        background: transparent;
+      }
+      .banner-img {
+        width: 100vw;
+        height: auto;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Header -->
+    <header>
+      <div class="brand-title">
+        <img src="/as-logo-square.png" alt="AS Refrigerations Logo" class="brand-logo" />
+        <div>
+          <h1>AS <span>REFRIGERATIONS</span> — Bangalore Flex Banner</h1>
+          <p>Kammanahalli Branch Hub • High-Resolution Vector Print Assets (CMYK / 300 DPI Ready)</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="/bangalore-flex-banner-8x4ft.svg" download="as-refrigerations-bangalore-8x4ft.svg" class="btn btn-primary" title="Download master vector SVG for flex printing">
+          <span>⬇️</span> Download 8x4 Ft SVG
+        </a>
+        <a href="/bangalore-standee-banner-3x6ft.svg" download="as-refrigerations-bangalore-standee-3x6ft.svg" class="btn btn-emerald" title="Download vertical standee banner SVG">
+          <span>⬇️</span> Download Standee SVG
+        </a>
+        <button onclick="window.print()" class="btn btn-secondary" title="Direct print or Save to PDF">
+          <span>🖨️</span> Print / Save PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('horizontal')">
+        <span>🖼️ Horizontal 8x4 Ft Flex Banner</span>
+        <span class="pill">Primary Outdoor Board</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('vertical')">
+        <span>📜 Vertical 3x6 Ft Rollup Standee</span>
+        <span class="pill">Showroom Standee</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('mockup')">
+        <span>🏬 Real Storefront Mockup</span>
+        <span class="pill">Photorealistic</span>
+      </button>
+    </div>
+
+    <!-- VIEW 1: HORIZONTAL 8x4 FT FLEX BANNER -->
+    <section id="view-horizontal" class="preview-card">
+      <div class="stage-header">
+        <div class="stage-title">
+          <span>8 ft × 4 ft Outdoor Commercial Flex Signboard</span>
+          <span class="badge-size">Standard 2:1 Ratio • 2400 × 1200 Vector ViewBox</span>
+        </div>
+        <div class="header-actions">
+          <a href="/bangalore-flex-banner-8x4ft.svg" target="_blank" class="btn btn-secondary">
+            <span>🔍</span> Open Raw Vector SVG
+          </a>
+          <a href="/bangalore-flex-banner-8x4ft.svg" download="as-refrigerations-bangalore-8x4ft.svg" class="btn btn-primary">
+            <span>⬇️</span> Download 8x4 Ft Master SVG
+          </a>
+        </div>
+      </div>
+
+      <div class="banner-frame-container">
+        <img src="/bangalore-flex-banner-8x4ft.svg" alt="AS Refrigerations Bangalore 8x4 Ft Flex Banner" class="banner-img" />
+      </div>
+    </section>
+
+    <!-- VIEW 2: VERTICAL 3x6 FT ROLLUP STANDEE -->
+    <section id="view-vertical" class="preview-card" style="display: none;">
+      <div class="stage-header">
+        <div class="stage-title">
+          <span>3 ft × 6 ft Vertical Rollup Standee Banner</span>
+          <span class="badge-size">1:2 Ratio • Ideal for Workshop Entrance & Kiosks</span>
+        </div>
+        <div class="header-actions">
+          <a href="/bangalore-standee-banner-3x6ft.svg" target="_blank" class="btn btn-secondary">
+            <span>🔍</span> Open Raw Vector SVG
+          </a>
+          <a href="/bangalore-standee-banner-3x6ft.svg" download="as-refrigerations-bangalore-standee-3x6ft.svg" class="btn btn-emerald">
+            <span>⬇️</span> Download 3x6 Ft Standee SVG
+          </a>
+        </div>
+      </div>
+
+      <div class="banner-frame-container">
+        <div class="standee-frame">
+          <img src="/bangalore-standee-banner-3x6ft.svg" alt="AS Refrigerations Bangalore 3x6 Ft Standee Banner" class="banner-img" />
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: REAL OUTDOOR MOCKUP -->
+    <section id="view-mockup" class="preview-card" style="display: none;">
+      <div class="stage-header">
+        <div class="stage-title">
+          <span>Photorealistic Outdoor Storefront Simulation (Kammanahalli, Bangalore)</span>
+          <span class="badge-size">16:9 4K Photographic Render</span>
+        </div>
+        <div class="header-actions">
+          <a href="/bangalore-flex-banner-mockup.jpg" download="as-refrigerations-bangalore-storefront-mockup.jpg" class="btn btn-primary">
+            <span>⬇️</span> Download Real Mockup (JPG)
+          </a>
+        </div>
+      </div>
+
+      <div class="banner-frame-container">
+        <img src="/bangalore-flex-banner-mockup.jpg" alt="Realistic Storefront Mockup in Kammanahalli Bangalore" class="banner-img" />
+      </div>
+    </section>
+
+    <!-- Printing Guidelines & Tech Specs -->
+    <div class="grid-info">
+      
+      <!-- Card 1: Flex Printer Technical Instructions -->
+      <div class="info-card">
+        <h3>🖨️ Flex Printer Instructions (Handover to Vendor)</h3>
+        <ul class="info-list">
+          <li>
+            <span>Recommended Material:</span>
+            <strong class="highlight">Star Flex / 340+ GSM Frontlit Heavy Flex</strong>
+          </li>
+          <li>
+            <span>Color Profile:</span>
+            <strong>CMYK Mode (Vector calibrated)</strong>
+          </li>
+          <li>
+            <span>Resolution for RIP Software:</span>
+            <strong>100 – 150 DPI at 1:1 Actual Size</strong>
+          </li>
+          <li>
+            <span>Alternative Sizes Supported:</span>
+            <strong>6×3 Ft, 10×5 Ft, 12×6 Ft (Exact 2:1 Ratio)</strong>
+          </li>
+          <li>
+            <span>Finishing:</span>
+            <strong class="emerald">Brass Eyelets Every 2 Ft on All Borders</strong>
+          </li>
+          <li>
+            <span>Coating / Lamination:</span>
+            <strong>Matte Cold Lamination (Prevents sun glare)</strong>
+          </li>
+          <li>
+            <span>Inks:</span>
+            <strong>Solvent / UV Inkjet (3-Year Outdoor Durability)</strong>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 2: Bangalore Local Details Verified -->
+      <div class="info-card">
+        <h3>📍 Bangalore Branch Identity & Contact Check</h3>
+        <ul class="info-list">
+          <li>
+            <span>Branch Lead / Specialist:</span>
+            <strong class="emerald">Master Syed</strong>
+          </li>
+          <li>
+            <span>24/7 Hotline Number:</span>
+            <strong class="highlight">+91 80732 06402</strong>
+          </li>
+          <li>
+            <span>Secondary Helpline:</span>
+            <strong>+91 80749 45415</strong>
+          </li>
+          <li>
+            <span>Kammanahalli Workshop Address:</span>
+            <strong>#2, Sree Residency, Venkateshappa Layout, Kammanahalli – 560084</strong>
+          </li>
+          <li>
+            <span>Visiting Charge / Diagnosis:</span>
+            <strong class="emerald">₹299 (100% Waived in Bill)</strong>
+          </li>
+          <li>
+            <span>Turnaround Time:</span>
+            <strong class="highlight">60-Minute Rapid Doorstep Dispatch</strong>
+          </li>
+          <li>
+            <span>Coverage Areas:</span>
+            <strong>Kammanahalli • HRBR • Kalyan Nagar • Banaswadi • HBR • Hennur</strong>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 3: Key Services Displayed -->
+      <div class="info-card">
+        <h3>🛠️ Services & Bangalore Transparent Rates</h3>
+        <ul class="info-list">
+          <li>
+            <span>AC Deep Foam Jet Spray Wash:</span>
+            <strong class="emerald">₹600</strong>
+          </li>
+          <li>
+            <span>AC Gas Refill (R32 / R410A / R22):</span>
+            <strong class="emerald">₹2,500 (Full Vacuum & Nitrogen)</strong>
+          </li>
+          <li>
+            <span>AC Installation / Uninstallation:</span>
+            <strong>₹1,350 / ₹800</strong>
+          </li>
+          <li>
+            <span>Single Door Fridge Service:</span>
+            <strong class="emerald">₹1,500</strong>
+          </li>
+          <li>
+            <span>Double Door Frost-Free Fridge:</span>
+            <strong class="emerald">₹2,000</strong>
+          </li>
+          <li>
+            <span>Washing Machine Front & Top Load:</span>
+            <strong>Direct Drive • PCB • Bearing • Motor</strong>
+          </li>
+          <li>
+            <span>Digital App Integration:</span>
+            <strong class="highlight">Google Play Store & WhatsApp QR Codes</strong>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('view-horizontal').style.display = 'none';
+      document.getElementById('view-vertical').style.display = 'none';
+      document.getElementById('view-mockup').style.display = 'none';
+
+      if (tab === 'horizontal') {
+        event.currentTarget.classList.add('active');
+        document.getElementById('view-horizontal').style.display = 'block';
+      } else if (tab === 'vertical') {
+        event.currentTarget.classList.add('active');
+        document.getElementById('view-vertical').style.display = 'block';
+      } else if (tab === 'mockup') {
+        event.currentTarget.classList.add('active');
+        document.getElementById('view-mockup').style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>
