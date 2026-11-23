@@ -37,7 +37,7 @@ export const TECHNICIANS_REGISTRY: TechnicianProfile[] = [
   {
     id: 'tech-bangalore-syed-02',
     name: 'Syed',
-    phone: '+91 80732 06402',
+    phone: '+91 80732 32064',
     city: 'bangalore',
     priority: 1, // BANGALORE BRANCH LEAD
     skills: ['Inverter AC Repair', 'Daikin/Voltas PCB', 'Chemical Wash', 'Gas Charging'],
@@ -99,7 +99,7 @@ class BookingStoreService {
         statusHistory: booking.statusHistory || [],
         assignedTechnicianId: booking.assignedTechnicianId || (isBlr ? 'tech-bangalore-syed-02' : 'tech-sameer-01'),
         assignedTechnicianName: booking.assignedTechnicianName || (isBlr ? 'Syed (Bangalore Branch Lead)' : 'Shaik Sameer'),
-        assignedTechnicianPhone: booking.assignedTechnicianPhone || (isBlr ? '+91 80732 06402' : '+91 78158 51330'),
+        assignedTechnicianPhone: booking.assignedTechnicianPhone || (isBlr ? '+91 80732 32064' : '+91 78158 51330'),
         isAssignedToSameer: booking.isAssignedToSameer ?? !isBlr,
         source: booking.source || 'website',
         bookingSource: booking.bookingSource || 'website',

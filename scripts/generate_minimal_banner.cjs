@@ -275,7 +275,7 @@ const svgMinimal = `<?xml version="1.0" encoding="UTF-8"?>
     <!-- The Giant Phone Number -->
     <g transform="translate(875, 128)" text-anchor="middle">
       <text x="0" y="0" fill="#FFFFFF" font-size="82" font-weight="900" letter-spacing="2">
-        📞 +91 80732 06402
+        📞 +91 80732 32064
       </text>
     </g>
 

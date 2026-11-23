@@ -202,7 +202,7 @@ export const CitySelectModal: React.FC<CitySelectModalProps> = ({
                   </p>
                   <div className="mt-2 text-[11px] text-slate-300 flex items-center gap-2 font-semibold">
                     <Phone className="w-3 h-3 text-red-400" />
-                    <span>Helpline: +91 80732 06402</span>
+                    <span>Helpline: +91 80732 32064</span>
                   </div>
                 </div>
               </div>

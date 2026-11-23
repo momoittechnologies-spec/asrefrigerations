@@ -20,7 +20,7 @@ const FAQS: FAQItem[] = [
   {
     category: 'Doorstep Service',
     question: 'Can I book an AC or appliance service online on behalf of someone else?',
-    answer: 'No. All online and in-app bookings must be made strictly by the customer for their own residence or premises. If you need to arrange service for someone else (such as a family member, tenant, or friend), please call our technician directly by phone (+91 78158 51330 for Kadapa or +91 80732 06402 for Bangalore) to discuss and coordinate arrangements.'
+    answer: 'No. All online and in-app bookings must be made strictly by the customer for their own residence or premises. If you need to arrange service for someone else (such as a family member, tenant, or friend), please call our technician directly by phone (+91 78158 51330 for Kadapa or +91 80732 32064 for Bangalore) to discuss and coordinate arrangements.'
   },
   {
     category: 'Doorstep Service',

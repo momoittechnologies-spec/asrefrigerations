@@ -437,7 +437,7 @@ const svg8x4 = `<?xml version="1.0" encoding="UTF-8"?>
     <!-- Giant Digits (Legible from 100 meters away!) -->
     <g transform="translate(560, 118)" text-anchor="middle">
       <text x="0" y="0" fill="#FFFFFF" font-size="68" font-weight="900" letter-spacing="1" class="mono-num">
-        📞 +91 80732 06402
+        📞 +91 80732 32064
       </text>
     </g>
 
@@ -655,7 +655,7 @@ const svg3x6 = `<?xml version="1.0" encoding="UTF-8"?>
       ⚡ 24/7 BANGALORE DOORSTEP HELPLINE ⚡
     </text>
     <text x="540" y="130" fill="#FFFFFF" font-size="72" font-weight="900" text-anchor="middle" letter-spacing="1">
-      📞 +91 80732 06402
+      📞 +91 80732 32064
     </text>
     <text x="540" y="185" fill="#FEF08A" font-size="20" font-weight="800" text-anchor="middle">
       Call / WhatsApp Syed • Instant Dispatch Across North &amp; East Bangalore

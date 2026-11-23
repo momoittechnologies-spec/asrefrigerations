@@ -999,8 +999,8 @@
       syed: {
         id: 'syed',
         name: 'Syed',
-        phone: '+91 80732 06402',
-        phoneRaw: '8073206402',
+        phone: '+91 80732 32064',
+        phoneRaw: '8073232064',
         title: '🏢 Syed (Bangalore Branch Lead)',
         roleBadge: 'Branch Lead',
         defaultCity: 'bangalore',
@@ -1069,7 +1069,7 @@
       } catch {}
       return [
         { id: 'tech-sameer-01', name: 'Shaik Sameer', phone: '+91 78158 51330', city: 'kadapa', role: 'Kadapa Flagship HQ & Operations Lead', rating: '4.98', jobs: '1,428', address: '74/15/1 Lohiya Nagar, Mariapuram, Kadapa', status: 'AVAILABLE', isActive: true, lat: 14.4673, lng: 78.8242 },
-        { id: 'tech-bangalore-syed-00', name: 'Syed', phone: '+91 80732 06402', city: 'bangalore', role: 'Bangalore Branch Operations Lead', rating: '4.95', jobs: '620', address: '#2 Sree Residency, Kammanahalli', status: 'AVAILABLE', isActive: true, lat: 13.0158, lng: 77.6377 }
+        { id: 'tech-bangalore-syed-00', name: 'Syed', phone: '+91 80732 32064', city: 'bangalore', role: 'Bangalore Branch Operations Lead', rating: '4.95', jobs: '620', address: '#2 Sree Residency, Kammanahalli', status: 'AVAILABLE', isActive: true, lat: 13.0158, lng: 77.6377 }
       ];
     }
 
@@ -1330,7 +1330,7 @@
         btnSyed.className = 'py-2.5 px-3 rounded-xl bg-blue-600 text-white transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm';
         btnSameer.className = 'py-2.5 px-3 rounded-xl text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5 cursor-pointer';
         label.textContent = 'Syed Security PIN (Bangalore Branch)';
-        helper.innerHTML = 'Default PIN: <strong class="text-slate-300">5600</strong>, <strong class="text-slate-300">8073</strong> or Mobile <strong class="text-slate-300">8073206402</strong>';
+        helper.innerHTML = 'Default PIN: <strong class="text-slate-300">5600</strong>, <strong class="text-slate-300">8073</strong> or Mobile <strong class="text-slate-300">8073232064</strong>';
         submitLabel.textContent = 'Open Bangalore Command Rail';
       }
       pinInput.focus();
@@ -1371,7 +1371,7 @@
           pinError.classList.remove('hidden');
         }
       } else if (selectedLoginPersona === 'syed') {
-        if (entered === '5600' || entered === '8073' || entered === '8073206402' || entered === '1234' || entered === '998877') {
+        if (entered === '5600' || entered === '8073' || entered === '8073232064' || entered === '1234' || entered === '998877') {
           currentSessionUser = PERSONAS.syed;
           sessionStorage.setItem('as_admin_user', 'syed');
           authGate.classList.add('hidden');
@@ -2746,7 +2746,7 @@
         status: 'booking_received',
         isAssignedToSameer: city === 'kadapa' && isSameer,
         assignedTechnicianName: city === 'kadapa' ? 'Shaik Sameer' : 'Syed (Bangalore Lead)',
-        assignedTechnicianPhone: city === 'kadapa' ? '+91 78158 51330' : '+91 80732 06402',
+        assignedTechnicianPhone: city === 'kadapa' ? '+91 78158 51330' : '+91 80732 32064',
         source: 'admin_portal',
         bookingSource: 'admin_portal',
         timestamp: Date.now()
@@ -2773,7 +2773,7 @@
       activeInvoiceData = b;
 
       const isSameer = !currentSessionUser || currentSessionUser.id === 'sameer';
-      const helplinePhone = (b.city === 'kadapa') ? '+91 78158 51330' : '+91 80732 06402';
+      const helplinePhone = (b.city === 'kadapa') ? '+91 78158 51330' : '+91 80732 32064';
       const techName = b.assignedTechnicianName || (b.city === 'kadapa' ? 'Shaik Sameer' : 'Syed (Branch Lead)');
       const amount = b.finalPrice || b.estimatedPrice || 499;
 
@@ -2834,7 +2834,7 @@
       const b = activeInvoiceData;
       const phone = (b.customerMobile || b.customerPhone || '').replace(/\D/g, '').slice(-10);
       const amount = b.finalPrice || b.estimatedPrice || 499;
-      const helplinePhone = (b.city === 'kadapa') ? '+91 78158 51330' : '+91 80732 06402';
+      const helplinePhone = (b.city === 'kadapa') ? '+91 78158 51330' : '+91 80732 32064';
       const techName = b.assignedTechnicianName || (b.city === 'kadapa' ? 'Shaik Sameer' : 'Syed (Branch Lead)');
 
       const msg = `*🧾 SERVICE RECEIPT - AS REFRIGERATIONS*\nInvoice No: #INV-${b.id}\nCustomer: ${b.customerName}\nTerritory: ${(b.city || 'Kadapa').toUpperCase()}\nService: ${b.serviceTitle}\nTotal Paid: Rs. ${amount}\nGuarantee: 30-Day Doorstep Service Guarantee\nTechnician: ${techName}\nBranch Helpline: ${helplinePhone}\n\nThank you for choosing AS Refrigerations!`;
@@ -3002,7 +3002,7 @@
         `----------------------------------------\n` +
         `Thank you for trusting AS Refrigerations!\n` +
         `Kadapa Helpline: +91 78158 51330\n` +
-        `Bangalore Helpline: +91 80732 06402`;
+        `Bangalore Helpline: +91 80732 32064`;
 
       const waUrl = `https://wa.me/91${phone}?text=${encodeURIComponent(receiptMsg)}`;
       window.open(waUrl, '_blank');

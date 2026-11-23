@@ -595,7 +595,7 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="pt-2 text-[11px] text-slate-400 flex items-start gap-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800/60">
                 <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong className="text-slate-200">Branch Geographic Boundary:</strong> The Bangalore branch operates strictly from Venkateshappa Layout, Kammanahalli (#2 Sree Residency) to guarantee rapid 60-minute doorstep service in Kammanahalli and contiguous East Bangalore neighborhoods. We do not service outer South/West Bangalore. For custom queries, WhatsApp <a href="https://wa.me/918073206402" className="text-emerald-400 underline font-bold">+91 80732 06402</a>.
+                  <strong className="text-slate-200">Branch Geographic Boundary:</strong> The Bangalore branch operates strictly from Venkateshappa Layout, Kammanahalli (#2 Sree Residency) to guarantee rapid 60-minute doorstep service in Kammanahalli and contiguous East Bangalore neighborhoods. We do not service outer South/West Bangalore. For custom queries, WhatsApp <a href="https://wa.me/918073232064" className="text-emerald-400 underline font-bold">+91 80732 32064</a>.
                 </span>
               </div>
             </div>
