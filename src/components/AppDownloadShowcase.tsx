@@ -220,7 +220,7 @@ export const AppDownloadShowcase: React.FC = () => {
                   <span>Field Edition</span>
                 </div>
                 <span className="text-slate-600">•</span>
-                <span className="text-slate-300 font-semibold">18.2 MB</span>
+                <span className="text-slate-300 font-semibold">8.9 MB</span>
                 <span className="text-slate-600">•</span>
                 <span className="text-emerald-400 font-bold flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5" />
@@ -264,7 +264,7 @@ export const AppDownloadShowcase: React.FC = () => {
                 title="Download direct Partner APK file"
               >
                 <Download className="w-3 h-3" />
-                <span>Or download direct Partner APK (18 MB)</span>
+                <span>Or download direct Partner APK (8.9 MB)</span>
               </a>
             </div>
           </div>
